@@ -132,7 +132,7 @@ class LoginScreen extends StatelessWidget {
                             InkWell(
                               onTap: () {
                                 Navigator.pushNamed(
-                                    context, AppRouterNames.rVerifyPhoneNumber);
+                                    context, AppRouterNames.rResetPasswordScreen);
                               },
                               child: DefaultText(
                                 color: AppColor.grey3,

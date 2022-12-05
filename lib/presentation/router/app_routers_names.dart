@@ -5,4 +5,5 @@ class AppRouterNames {
   static const rVerifyPhoneNumber = '/verifyPhoneNumber';
   static const rSendOtp = '/SendOtp';
   static const rFindFuelStationScreen = '/FindFuelStationScreen';
+  static const rResetPasswordScreen = '/ResetPasswordScreen';
 }

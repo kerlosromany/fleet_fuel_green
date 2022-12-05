@@ -18,6 +18,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   static LoginCubit get(context) => BlocProvider.of(context);
 
+  // change password visibility Logic
   IconData suffixIcon = Icons.visibility_outlined;
   bool isPassword = true;
   void changePasswordVisibility() {
@@ -25,6 +26,16 @@ class LoginCubit extends Cubit<LoginState> {
     suffixIcon =
         isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
     emit(ChangePasswordVisibilityState());
+  }
+
+  IconData suffixIconConfirm = Icons.visibility_outlined;
+  bool isConfirmPassword = true;
+  void changePasswordConfirmVisibility() {
+    isConfirmPassword = !isConfirmPassword;
+    suffixIconConfirm = isConfirmPassword
+        ? Icons.visibility_outlined
+        : Icons.visibility_off_outlined;
+    emit(ChangePasswordConfirmVisibilityState());
   }
 
   // verify Login Logic
@@ -127,5 +138,35 @@ class LoginCubit extends Cubit<LoginState> {
   void changeCodeTexttoEmpty(value) {
     codeText = "";
     emit(ChangeCodeTextToEmptyState());
+  }
+
+  //reset password logic
+
+  late LoginModel modelAfterResetPassword;
+  resetPassword({
+    required String password,
+    required String confirmPassword,
+    required BuildContext context,
+  }) {
+    emit(ResetPasswordLoadingState());
+    DioHelper.postData(
+      url: epRESETPASSWORD,
+      body: {
+        "password": password,
+        "password_confirmation": confirmPassword,
+      },
+      token: "Bearer ${CacheHelper.getDataFromSharedPreference(key: 'token')}",
+    ).then((value) {
+      //print(value.data);
+      modelAfterResetPassword = LoginModel.fromJson(value.data);
+      //print(loginModel.data!.user!.token);
+      CacheHelper.saveDataSharedPreference(
+          key: 'token', value: modelAfterResetPassword.data!.user!.token);
+      emit(ResetPasswordSuccessState());
+    }).catchError((error) {
+      showToast(AppString.sLoginError, context);
+      print(error.toString());
+      emit(ResetPasswordErrorState(error: error.toString()));
+    });
   }
 }
