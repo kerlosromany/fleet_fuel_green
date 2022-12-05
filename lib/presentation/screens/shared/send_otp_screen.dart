@@ -14,6 +14,7 @@ import 'package:magdsoft_flutter_structure/presentation/widget/default_container
 import 'package:magdsoft_flutter_structure/presentation/widget/default_text.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/progress_indicator_widget.dart';
 
+import '../../router/app_routers_names.dart';
 import '../../widget/text_field_otp.dart';
 
 class SendOtpScreen extends StatelessWidget {
@@ -27,7 +28,11 @@ class SendOtpScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is VerifyOtpSuccessState) {
+            Navigator.pushNamed(context, AppRouterNames.rHome);
+          }
+        },
         builder: (context, state) {
           var cubit = LoginCubit.get(context);
           return Scaffold(
@@ -188,7 +193,8 @@ class SendOtpScreen extends StatelessWidget {
                         children: [
                           InkWell(
                             onTap: () {
-                              cubit.sendOtp(code: cubit.codeText , context: context);
+                              cubit.sendOtp(
+                                  code: cubit.codeText, context: context);
                             },
                             child: state is VerifyOtpLoadingState
                                 ? const ProgressIndicatorWidget()

@@ -41,6 +41,7 @@ dependencies:
   flutter_translate: ^4.0.2
   fluttertoast: ^8.0.9
   google_maps_flutter: ^2.2.1
+  google_nav_bar: ^5.0.6
   shared_preferences: ^2.0.15
   sizer: ^2.0.15
   snapping_sheet: ^3.1.0
@@ -83,7 +84,6 @@ flutter:
     - family: InriaSerif
       fonts:
         - asset: assets/fonts/InriaSerif-Regular.ttf
-       
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

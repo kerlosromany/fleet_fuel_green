@@ -13,5 +13,8 @@ class ChangeConfirmPasswordVisibiltyState extends GlobalState {}
 class ChangeSheetContentToSecondSheet extends GlobalState {}
 class ChangeSheetContentToThirdSheet extends GlobalState {}
 
+// change bottom nav bar states
+class ChangeCurrentIndexState extends GlobalState {}
+
 
 

@@ -48,6 +48,12 @@ class AppString {
   static const String sCamera = 'assets/images/camera.png';
   static const String sCounter = 'assets/images/counter.png';
   static const String sQrCode = 'assets/images/qr_code.png';
+  static const String sWallet = 'assets/images/wallet.png';
+  static const String sOrders = 'assets/images/orders.png';
+  static const String sHome = 'assets/images/home.png';
+  static const String sUser = 'assets/images/user.png';
+  
+
 
 
   // Font strings

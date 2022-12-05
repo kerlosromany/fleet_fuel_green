@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:magdsoft_flutter_structure/presentation/router/app_routers_names.dart';
+import 'package:magdsoft_flutter_structure/presentation/screens/shared/find_fuel_station_screen.dart';
 import 'package:magdsoft_flutter_structure/presentation/screens/shared/verify_phone_number_screen.dart';
 
-import '../screens/shared/find_fuel_station_screen.dart';
+import '../screens/shared/home_screen.dart';
 import '../screens/shared/find_workshop_screen.dart';
 import '../screens/shared/login_screen.dart';
 import '../screens/shared/notifications_screen.dart';
@@ -17,6 +18,8 @@ class AppRouter {
     switch (settings.name) {
       case AppRouterNames.rLogin:
         return MaterialPageRoute(builder: (_) =>  LoginScreen());
+      case AppRouterNames.rHome:
+        return MaterialPageRoute(builder: (_) =>  HomeScreen());
       case AppRouterNames.rProfile:
         return MaterialPageRoute(builder: (_) => ProfileSettingsScreen());
       case AppRouterNames.rVerifyPhoneNumber:
@@ -24,7 +27,7 @@ class AppRouter {
       case AppRouterNames.rSendOtp:
         return MaterialPageRoute(builder: (_) => const SendOtpScreen());
       case AppRouterNames.rFindFuelStationScreen:
-        return MaterialPageRoute(builder: (_) =>  FindFuelStationScreen());
+        return MaterialPageRoute(builder: (_) =>  FindFuelStationScren());
       default:
         return null;
     }

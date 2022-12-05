@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magdsoft_flutter_structure/business_logic/Login_cubit/login_cubit.dart';
 import 'package:magdsoft_flutter_structure/business_logic/Login_cubit/login_states.dart';
+import 'package:magdsoft_flutter_structure/presentation/router/app_router.dart';
 import 'package:magdsoft_flutter_structure/presentation/router/app_routers_names.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 
@@ -30,8 +31,7 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccessState) {
-            Navigator.pushReplacementNamed(
-                context, AppRouterNames.rFindFuelStationScreen);
+            Navigator.pushReplacementNamed(context, AppRouterNames.rHome);
           }
         },
         builder: (context, state) {
@@ -129,11 +129,17 @@ class LoginScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            DefaultText(
-                              color: AppColor.grey3,
-                              fontSize: 0.0408 * screenWidth,
-                              text: AppString.sForgotPassword,
-                              fontWeight: FontWeight.w400,
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRouterNames.rVerifyPhoneNumber);
+                              },
+                              child: DefaultText(
+                                color: AppColor.grey3,
+                                fontSize: 0.0408 * screenWidth,
+                                text: AppString.sForgotPassword,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ],
                         ),
