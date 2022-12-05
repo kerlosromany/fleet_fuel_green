@@ -128,4 +128,34 @@ class LoginCubit extends Cubit<LoginState> {
     codeText = "";
     emit(ChangeCodeTextToEmptyState());
   }
+
+
+  //reset password logic
+
+  late LoginModel tokenAfterResetPassword;
+  resetPassword({
+    required String password,
+    required String confirmPassword,
+    required BuildContext context,
+  }) {
+    emit(ResetPasswordLoadingState());
+    DioHelper.postData(
+      url: epRESETPASSWORD,
+      body: {
+        "password": password,
+        "password_confirmation": confirmPassword,
+      },
+      token: "Bearer ${CacheHelper.getDataFromSharedPreference(key: 'token')}",
+    ).then((value) {
+      print(value.data);
+      tokenAfterResetPassword = LoginModel.fromJson(value.data);
+      print(loginModel.data!.user!.token);
+      CacheHelper.saveDataSharedPreference(
+          key: 'token', value: tokenAfterResetPassword.data!.user!.token);
+      emit(ResetPasswordSuccessState());
+    }).catchError((error) {
+      showToast(AppString.sLoginError, context);
+      emit(ResetPasswordErrorState(error: error.toString()));
+    });
+  }
 }

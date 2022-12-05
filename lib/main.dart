@@ -14,21 +14,21 @@ import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 
-late LocalizationDelegate delegate;
+//late LocalizationDelegate delegate;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   BlocOverrides.runZoned(
-    () async {
+        () async {
       DioHelper.init();
       await CacheHelper.init();
       final locale =
           CacheHelper.getDataFromSharedPreference(key: 'language') ?? "en";
-      delegate = await LocalizationDelegate.create(
-        fallbackLocale: locale,
-        supportedLocales: ['ar', 'en'],
-      );
-      await delegate.changeLocale(Locale(locale));
+      //delegate = await LocalizationDelegate.create(
+      // fallbackLocale: locale,
+      //supportedLocales: ['ar', 'en'],
+      //);
+      //  await delegate.changeLocale(Locale(locale));
       runApp(MyApp(
         appRouter: AppRouter(),
       ));
@@ -49,21 +49,21 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with TickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
-    Intl.defaultLocale = delegate.currentLocale.languageCode;
+    // Intl.defaultLocale = delegate.currentLocale.languageCode;
 
-    delegate.onLocaleChanged = (Locale value) async {
-      try {
-        setState(() {
-          Intl.defaultLocale = value.languageCode;
-        });
-      } catch (e) {
-        //showToast(e.toString());
-      }
-    };
+    // delegate.onLocaleChanged = (Locale value) async {
+    // try {
+    // setState(() {
+    // Intl.defaultLocale = value.languageCode;
+    //});
+    //} catch (e) {
+    //showToast(e.toString());
+    //}
+    //};
   }
 
   @override
@@ -73,30 +73,30 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: ((context) => GlobalCubit()),
         ),
-        // BlocProvider(
-        //   create: ((context) => LoginCubit()),
-        // ),
+       // BlocProvider(
+         // create: ((context) => LoginCubit()),
+        //),
       ],
       child: BlocConsumer<GlobalCubit, GlobalState>(
         listener: (context, state) {},
         builder: (context, state) {
           return Sizer(
             builder: (context, orientation, deviceType) {
-              return LocalizedApp(
-                delegate,
+              return
+
                 LayoutBuilder(builder: (context, constraints) {
                   return MaterialApp(
                     debugShowCheckedModeBanner: false,
                     title: 'Werash',
-                    localizationsDelegates: [
-                      GlobalCupertinoLocalizations.delegate,
-                      DefaultCupertinoLocalizations.delegate,
-                      GlobalMaterialLocalizations.delegate,
-                      GlobalWidgetsLocalizations.delegate,
-                      delegate,
-                    ],
-                    locale: delegate.currentLocale,
-                    supportedLocales: delegate.supportedLocales,
+                    //localizationsDelegates: [
+                    //GlobalCupertinoLocalizations.delegate,
+                    //DefaultCupertinoLocalizations.delegate,
+                    //GlobalMaterialLocalizations.delegate,
+                    //GlobalWidgetsLocalizations.delegate,
+                    //delegate,
+                    //],
+                    //locale: delegate.currentLocale,
+                    // supportedLocales: delegate.supportedLocales,
                     onGenerateRoute: widget.appRouter.onGenerateRoute,
                     theme: ThemeData(
                       fontFamily: 'cairo',
@@ -110,8 +110,7 @@ class _MyAppState extends State<MyApp> {
                       ),
                     ),
                   );
-                }),
-              );
+                });
             },
           );
         },

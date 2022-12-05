@@ -7,3 +7,5 @@ const String epGETPROFILE = 'GetProfile';
 const String epVERIFYPHONE = 'verifyPhone';
 
 const String epVERIFYOTP = "verifyOtp";
+const String epRESETPASSWORD = "resetPassword";
+

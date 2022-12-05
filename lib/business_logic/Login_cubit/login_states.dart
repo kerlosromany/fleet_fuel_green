@@ -40,3 +40,15 @@ class VerifyOtpErrorState extends LoginState {
 
 class ChangeCodeTextState extends LoginState {}
 class ChangeCodeTextToEmptyState extends LoginState {}
+
+// reset password States
+
+class ResetPasswordLoadingState extends LoginState {}
+
+class ResetPasswordSuccessState extends LoginState {}
+
+class ResetPasswordErrorState extends LoginState {
+  final String error;
+
+  ResetPasswordErrorState({required this.error});
+}

@@ -30,7 +30,7 @@ class SendOtpScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is VerifyOtpSuccessState) {
-            Navigator.pushNamed(context, AppRouterNames.rHome);
+            Navigator.pushNamed(context, AppRouterNames.rResetPasswordScreen);
           }
         },
         builder: (context, state) {
