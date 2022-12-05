@@ -149,7 +149,6 @@ class LoginCubit extends Cubit<LoginState> {
     ).then((value) {
       print(value.data);
       tokenAfterResetPassword = LoginModel.fromJson(value.data);
-      print(loginModel.data!.user!.token);
       CacheHelper.saveDataSharedPreference(
           key: 'token', value: tokenAfterResetPassword.data!.user!.token);
       emit(ResetPasswordSuccessState());
