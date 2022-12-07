@@ -3,16 +3,67 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mobile_vision_2/flutter_mobile_vision_2.dart';
 import 'package:magdsoft_flutter_structure/business_logic/global_cubit/global_cubit.dart';
 import 'package:magdsoft_flutter_structure/constants/strings.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/default_container.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/default_text.dart';
+import 'package:magdsoft_flutter_structure/presentation/widget/default_text_field.dart';
 
 import '../styles/colors.dart';
 import 'fuel_station_sheet_content3.dart';
 
-class FuelStationSheetContent2 extends StatelessWidget {
+class FuelStationSheetContent2 extends StatefulWidget {
   const FuelStationSheetContent2({Key? key}) : super(key: key);
+
+  @override
+  State<FuelStationSheetContent2> createState() =>
+      _FuelStationSheetContent2State();
+}
+
+class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
+  TextEditingController odoController = TextEditingController();
+  TextEditingController litersController = TextEditingController();
+
+  bool isInitialized = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FlutterMobileVision.start().then((x) => setState(() {
+          isInitialized = true;
+        }));
+  }
+
+  _startScanForODO() async {
+    List<OcrText> list1 = [];
+    try {
+      list1 =
+          await FlutterMobileVision.read(waitTap: true, multiple: true, fps: 1);
+      for (OcrText ocrText in list1) {
+        print("Values is ${ocrText.value}");
+      }
+    } on Exception {
+      list1.add(OcrText('Failed to recognize text.'));
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  _startScanForLiter() async {
+    List<OcrText> list2 = [];
+    try {
+      list2 =
+          await FlutterMobileVision.read(waitTap: true, multiple: true, fps: 1);
+      for (OcrText ocrText in list2) {
+        print("Values is ${ocrText.value}");
+      }
+    } on Exception {
+      list2.add(OcrText('Failed to recognize text.'));
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,23 +132,33 @@ class FuelStationSheetContent2 extends StatelessWidget {
                   const SizedBox(height: 20),
                   // second row
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       DefaultContainer(
                         color: AppColor.grey6,
-                        width: 250,
-                        height: 50,
+                        width: 285,
+                        height: 65,
                         borderRadius: 10,
                         widget: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Image.asset(AppString.sFuel),
-                            const DefaultText(
-                              text: "1256888",
-                              color: AppColor.red2,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: AppString.sInriaSerif,
+                            Expanded(
+                              flex: 4,
+                              child: DefaultTextField(
+                                height: 55,
+                                isSearch: false,
+                                hintTxt: "",
+                                color: AppColor.grey6,
+                                isPassword: false,
+                                textInputType: TextInputType.number,
+                                textEditingController: odoController,
+                                validate: (value) {},
+                                fillColor: AppColor.grey6,
+                                styleColor: AppColor.red2,
+                                styleFontSize: 26,
+                                fontFamily: AppString.sInriaSerif,
+                              ),
                             ),
                             const DefaultText(
                               text: "ODO",
@@ -109,14 +170,17 @@ class FuelStationSheetContent2 extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const DefaultContainer(
-                        borderRadius: 10,
-                        color: AppColor.grey6,
-                        height: 50,
-                        width: 60,
-                        widget: Image(
-                          image: AssetImage(AppString.sCamera),
-                          fit: BoxFit.cover,
+                      InkWell(
+                        onTap: _startScanForODO,
+                        child: const DefaultContainer(
+                          borderRadius: 10,
+                          color: AppColor.grey6,
+                          height: 65,
+                          width: 60,
+                          widget: Image(
+                            image: AssetImage(AppString.sCamera),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ],
@@ -124,23 +188,32 @@ class FuelStationSheetContent2 extends StatelessWidget {
                   const SizedBox(height: 15),
                   // third row
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       DefaultContainer(
                         color: AppColor.grey6,
-                        width: 250,
-                        height: 50,
+                        width: 285,
+                        height: 65,
                         borderRadius: 10,
                         widget: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Image.asset(AppString.sCounter),
-                            const DefaultText(
-                              text: "90",
-                              color: AppColor.red2,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: AppString.sInriaSerif,
+                            Expanded(
+                              child: DefaultTextField(
+                                height: 50,
+                                isPassword: false,
+                                hintTxt: "",
+                                color: AppColor.grey6,
+                                textInputType: TextInputType.number,
+                                textEditingController: litersController,
+                                isSearch: false,
+                                validate: (value) {},
+                                fillColor: AppColor.grey6,
+                                styleColor: AppColor.red2,
+                                styleFontSize: 30,
+                                fontFamily: AppString.sInriaSerif,
+                              ),
                             ),
                             const DefaultText(
                               text: "Liter",
@@ -152,14 +225,17 @@ class FuelStationSheetContent2 extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const DefaultContainer(
-                        borderRadius: 10,
-                        color: AppColor.grey6,
-                        height: 50,
-                        width: 60,
-                        widget: Image(
-                          image: AssetImage(AppString.sCamera),
-                          fit: BoxFit.cover,
+                      InkWell(
+                        onTap: _startScanForLiter,
+                        child: const DefaultContainer(
+                          borderRadius: 10,
+                          color: AppColor.grey6,
+                          height: 65,
+                          width: 60,
+                          widget: Image(
+                            image: AssetImage(AppString.sCamera),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ],

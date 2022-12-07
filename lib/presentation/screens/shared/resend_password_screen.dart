@@ -73,6 +73,7 @@ class ResetPasswordScreen extends StatelessWidget {
                           height: 0.06 * screenHeight,
                           color: AppColor.grey3,
                           hintTxt: "Password",
+                          isSearch: false,
                           img: AppString.sPasswordPhoto1,
                           isPassword: cubit.isPassword,
                           textInputType: TextInputType.visiblePassword,
@@ -98,6 +99,7 @@ class ResetPasswordScreen extends StatelessWidget {
                           img: AppString.sPasswordPhoto1,
                           isPassword: cubit.isConfirmPassword,
                           textInputType: TextInputType.visiblePassword,
+                          isSearch: false,
                           textEditingController: passwordConfirmController,
                           validate: (value) {
                             if (value.isEmpty) {

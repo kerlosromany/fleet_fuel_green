@@ -13,9 +13,13 @@ class DefaultTextField extends StatelessWidget {
   IconData? iconData;
   final String hintTxt;
   final Color color;
+  Color? fillColor;
+  Color? styleColor;
+  double? styleFontSize;
+  String? fontFamily;
   final TextInputType textInputType;
   bool? isPassword = false;
-  //bool? isConfirmPassword = false;
+  bool isSearch = false;
   final TextEditingController textEditingController;
   var validate;
 
@@ -31,7 +35,11 @@ class DefaultTextField extends StatelessWidget {
     required this.color,
     required this.textInputType,
     this.isPassword,
-    //this.isConfirmPassword,
+    this.fillColor,
+    this.styleColor,
+    this.styleFontSize,
+    this.fontFamily,
+    required this.isSearch,
     required this.textEditingController,
     required this.validate,
     this.suffixPressed,
@@ -46,26 +54,29 @@ class DefaultTextField extends StatelessWidget {
       controller: textEditingController,
       keyboardType: textInputType,
       obscureText: isPassword as bool,
+      cursorColor: AppColor.teal,
       decoration: InputDecoration(
-        prefixIcon: img == null
-            ? const Icon(Icons.search, color: AppColor.grey4)
-            : Image.asset(img!),
+        prefixIcon: (img == null && isSearch == false)
+            ? const SizedBox()
+            : isSearch
+                ? const Icon(Icons.search, color: AppColor.grey4)
+                : Image.asset(img!),
         suffixIcon: IconButton(
             onPressed: suffixPressed,
             icon: Icon(iconData, color: AppColor.grey4)),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide: const BorderSide(width: 0, color: AppColor.white),
+          borderSide: BorderSide(width: 0, color: fillColor ?? AppColor.white),
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide: const BorderSide(width: 0, color: AppColor.white),
+          borderSide: BorderSide(width: 0, color: fillColor ?? AppColor.white),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide: const BorderSide(width: 0, color: AppColor.white),
+          borderSide: BorderSide(width: 0, color: fillColor ?? AppColor.white),
         ),
-        fillColor: AppColor.white,
+        fillColor: fillColor ?? AppColor.white,
         filled: true,
         hintText: hintTxt,
         hintStyle: TextStyle(
@@ -75,7 +86,12 @@ class DefaultTextField extends StatelessWidget {
           color: AppColor.grey4,
         ),
       ),
-      style: const TextStyle(fontWeight: FontWeight.w400),
+      style: TextStyle(
+        fontWeight: FontWeight.w400,
+        color: styleColor ?? AppColor.teal,
+        fontSize: styleFontSize,
+        fontFamily: fontFamily ?? AppString.sActor,
+      ),
       onFieldSubmitted: onFieldSubmitted,
       validator: validate,
       onTap: onTap,

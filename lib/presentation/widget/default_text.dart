@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -10,6 +11,7 @@ class DefaultText extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final String? fontFamily;
+  //final VoidCallback? onpressed;
   const DefaultText({
     Key? key,
     required this.text,
@@ -17,6 +19,7 @@ class DefaultText extends StatelessWidget {
     required this.fontSize,
     required this.fontWeight,
     this.fontFamily,
+    //this.onpressed,
   });
 
   @override
@@ -27,7 +30,7 @@ class DefaultText extends StatelessWidget {
         color: color,
         fontSize: fontSize,
         fontWeight: fontWeight,
-        fontFamily: fontFamily ?? AppString.sAbel ,
+        fontFamily: fontFamily ?? AppString.sAbel,
       ),
     );
   }

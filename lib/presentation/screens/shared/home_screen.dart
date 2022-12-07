@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_mobile_vision_2/flutter_mobile_vision_2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:magdsoft_flutter_structure/presentation/screens/shared/payment_method_screen.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
@@ -23,6 +24,7 @@ class HomeScreen extends StatelessWidget {
         var cubit = GlobalCubit.get(context);
         return Scaffold(
           body: cubit.screens[cubit.currentIndex],
+         
           bottomNavigationBar: Container(
             decoration: const BoxDecoration(
               color: AppColor.white,
@@ -51,7 +53,9 @@ class HomeScreen extends StatelessWidget {
                             : AppColor.white,
                       ),
                       child: Row(
-                        mainAxisAlignment: cubit.currentIndex == 0 ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
+                        mainAxisAlignment: cubit.currentIndex == 0
+                            ? MainAxisAlignment.spaceEvenly
+                            : MainAxisAlignment.center,
                         children: [
                           ImageIcon(
                             const AssetImage(AppString.sHome),
@@ -85,8 +89,10 @@ class HomeScreen extends StatelessWidget {
                             : AppColor.white,
                       ),
                       child: Row(
-                        mainAxisAlignment: cubit.currentIndex == 1 ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
-                        children:  [
+                        mainAxisAlignment: cubit.currentIndex == 1
+                            ? MainAxisAlignment.spaceEvenly
+                            : MainAxisAlignment.center,
+                        children: [
                           ImageIcon(
                             const AssetImage(AppString.sWallet),
                             color: cubit.currentIndex == 1
@@ -119,8 +125,10 @@ class HomeScreen extends StatelessWidget {
                             : AppColor.white,
                       ),
                       child: Row(
-                        mainAxisAlignment: cubit.currentIndex == 2 ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
-                        children:  [
+                        mainAxisAlignment: cubit.currentIndex == 2
+                            ? MainAxisAlignment.spaceEvenly
+                            : MainAxisAlignment.center,
+                        children: [
                           ImageIcon(
                             const AssetImage(AppString.sOrders),
                             color: cubit.currentIndex == 2
@@ -153,8 +161,10 @@ class HomeScreen extends StatelessWidget {
                             : AppColor.white,
                       ),
                       child: Row(
-                        mainAxisAlignment: cubit.currentIndex == 3 ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
-                        children:  [
+                        mainAxisAlignment: cubit.currentIndex == 3
+                            ? MainAxisAlignment.spaceEvenly
+                            : MainAxisAlignment.center,
+                        children: [
                           ImageIcon(
                             const AssetImage(AppString.sUser),
                             color: cubit.currentIndex == 3

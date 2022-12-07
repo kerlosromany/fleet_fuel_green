@@ -36,6 +36,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   flutter_localizations:
     sdk: flutter
+  flutter_mobile_vision_2: ^0.1.15
   flutter_otp_text_field: ^1.1.1
   flutter_svg_provider: ^1.0.3
   flutter_translate: ^4.0.2

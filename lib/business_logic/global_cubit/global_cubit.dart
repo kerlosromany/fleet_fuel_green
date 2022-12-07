@@ -14,18 +14,6 @@ class GlobalCubit extends Cubit<GlobalState> {
 
   static GlobalCubit get(context) => BlocProvider.of(context);
 
-  // password visibility Logic
-  // bool isPassword = true;
-  // void changePasswordVisibility() {
-  //   isPassword = !isPassword;
-  //   emit(ChangePasswordVisibiltyState());
-  // }
-
-  // bool isConfirmPassword = true;
-  // void changeConfirmPasswordVisibility() {
-  //   isConfirmPassword = !isConfirmPassword;
-  //   emit(ChangeConfirmPasswordVisibiltyState());
-  // }
 
   // change fuel station sheet content Logic
   void changeSheetContentToSecondSheet2() {

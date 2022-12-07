@@ -38,7 +38,7 @@ class LoginCubit extends Cubit<LoginState> {
     emit(ChangePasswordConfirmVisibilityState());
   }
 
-  // verify Login Logic
+  // Login Logic
   late LoginModel loginModel;
   userLogin({
     required String phone,
@@ -85,7 +85,8 @@ class LoginCubit extends Cubit<LoginState> {
       verifyPhoneModel = LoginModel.fromJson(res.data);
       CacheHelper.saveDataSharedPreference(
           key: 'token', value: verifyPhoneModel.data!.user!.token);
-
+      CacheHelper.saveDataSharedPreference(
+          key: 'phone', value: verifyPhoneModel.data!.user!.phone);
       emit(VerifyPhoneSuccessState());
     } on DioError catch (e) {
       if (e.type == DioErrorType.response) {
@@ -101,6 +102,46 @@ class LoginCubit extends Cubit<LoginState> {
       emit(VerifyPhoneErrorState(error: e.toString()));
     }
   }
+
+  // resend otp code
+  resendOTPCode({
+    required String phone,
+    required BuildContext context,
+  }) async {
+    emit(VerifyPhoneLoadingState());
+    try {
+      Response res = await DioHelper.postData(
+        url: epVERIFYPHONE,
+        body: {
+          "phone": phone,
+          //"appKey": 524,
+        },
+      );
+      print(res.data);
+      verifyPhoneModel = LoginModel.fromJson(res.data);
+      CacheHelper.saveDataSharedPreference(
+          key: 'token', value: verifyPhoneModel.data!.user!.token);
+      showToast(
+          verifyPhoneModel.data!.otp,
+          context,
+        );
+      emit(VerifyPhoneSuccessState());
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.response) {
+        showToast(
+          AppString.sSentOtpError,
+          context,
+        );
+        emit(VerifyPhoneErrorState(error: e.message));
+        return;
+      }
+    } catch (e) {
+      print(e.toString());
+      emit(VerifyPhoneErrorState(error: e.toString()));
+    }
+  }
+
+
 
   // send verified code
   late LoginModel verifiedModelAfterSendOtp;

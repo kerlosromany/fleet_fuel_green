@@ -105,6 +105,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                           //Name
                           DefaultTextField(
                             height: 0.06 * screenHeight,
+                            isSearch: false,
                             img: AppString.sPasswordPhoto1,
                             hintTxt: cubit.loginModel.data?.user!.name ?? "Name",
                             color: AppColor.grey3,
@@ -117,6 +118,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                           // Bus Info
                           DefaultTextField(
                             height: 0.06 * screenHeight,
+                            isSearch: false,
                             img: AppString.sCar,
                             hintTxt: "1234 | م س",
                             color: AppColor.grey3,
@@ -132,6 +134,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                             img: AppString.sSmartPhone,
                             hintTxt: cubit.loginModel.data?.user!.phone ?? "Phone Number",
                             color: AppColor.grey3,
+                            isSearch: false,
                             isPassword: false,
                             textInputType: TextInputType.phone,
                             textEditingController: phoneController,
@@ -147,6 +150,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                             isPassword: false,
                             textInputType: TextInputType.emailAddress,
                             textEditingController: emailController,
+                            isSearch: false,
                             validate: (value) {},
                           ),
                           SizedBox(height: 0.018 * screenHeight),
@@ -158,6 +162,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                             img: AppString.sPasswordPhoto1,
                             isPassword: true,
                             textInputType: TextInputType.text,
+                            isSearch: false,
                             textEditingController: passwordController,
                             validate: (value) {},
 
@@ -171,6 +176,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                             img: AppString.sPasswordPhoto1,
                             isPassword: false,
                             textInputType: TextInputType.text,
+                            isSearch: false,
                             textEditingController: passwordConfirmController,
                             validate: (value) {},
                           ),
