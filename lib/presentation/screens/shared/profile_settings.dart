@@ -18,8 +18,10 @@ class ProfileSettingsScreen extends StatelessWidget {
   TextEditingController addressController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController birthController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
+  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class ProfileSettingsScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           var cubit = GetProfileCubit.get(context);
-          
+
           return Scaffold(
             backgroundColor: AppColor.grey6,
             appBar: AppBar(
@@ -47,166 +49,216 @@ class ProfileSettingsScreen extends StatelessWidget {
               ],
             ),
             drawer: const Drawer(),
-            body: state is GetProfileLoadingState?  const ProgressIndicatorWidget() : Center(
-              child: Stack(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 0.038 * screenWidth),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          // Edit Profile Photo
-                          Stack(
-                            children: [
-                              CircleAvatar(
-                                radius: 0.16 * screenWidth,
-                                backgroundColor: Colors.green,
-                              ),
-                              Positioned(
-                                top: 0.1 * screenHeight,
-                                left: 0.2 * screenWidth,
-                                child: CircleAvatar(
-                                  backgroundColor: AppColor.white,
-                                  radius: 0.05 * screenWidth,
-                                  child: CircleAvatar(
-                                    radius: 0.045 * screenWidth,
-                                    backgroundColor: AppColor.red,
-                                    child: FittedBox(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          IconButton(
-                                            onPressed: () {},
-                                            icon: const Icon(
-                                              Icons.edit_outlined,
-                                              color: AppColor.white,
+            body: state is GetProfileLoadingState
+                ? const ProgressIndicatorWidget()
+                : Center(
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 0.038 * screenWidth),
+                          child: SingleChildScrollView(
+                            child: Form(
+                              key: formKey,
+                              child: Column(
+                                children: [
+                                  // Edit Profile Photo
+                                  Stack(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 0.16 * screenWidth,
+                                        backgroundColor: Colors.green,
+                                      ),
+                                      Positioned(
+                                        top: 0.1 * screenHeight,
+                                        left: 0.2 * screenWidth,
+                                        child: CircleAvatar(
+                                          backgroundColor: AppColor.white,
+                                          radius: 0.05 * screenWidth,
+                                          child: CircleAvatar(
+                                            radius: 0.045 * screenWidth,
+                                            backgroundColor: AppColor.red,
+                                            child: FittedBox(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  IconButton(
+                                                    onPressed: () {},
+                                                    icon: const Icon(
+                                                      Icons.edit_outlined,
+                                                      color: AppColor.white,
+                                                    ),
+                                                  ),
+                                                  const Text(
+                                                    "...",
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                          const Text(
-                                            "...",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ),
+                                  SizedBox(height: 0.018 * screenHeight),
+                                  const Text("Kerolos romany dawood"),
+                                  const Text("مدرسة فيوتشر"),
+                                  SizedBox(height: 0.05 * screenHeight),
+                                  //Name
+                                  DefaultTextField(
+                                    height: 0.06 * screenHeight,
+                                    isSearch: false,
+                                    img: AppString.sPasswordPhoto1,
+                                    hintTxt:
+                                        cubit.loginModel.data?.user!.name ??
+                                            "Name",
+                                    color: AppColor.grey3,
+                                    isPassword: false,
+                                    textInputType: TextInputType.name,
+                                    textEditingController: nameController,
+                                    validate: (value) {},
+                                  ),
+                                  SizedBox(height: 0.018 * screenHeight),
+                                  // Bus Info
+                                  DefaultTextField(
+                                    height: 0.06 * screenHeight,
+                                    isSearch: false,
+                                    img: AppString.sCar,
+                                    hintTxt: "1234 | م س",
+                                    color: AppColor.grey3,
+                                    isPassword: false,
+                                    textInputType: TextInputType.text,
+                                    textEditingController: addressController,
+                                    validate: (value) {},
+                                  ),
+                                  SizedBox(height: 0.018 * screenHeight),
+                                  // Phone number
+                                  DefaultTextField(
+                                    height: 0.06 * screenHeight,
+                                    img: AppString.sSmartPhone,
+                                    hintTxt:
+                                        cubit.loginModel.data?.user!.phone ??
+                                            "Phone Number",
+                                    color: AppColor.grey3,
+                                    isSearch: false,
+                                    isPassword: false,
+                                    textInputType: TextInputType.phone,
+                                    textEditingController: phoneController,
+                                    validate: (value) {},
+                                  ),
+                                  SizedBox(height: 0.018 * screenHeight),
+                                  // Email
+                                  DefaultTextField(
+                                    height: 0.06 * screenHeight,
+                                    img: AppString.sEmail,
+                                    hintTxt:
+                                        cubit.loginModel.data?.user!.email ??
+                                            "Email",
+                                    color: AppColor.grey3,
+                                    isPassword: false,
+                                    textInputType: TextInputType.emailAddress,
+                                    textEditingController: emailController,
+                                    isSearch: false,
+                                    validate: (value) {},
+                                  ),
+                                  
+                                  SizedBox(height: 0.018 * screenHeight),
+                                  // password
+                                  DefaultTextField(
+                                    height: 0.06 * screenHeight,
+                                    color: AppColor.grey3,
+                                    hintTxt: "Password",
+                                    img: AppString.sPasswordPhoto1,
+                                    isPassword: true,
+                                    textInputType: TextInputType.text,
+                                    isSearch: false,
+                                    textEditingController: passwordController,
+                                    validate: (value) {
+                                      if (value.isNotEmpty) {
+                                        if (value.length < 9) {
+                                          return "Password must be 9 characters or more";
+                                        }
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(height: 0.018 * screenHeight),
+                                  // confirm password
+                                  DefaultTextField(
+                                    height: 0.06 * screenHeight,
+                                    color: AppColor.grey3,
+                                    hintTxt: "Confirm Password",
+                                    img: AppString.sPasswordPhoto1,
+                                    isPassword: true,
+                                    textInputType: TextInputType.text,
+                                    isSearch: false,
+                                    textEditingController:
+                                        passwordConfirmController,
+                                    validate: (value) {
+                                      if (value.isNotEmpty) {
+                                        if (value.length < 9) {
+                                          return "Password must be 9 characters or more";
+                                        }
+                                      }
+                                      if (value != passwordController.text) {
+                                        return "Password does not match";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  SizedBox(height: 0.06 * screenHeight),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          if (formKey.currentState!
+                                              .validate()) {
+                                            cubit.updateProfileData(
+                                              password: passwordController.text,
+                                              confirmPassword:
+                                                  passwordConfirmController
+                                                      .text,
+                                              birth: birthController.text,
+                                              email: emailController.text,
+                                              context: context,
+                                            );
+                                          }
+                                        },
+                                        child: state
+                                                is UpdateProfileLoadingState
+                                            ? const ProgressIndicatorWidget()
+                                            : DefaultContainer(
+                                                color: AppColor.teal
+                                                    .withOpacity(0.7),
+                                                borderRadius: 10,
+                                                width: 0.255 * screenWidth,
+                                                height: 0.06 * screenHeight,
+                                                widget: const Text(
+                                                  "Save",
+                                                  style: TextStyle(
+                                                      color: AppColor.white),
+                                                ),
+                                              ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                          SizedBox(height: 0.018 * screenHeight),
-                          const Text("Kerolos romany dawood"),
-                          const Text("مدرسة فيوتشر"),
-                          SizedBox(height: 0.05 * screenHeight),
-                          //Name
-                          DefaultTextField(
-                            height: 0.06 * screenHeight,
-                            isSearch: false,
-                            img: AppString.sPasswordPhoto1,
-                            hintTxt: cubit.loginModel.data?.user!.name ?? "Name",
-                            color: AppColor.grey3,
-                            isPassword: false,
-                            textInputType: TextInputType.name,
-                            textEditingController: nameController,
-                            validate: (value) {},
-                          ),
-                          SizedBox(height: 0.018 * screenHeight),
-                          // Bus Info
-                          DefaultTextField(
-                            height: 0.06 * screenHeight,
-                            isSearch: false,
-                            img: AppString.sCar,
-                            hintTxt: "1234 | م س",
-                            color: AppColor.grey3,
-                            isPassword: false,
-                            textInputType: TextInputType.text,
-                            textEditingController: addressController,
-                            validate: (value) {},
-                          ),
-                          SizedBox(height: 0.018 * screenHeight),
-                          // Phone number
-                          DefaultTextField(
-                            height: 0.06 * screenHeight,
-                            img: AppString.sSmartPhone,
-                            hintTxt: cubit.loginModel.data?.user!.phone ?? "Phone Number",
-                            color: AppColor.grey3,
-                            isSearch: false,
-                            isPassword: false,
-                            textInputType: TextInputType.phone,
-                            textEditingController: phoneController,
-                            validate: (value) {},
-                          ),
-                          SizedBox(height: 0.018 * screenHeight),
-                          // Email
-                          DefaultTextField(
-                            height: 0.06 * screenHeight,
-                            img: AppString.sEmail,
-                            hintTxt: cubit.loginModel.data?.user!.email ?? "Email",
-                            color: AppColor.grey3,
-                            isPassword: false,
-                            textInputType: TextInputType.emailAddress,
-                            textEditingController: emailController,
-                            isSearch: false,
-                            validate: (value) {},
-                          ),
-                          SizedBox(height: 0.018 * screenHeight),
-                          // password
-                          DefaultTextField(
-                            height: 0.06 * screenHeight,
-                            color: AppColor.grey3,
-                            hintTxt: "Password",
-                            img: AppString.sPasswordPhoto1,
-                            isPassword: true,
-                            textInputType: TextInputType.text,
-                            isSearch: false,
-                            textEditingController: passwordController,
-                            validate: (value) {},
-
-                          ),
-                          SizedBox(height: 0.018 * screenHeight),
-                          // confirm password
-                          DefaultTextField(
-                            height: 0.06 * screenHeight,
-                            color: AppColor.grey3,
-                            hintTxt: "Confirm Password",
-                            img: AppString.sPasswordPhoto1,
-                            isPassword: false,
-                            textInputType: TextInputType.text,
-                            isSearch: false,
-                            textEditingController: passwordConfirmController,
-                            validate: (value) {},
-                          ),
-                          SizedBox(height: 0.06 * screenHeight),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              DefaultContainer(
-                                color: AppColor.teal.withOpacity(0.7),
-                                borderRadius: 10,
-                                width: 0.255 * screenWidth,
-                                height: 0.06 * screenHeight,
-                                widget: const Text(
-                                  "Save",
-                                  style: TextStyle(color: AppColor.white),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                        Positioned(
+                          top: 0.06 * screenHeight,
+                          child: Image.asset(AppString.sBackGround),
+                        ),
+                      ],
                     ),
                   ),
-                  Positioned(
-                    top: 0.06 * screenHeight,
-                    child: Image.asset(AppString.sBackGround),
-                  ),
-                ],
-              ),
-            ),
           );
         },
       ),

@@ -9,3 +9,7 @@ const String epVERIFYPHONE = 'verifyPhone';
 const String epVERIFYOTP = "verifyOtp";
 
 const String epRESETPASSWORD = "resetPassword";
+
+const String epUPDATEPROFILE = "updateProfile";
+
+

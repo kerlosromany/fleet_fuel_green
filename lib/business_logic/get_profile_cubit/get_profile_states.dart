@@ -12,3 +12,14 @@ class GetProfileErrorState extends GetProfileState {
   GetProfileErrorState({required this.error});
 }
 
+
+class UpdateProfileLoadingState extends GetProfileState {}
+
+class UpdateProfileSuccessState extends GetProfileState {}
+
+class UpdateProfileErrorState extends GetProfileState {
+  final String error;
+
+  UpdateProfileErrorState({required this.error});
+}
+

@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = GlobalCubit.get(context);
         return Scaffold(
-          body: cubit.screens[cubit.currentIndex],
+          body: cubit.screens[cubit.currentIndex], 
          
           bottomNavigationBar: Container(
             decoration: const BoxDecoration(

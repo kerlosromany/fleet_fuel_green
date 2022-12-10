@@ -22,6 +22,7 @@ class DefaultTextField extends StatelessWidget {
   bool isSearch = false;
   final TextEditingController textEditingController;
   var validate;
+  var onChange;
 
   VoidCallback? suffixPressed;
   VoidCallback? onTap;
@@ -45,6 +46,7 @@ class DefaultTextField extends StatelessWidget {
     this.suffixPressed,
     this.onTap,
     this.onFieldSubmitted,
+    this.onChange,
   });
 
   @override
@@ -96,6 +98,7 @@ class DefaultTextField extends StatelessWidget {
       validator: validate,
       onTap: onTap,
       enabled: true,
+      onChanged: onChange,
     );
   }
 }
