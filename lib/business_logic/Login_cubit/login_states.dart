@@ -14,7 +14,10 @@ class LoginErrorState extends LoginState {
   LoginErrorState({required this.error});
 }
 
+// change password visibility Logic
+
 class ChangePasswordVisibilityState extends LoginState{}
+class ChangePasswordConfirmVisibilityState extends LoginState{}
 
 // Verify Phone States
 class VerifyPhoneLoadingState extends LoginState {}
@@ -40,6 +43,7 @@ class VerifyOtpErrorState extends LoginState {
 
 class ChangeCodeTextState extends LoginState {}
 class ChangeCodeTextToEmptyState extends LoginState {}
+
 
 // reset password States
 

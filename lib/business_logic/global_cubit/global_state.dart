@@ -16,5 +16,13 @@ class ChangeSheetContentToThirdSheet extends GlobalState {}
 // change bottom nav bar states
 class ChangeCurrentIndexState extends GlobalState {}
 
+// ocr states changes
+class ChangeControllersState extends GlobalState {}
+class OdoControllerSuccessState extends GlobalState {}
+class OdoControllerErrorState extends GlobalState {}
+////////
+class LitersControllerSuccessState extends GlobalState {}
+class LitersControllerErrorState extends GlobalState {}
+
 
 

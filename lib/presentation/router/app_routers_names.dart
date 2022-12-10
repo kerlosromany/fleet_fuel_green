@@ -6,5 +6,4 @@ class AppRouterNames {
   static const rSendOtp = '/SendOtp';
   static const rFindFuelStationScreen = '/FindFuelStationScreen';
   static const rResetPasswordScreen = '/ResetPasswordScreen';
-
 }

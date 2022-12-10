@@ -77,6 +77,7 @@ class LoginScreen extends StatelessWidget {
                         // Phone number
                         DefaultTextField(
                           textEditingController: phoneLoginController,
+                          isSearch: false,
                           height: 0.07 * screenHeight,
                           img: AppString.sSmartPhone,
                           hintTxt: AppString.sPhoneNumber,
@@ -95,6 +96,7 @@ class LoginScreen extends StatelessWidget {
                         DefaultTextField(
                           height: 0.07 * screenHeight,
                           color: AppColor.grey3,
+                          isSearch: false,
                           hintTxt: AppString.sPassword,
                           img: AppString.sPasswordPhoto1,
                           isPassword: cubit.isPassword,
@@ -132,7 +134,7 @@ class LoginScreen extends StatelessWidget {
                             InkWell(
                               onTap: () {
                                 Navigator.pushNamed(
-                                    context, AppRouterNames.rVerifyPhoneNumber);
+                                    context, AppRouterNames.rResetPasswordScreen);
                               },
                               child: DefaultText(
                                 color: AppColor.grey3,

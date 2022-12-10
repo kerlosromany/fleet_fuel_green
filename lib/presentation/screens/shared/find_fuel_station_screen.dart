@@ -83,6 +83,7 @@ class FindFuelStationScren extends StatelessWidget {
                   DefaultTextField(
                     height: 50,
                     hintTxt: "Search...",
+                    isSearch: true,
                     color: AppColor.grey4,
                     isPassword: false,
                     textInputType: TextInputType.text,

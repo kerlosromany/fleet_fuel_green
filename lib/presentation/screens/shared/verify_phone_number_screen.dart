@@ -32,7 +32,7 @@ class VerifyPhoneNumberScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const SendOtpScreen(),
-                ));
+                )); 
             showToast(cubit.verifyPhoneModel.data!.otp, context);
           }
         },
@@ -97,6 +97,7 @@ class VerifyPhoneNumberScreen extends StatelessWidget {
                           hintTxt: "Phone Number",
                           color: AppColor.grey3,
                           isPassword: false,
+                          isSearch: false,
                           textInputType: TextInputType.phone,
                           textEditingController: phoneSendOtpController,
                           validate: (value) {

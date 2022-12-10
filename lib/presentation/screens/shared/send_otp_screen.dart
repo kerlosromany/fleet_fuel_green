@@ -9,6 +9,7 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:magdsoft_flutter_structure/business_logic/Login_cubit/login_cubit.dart';
 import 'package:magdsoft_flutter_structure/business_logic/Login_cubit/login_states.dart';
 import 'package:magdsoft_flutter_structure/constants/strings.dart';
+import 'package:magdsoft_flutter_structure/data/data_providers/local/cache_helper.dart';
 import 'package:magdsoft_flutter_structure/presentation/styles/colors.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/default_container.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/default_text.dart';
@@ -179,11 +180,20 @@ class SendOtpScreen extends StatelessWidget {
                             fontSize: 0.035 * screenWidth,
                             fontWeight: FontWeight.w400,
                           ),
-                          DefaultText(
-                            text: AppString.sResend,
-                            color: AppColor.red,
-                            fontSize: 0.045 * screenWidth,
-                            fontWeight: FontWeight.w400,
+                          InkWell(
+                            onTap: () {
+                              cubit.resendOTPCode(
+                                phone: CacheHelper.getDataFromSharedPreference(
+                                    key: 'phone'),
+                                context: context,
+                              );
+                            },
+                            child: DefaultText(
+                              text: AppString.sResend,
+                              color: AppColor.red,
+                              fontSize: 0.045 * screenWidth,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ],
                       ),

@@ -21,8 +21,9 @@ class FuelStationSheetContent extends StatelessWidget {
     return BlocBuilder<GlobalCubit, GlobalState>(
       builder: (context, state) {
         var cubit = GlobalCubit.get(context);
-        if (state is ChangeSheetContentToSecondSheet)
+        if (state is ChangeSheetContentToSecondSheet) {
           return const FuelStationSheetContent2();
+        }
         if (state is ChangeSheetContentToThirdSheet) {
           return const FuelStationSheetContent3();
         }
