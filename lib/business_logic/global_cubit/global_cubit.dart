@@ -7,6 +7,7 @@ import 'package:flutter_mobile_vision_2/flutter_mobile_vision_2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:magdsoft_flutter_structure/presentation/screens/shared/find_fuel_station_screen.dart';
 import 'package:magdsoft_flutter_structure/presentation/screens/shared/profile_settings.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../constants/end_points.dart';
 import '../../data/data_providers/local/cache_helper.dart';
@@ -47,70 +48,6 @@ class GlobalCubit extends Cubit<GlobalState> {
     const OrdersHistoryScreen(),
     ProfileSettingsScreen(),
   ];
-
-  // ocr logic
-
-  List<OcrText> list1 = [];
-  startScanForODO() async {
-    try {
-      list1 =
-          await FlutterMobileVision.read(waitTap: true, multiple: true, fps: 1);
-      for (OcrText ocrText in list1) {
-        print("Values is ${ocrText.value}");
-      }
-      print("first value is ${list1[0].value}");
-    } on Exception {
-      list1.add(OcrText('Failed to recognize text.'));
-      emit(OdoControllerErrorState());
-    } catch (e) {
-      print(e.toString());
-      emit(OdoControllerErrorState());
-    }
-  }
-
-  List<OcrText> list2 = [];
-  startScanForLiter() async {
-    try {
-      list2 =
-          await FlutterMobileVision.read(waitTap: true, multiple: true, fps: 1);
-      for (OcrText ocrText in list2) {
-        print("Values is ${ocrText.value}");
-      }
-    } on Exception {
-      list2.add(OcrText('Failed to recognize text.'));
-      emit(LitersControllerErrorState());
-    } catch (e) {
-      print(e.toString());
-      emit(LitersControllerErrorState());
-    }
-  }
-
-  // user car data
-  late UserCar userCarModel;
-  getUserCarData() {
-    emit(GetUserCarLoadingState());
-    DioHelper.getData(
-      url: epUSERCARS,
-      token: "Bearer ${CacheHelper.getDataFromSharedPreference(key: 'token')}",
-    ).then((value) {
-      //print(value.data);
-      userCarModel = UserCar.fromJson(value.data);
-      print(userCarModel);
-      print(userCarModel.message);
-      print(userCarModel.data!.userVehicles);
-      emit(GetUserCarSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(GetUserCarErrorState(error: error.toString()));
-    });
-  }
-
-  // choose car photo logic
-  int currentPhoto = 0;
-  void changeCurrentPhoto(int photoIndex) {
-    currentPhoto = photoIndex;
-    emit(ChangeCarPhotoState());
-  }
 
   // Make new order
   late NewOrderModel newOrderModel;
@@ -153,37 +90,98 @@ class GlobalCubit extends Cubit<GlobalState> {
     });
   }
 
-  // pick ocr photo
-  File? odoImage;
-  File? litersImage;
-  Future pickODOImage(context, ImageSource imageSource) async {
-    try {
-      final image = await ImagePicker().pickImage(source: imageSource);
-      if (image == null) {
-        return;
-      }
-      final imageTemp = File(image.path);
-      odoImage = imageTemp;
-      print("Succefully to pick image");
-      emit(ChangePhotoState());
-    } on PlatformException catch (e) {
-      print("the error is ${e.toString()}");
-      showToast("Failed to pick image", context);
-    }
+  // user car data
+  late UserCar userCarModel;
+  getUserCarData() {
+    emit(GetUserCarLoadingState());
+    DioHelper.getData(
+      url: epUSERCARS,
+      token: "Bearer ${CacheHelper.getDataFromSharedPreference(key: 'token')}",
+    ).then((value) {
+      //print(value.data);
+      userCarModel = UserCar.fromJson(value.data);
+      print(userCarModel);
+      print(userCarModel.message);
+      print(userCarModel.data!.userVehicles);
+      emit(GetUserCarSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetUserCarErrorState(error: error.toString()));
+    });
   }
 
-  Future pickLitersImage(context, ImageSource imageSource) async {
-    try {
-      final image = await ImagePicker().pickImage(source: imageSource);
-      if (image == null) {
-        return;
-      }
-      final imageTemp = File(image.path);
-      litersImage = imageTemp;
-      emit(ChangePhotoState());
-    } on PlatformException catch (e) {
-      print("the error is ${e.toString()}");
-      showToast("Failed to pick image", context);
+  // choose car photo logic
+  int currentPhoto = 0;
+  void changeCurrentPhoto(int photoIndex) {
+    currentPhoto = photoIndex;
+    emit(ChangeCarPhotoState());
+  }
+
+// make ocr logic
+
+  int? cameraOcr = FlutterMobileVision.CAMERA_BACK;
+  bool autoFocusOcr = true;
+  bool torchOcr = false;
+  bool multipleOcr = true;
+  bool waitTapOcr = true;
+  bool showTextOcr = true;
+  Size? previewOcr;
+
+  Future<void> mobileVisionInit() async {
+    final previewSizes = await FlutterMobileVision.start();
+    previewOcr = previewSizes[cameraOcr]!.first;
+    //emit(MobileVisionInitState());
+  }
+
+  OcrText? oddoOCR;
+  OcrText? literOCR;
+
+  String? oddoOCRImagePath;
+  String? literOCRImagePath;
+
+  Future read(String fileName, OCRType ocrType) async {
+    List<OcrText> texts = [];
+    Size scanpreviewOcr = previewOcr ?? FlutterMobileVision.PREVIEW;
+    if (ocrType == OCRType.oddo) {
+      oddoOCRImagePath = await getFilePath(fileName);
+    } else if (ocrType == OCRType.liter) {
+      literOCRImagePath = await getFilePath(fileName);
     }
+    try {
+      texts = await FlutterMobileVision.read(
+        flash: torchOcr,
+        autoFocus: autoFocusOcr,
+        multiple: multipleOcr,
+        waitTap: waitTapOcr,
+        forceCloseCameraOnTap: true,
+        imagePath: ocrType == OCRType.oddo
+            ? oddoOCRImagePath!
+            : literOCRImagePath!, //'path/to/file.jpg'
+        showText: showTextOcr,
+        preview: previewOcr ?? FlutterMobileVision.PREVIEW,
+        scanArea: Size(scanpreviewOcr.width - 20, scanpreviewOcr.height - 20),
+        camera: cameraOcr ?? FlutterMobileVision.CAMERA_BACK,
+        fps: 2.0,
+      );
+    } on Exception {
+      texts.add(OcrText('Failed to recognize text.'));
+    }
+    if (ocrType == OCRType.oddo) {
+      oddoOCR = texts[0];
+    } else if (ocrType == OCRType.liter) {
+      literOCR = texts[0];
+    }
+    emit(MobileVisionTextOcrState());
+  }
+
+  Future<String> getFilePath(String fileName) async {
+    Directory appDocumentsDirectory =
+        await getApplicationDocumentsDirectory(); // 1
+    String appDocumentsPath = appDocumentsDirectory.path; // 2
+    String filePath = '$appDocumentsPath/$fileName.jpg'; // 3
+
+    return filePath;
   }
 }
+
+enum OCRType { oddo, liter }

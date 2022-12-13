@@ -25,7 +25,9 @@ class OdoControllerSuccessState extends GlobalState {}
 
 class OdoControllerErrorState extends GlobalState {}
 
-class ChangePhotoState extends GlobalState {}
+class MobileVisionTextOcrState extends GlobalState {}
+
+class MobileVisionInitState extends GlobalState {}
 
 ////////
 class LitersControllerSuccessState extends GlobalState {}

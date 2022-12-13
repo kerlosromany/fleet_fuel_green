@@ -33,14 +33,12 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
   TextEditingController litersController = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
-  bool isInitialized = false;
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
-    FlutterMobileVision.start().then((x) => setState(() {
-          isInitialized = true;
-        }));
+    GlobalCubit.get(context).mobileVisionInit();
   }
 
   @override
@@ -158,17 +156,29 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                           ),
                         ),
                         InkWell(
-                          onTap: cubit.startScanForODO,
-                          child: const DefaultContainer(
-                            borderRadius: 10,
-                            color: AppColor.grey6,
-                            height: 65,
-                            width: 60,
-                            widget: Image(
-                              image: AssetImage(AppString.sCamera),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                          onTap: () {
+                            cubit.read('oddoOcr', OCRType.oddo);
+                          },
+                          child: cubit.oddoOCRImagePath != null
+                              ? DefaultContainer(
+                                  widget: Image.file(
+                                      File(cubit.oddoOCRImagePath!),
+                                      fit: BoxFit.cover),
+                                  borderRadius: 10,
+                                  color: AppColor.white,
+                                  height: 65,
+                                  width: 60,
+                                )
+                              : const DefaultContainer(
+                                  borderRadius: 10,
+                                  color: AppColor.grey6,
+                                  height: 65,
+                                  width: 60,
+                                  widget: Image(
+                                    image: AssetImage(AppString.sCamera),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                         ),
                       ],
                     ),
@@ -219,15 +229,17 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         ),
                         InkWell(
                           onTap: () {
-                            //cubit.startScanForLiter;
-                            cubit.pickLitersImage(context, ImageSource.gallery);
+                            cubit.read('literOcr', OCRType.liter);
                           },
-                          child: cubit.litersImage != null
-                              ? Image.file(
-                                  cubit.litersImage!,
+                          child: cubit.literOCRImagePath != null
+                              ? DefaultContainer(
+                                  widget: Image.file(
+                                      File(cubit.literOCRImagePath!),
+                                      fit: BoxFit.cover),
+                                  borderRadius: 10,
+                                  color: AppColor.white,
                                   height: 65,
                                   width: 60,
-                                  fit: BoxFit.cover,
                                 )
                               : const DefaultContainer(
                                   borderRadius: 10,
@@ -253,9 +265,7 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                     const SizedBox(height: 30),
                     InkWell(
                       onTap: () {
-                        if (formKey.currentState!.validate() &&
-                            cubit.list1.isNotEmpty &&
-                            cubit.list2.isNotEmpty) {
+                        if (formKey.currentState!.validate()) {
                           // cubit.recieveController(
                           //     odoController, litersController);
                           cubit.changeSheetContentToThirdSheet3();
@@ -263,16 +273,16 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                       },
                       child: InkWell(
                         onTap: () {
-                          cubit.confirmOrder(
-                            odoMeterInput: odoController.text,
-                            odoMeterOcrText: cubit.list1[0].value,
-                            literInput: litersController.text,
-                            literOcrText: cubit.list2[0].value,
-                            odoImage: cubit.odoImage as File,
-                            litersImage: cubit.litersImage as File,
-                            vehicleId: CacheHelper.getDataFromSharedPreference(
-                                key: 'imageID'),
-                          );
+                          // cubit.confirmOrder(
+                          //   odoMeterInput: odoController.text,
+                          //   odoMeterOcrText: cubit.list1[0].value,
+                          //   literInput: litersController.text,
+                          //   literOcrText: cubit.list2[0].value,
+                          //   odoImage: cubit.odoImage as File,
+                          //   litersImage: cubit.litersImage as File,
+                          //   vehicleId: CacheHelper.getDataFromSharedPreference(
+                          //       key: 'imageID'),
+                          // );
                         },
                         child: const DefaultContainer(
                           borderRadius: 30.0,
