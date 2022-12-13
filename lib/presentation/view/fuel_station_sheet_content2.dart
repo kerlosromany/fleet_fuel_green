@@ -1,11 +1,14 @@
 // ignore_for_file: iterable_contains_unrelated_type
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mobile_vision_2/flutter_mobile_vision_2.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:magdsoft_flutter_structure/business_logic/global_cubit/global_cubit.dart';
 import 'package:magdsoft_flutter_structure/constants/strings.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/default_container.dart';
@@ -13,6 +16,7 @@ import 'package:magdsoft_flutter_structure/presentation/widget/default_text.dart
 import 'package:magdsoft_flutter_structure/presentation/widget/default_text_field.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 
+import '../../data/data_providers/local/cache_helper.dart';
 import '../styles/colors.dart';
 import 'fuel_station_sheet_content3.dart';
 
@@ -214,17 +218,27 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                           ),
                         ),
                         InkWell(
-                          onTap: cubit.startScanForLiter,
-                          child: const DefaultContainer(
-                            borderRadius: 10,
-                            color: AppColor.grey6,
-                            height: 65,
-                            width: 60,
-                            widget: Image(
-                              image: AssetImage(AppString.sCamera),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                          onTap: () {
+                            //cubit.startScanForLiter;
+                            cubit.pickLitersImage(context, ImageSource.gallery);
+                          },
+                          child: cubit.litersImage != null
+                              ? Image.file(
+                                  cubit.litersImage!,
+                                  height: 65,
+                                  width: 60,
+                                  fit: BoxFit.cover,
+                                )
+                              : const DefaultContainer(
+                                  borderRadius: 10,
+                                  color: AppColor.grey6,
+                                  height: 65,
+                                  width: 60,
+                                  widget: Image(
+                                    image: AssetImage(AppString.sCamera),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                         ),
                       ],
                     ),
@@ -242,23 +256,36 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         if (formKey.currentState!.validate() &&
                             cubit.list1.isNotEmpty &&
                             cubit.list2.isNotEmpty) {
-                          cubit.recieveController(
-                              odoController, litersController);
-
+                          // cubit.recieveController(
+                          //     odoController, litersController);
                           cubit.changeSheetContentToThirdSheet3();
                         }
                       },
-                      child: const DefaultContainer(
-                        borderRadius: 30.0,
-                        color: AppColor.teal,
-                        width: double.infinity,
-                        height: 45.0,
-                        widget: DefaultText(
-                          text: "Confirm Order",
-                          color: AppColor.white,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: AppString.sActor,
+                      child: InkWell(
+                        onTap: () {
+                          cubit.confirmOrder(
+                            odoMeterInput: odoController.text,
+                            odoMeterOcrText: cubit.list1[0].value,
+                            literInput: litersController.text,
+                            literOcrText: cubit.list2[0].value,
+                            odoImage: cubit.odoImage as File,
+                            litersImage: cubit.litersImage as File,
+                            vehicleId: CacheHelper.getDataFromSharedPreference(
+                                key: 'imageID'),
+                          );
+                        },
+                        child: const DefaultContainer(
+                          borderRadius: 30.0,
+                          color: AppColor.teal,
+                          width: double.infinity,
+                          height: 45.0,
+                          widget: DefaultText(
+                            text: "Confirm Order",
+                            color: AppColor.white,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: AppString.sActor,
+                          ),
                         ),
                       ),
                     ),

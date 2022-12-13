@@ -12,4 +12,6 @@ const String epRESETPASSWORD = "resetPassword";
 
 const String epUPDATEPROFILE = "updateProfile";
 
+const String epUSERCARS = "UserCars";
 
+const String epMAKENEWORDER = "makeNewOrder";

@@ -10,6 +10,7 @@ import 'package:magdsoft_flutter_structure/business_logic/global_cubit/global_cu
 import 'package:magdsoft_flutter_structure/data/data_providers/local/cache_helper.dart';
 import 'package:magdsoft_flutter_structure/data/data_providers/remote/dio_helper.dart';
 import 'package:magdsoft_flutter_structure/presentation/router/app_router.dart';
+import 'package:magdsoft_flutter_structure/presentation/router/app_routers_names.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
@@ -24,6 +25,13 @@ Future<void> main() async {
       await CacheHelper.init();
       final locale =
           CacheHelper.getDataFromSharedPreference(key: 'language') ?? "en";
+      String? token = CacheHelper.getDataFromSharedPreference(key: 'token');
+      late String initialRoute;
+      if (token != null) {
+        initialRoute = AppRouterNames.rHome;
+      } else {
+        initialRoute = AppRouterNames.rLogin;
+      }
       delegate = await LocalizationDelegate.create(
         fallbackLocale: locale,
         supportedLocales: ['ar', 'en'],
@@ -31,6 +39,7 @@ Future<void> main() async {
       await delegate.changeLocale(Locale(locale));
       runApp(MyApp(
         appRouter: AppRouter(),
+        initialRoute: initialRoute,
       ));
     },
     blocObserver: MyBlocObserver(),
@@ -39,9 +48,11 @@ Future<void> main() async {
 
 class MyApp extends StatefulWidget {
   final AppRouter appRouter;
+  final String initialRoute;
 
   const MyApp({
     required this.appRouter,
+    required this.initialRoute,
     Key? key,
   }) : super(key: key);
 
@@ -68,6 +79,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    //CacheHelper.removeData(key: 'token');
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -98,6 +110,7 @@ class _MyAppState extends State<MyApp> {
                     locale: delegate.currentLocale,
                     supportedLocales: delegate.supportedLocales,
                     onGenerateRoute: widget.appRouter.onGenerateRoute,
+                    initialRoute: widget.initialRoute,
                     theme: ThemeData(
                       fontFamily: 'cairo',
                       //scaffoldBackgroundColor: AppColors.white,

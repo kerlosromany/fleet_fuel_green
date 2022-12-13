@@ -81,7 +81,7 @@ class ResetPasswordScreen extends StatelessWidget {
                           validate: (value) {
                             if (value.isEmpty) {
                               return "Password must be not empty";
-                            } else if (value.length < 6) {
+                            } else if (value.length < 9) {
                               return "Password must be 9 characters or more";
                             }
                             return null;
@@ -104,7 +104,7 @@ class ResetPasswordScreen extends StatelessWidget {
                           validate: (value) {
                             if (value.isEmpty) {
                               return "Password must be not empty";
-                            } else if (value.length < 6) {
+                            } else if (value.length < 9) {
                               return "Password must be 9 characters or more";
                             } else if (value != passwordController.text) {
                               return "Password does not match";

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:magdsoft_flutter_structure/data/data_providers/local/cache_helper.dart';
+import 'package:magdsoft_flutter_structure/presentation/widget/progress_indicator_widget.dart';
+import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 
 import '../../business_logic/global_cubit/global_cubit.dart';
 import '../../constants/strings.dart';
 import '../styles/colors.dart';
 import '../widget/default_container.dart';
 import '../widget/default_text.dart';
+import '../widget/text_error.dart';
 import 'fuel_station_sheet_content2.dart';
 import 'fuel_station_sheet_content3.dart';
 
@@ -20,6 +24,7 @@ class FuelStationSheetContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GlobalCubit, GlobalState>(
       builder: (context, state) {
+        //print(CacheHelper.getDataFromSharedPreference(key: 'imageID'));
         var cubit = GlobalCubit.get(context);
         if (state is ChangeSheetContentToSecondSheet) {
           return const FuelStationSheetContent2();
@@ -35,23 +40,52 @@ class FuelStationSheetContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: 350.0,
-                    height: 60.0,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => const SizedBox(
-                        child: Image(
-                          image: AssetImage(AppString.sLic),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      separatorBuilder: (context, index) => const SizedBox(
-                        width: 5.0,
-                      ),
-                      itemCount: 5,
-                    ),
-                  ),
+                  state is GetUserCarLoadingState
+                      ? const ProgressIndicatorWidget()
+                      : state is GetUserCarErrorState
+                          ? const TextErrorWidget()
+                          : SizedBox(
+                              width: double.infinity,
+                              height: 60.0,
+                              child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) => SizedBox(
+                                  height: 70,
+                                  child: InkWell(
+                                    onTap: () {
+                                      CacheHelper.saveDataSharedPreference(
+                                          key: 'imageID',
+                                          value: cubit.userCarModel.data!
+                                              .userVehicles[index].vehicleId);
+                                      cubit.changeCurrentPhoto(index);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        boxShadow: cubit.currentPhoto == index
+                                            ? [
+                                                const BoxShadow(
+                                                  blurRadius: 5,
+                                                  color: AppColor.grey6,
+                                                  offset: Offset(0, 6),
+                                                ),
+                                              ]
+                                            : [],
+                                      ),
+                                      child: const Image(
+                                        image: AssetImage(AppString.sLic),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                  width: 5.0,
+                                ),
+                                itemCount: cubit
+                                    .userCarModel.data!.userVehicles.length,
+                              ),
+                            ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -105,7 +139,13 @@ class FuelStationSheetContent extends StatelessWidget {
                   Center(
                     child: InkWell(
                       onTap: () {
-                        cubit.changeSheetContentToSecondSheet2();
+                        if (CacheHelper.getDataFromSharedPreference(
+                                key: 'imageID') !=
+                            null) {
+                          cubit.changeSheetContentToSecondSheet2();
+                        } else {
+                          showToast("Please select a car", context);
+                        }
                       },
                       child: const DefaultContainer(
                         borderRadius: 30.0,
