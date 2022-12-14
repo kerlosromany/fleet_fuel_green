@@ -14,12 +14,13 @@ class DioHelper {
   }
 
   static Future<Response> getData(
-      {required String url, Map<String, dynamic>? query , String? token}) async {
-        dio!.options.headers = {
-      'Content-Type': 'application/json',
-      'Accept' : 'application/json',
-      'appKey' : 524,
-      'Authorization': token ?? '',
+      {required String url, Map<String, dynamic>? query , String? token , bool isMultipart = false}) async {
+       dio!.options.headers = {
+      if (isMultipart) 'Content-Type': 'multipart/form-data',
+      if (!isMultipart) 'Content-Type': 'application/json',
+      if (!isMultipart) 'Accept': 'application/json',
+      if (token != null) 'Authorization': 'Bearer $token',
+      'appKey': 524,
     };
     return await dio!.get(url, queryParameters: query);
   }
@@ -27,14 +28,16 @@ class DioHelper {
   static Future<Response> postData({
     required String url,
     Map<String, dynamic>? query,
-    required Map<String, dynamic> body,
+    required  body,
     String? token,
+    bool isMultipart = false
   }) async {
     dio!.options.headers = {
-      'Content-Type': 'application/json',
-      'Accept' : 'application/json',
-      'appKey' : 524,
-      'Authorization': token ?? '',
+      if (isMultipart) 'Content-Type': 'multipart/form-data',
+      if (!isMultipart) 'Content-Type': 'application/json',
+      if (!isMultipart) 'Accept': 'application/json',
+      if (token != null) 'Authorization': 'Bearer $token',
+      'appKey': 524,
     };
     return await dio!.post(url, data: body);
   }

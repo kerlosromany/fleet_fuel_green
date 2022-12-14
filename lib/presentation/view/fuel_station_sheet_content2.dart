@@ -1,5 +1,3 @@
-// ignore_for_file: iterable_contains_unrelated_type
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,10 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mobile_vision_2/flutter_mobile_vision_2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:magdsoft_flutter_structure/business_logic/global_cubit/global_cubit.dart';
+import 'package:magdsoft_flutter_structure/business_logic/order_cubit/order_cubit.dart';
+import 'package:magdsoft_flutter_structure/business_logic/order_cubit/order_states.dart';
 import 'package:magdsoft_flutter_structure/constants/strings.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/default_container.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/default_text.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/default_text_field.dart';
+import 'package:magdsoft_flutter_structure/presentation/widget/progress_indicator_widget.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 
 import '../../data/data_providers/local/cache_helper.dart';
@@ -38,14 +39,16 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
     // TODO: implement initState
 
     super.initState();
-    GlobalCubit.get(context).mobileVisionInit();
+    OrderCubit.get(context).mobileVisionInit();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GlobalCubit, GlobalState>(
+    var cubit = GlobalCubit.get(context);
+
+    return BlocBuilder<OrderCubit, OrderState>(
       builder: (context, state) {
-        var cubit = GlobalCubit.get(context);
+        var orderCubit = OrderCubit.get(context);
 
         return Container(
           decoration: const BoxDecoration(color: AppColor.white),
@@ -157,12 +160,12 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         ),
                         InkWell(
                           onTap: () {
-                            cubit.read('oddoOcr', OCRType.oddo);
+                            orderCubit.read('oddoOcr', OCRType.oddo);
                           },
-                          child: cubit.oddoOCRImagePath != null
+                          child: orderCubit.oddoOCRImagePath != null
                               ? DefaultContainer(
                                   widget: Image.file(
-                                      File(cubit.oddoOCRImagePath!),
+                                      File(orderCubit.oddoOCRImagePath!),
                                       fit: BoxFit.cover),
                                   borderRadius: 10,
                                   color: AppColor.white,
@@ -229,12 +232,12 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         ),
                         InkWell(
                           onTap: () {
-                            cubit.read('literOcr', OCRType.liter);
+                            orderCubit.read('literOcr', OCRType.liter);
                           },
-                          child: cubit.literOCRImagePath != null
+                          child: orderCubit.literOCRImagePath != null
                               ? DefaultContainer(
                                   widget: Image.file(
-                                      File(cubit.literOCRImagePath!),
+                                      File(orderCubit.literOCRImagePath!),
                                       fit: BoxFit.cover),
                                   borderRadius: 10,
                                   color: AppColor.white,
@@ -265,39 +268,50 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                     const SizedBox(height: 30),
                     InkWell(
                       onTap: () {
-                        if (formKey.currentState!.validate()) {
-                          // cubit.recieveController(
-                          //     odoController, litersController);
-                          cubit.changeSheetContentToThirdSheet3();
+                        if (formKey.currentState!.validate() &&
+                            orderCubit.oddoText != "" &&
+                            orderCubit.litersText != "" &&
+                            orderCubit.odoImageFile != null &&
+                            orderCubit.litersImageFile != null) {
+                          orderCubit
+                              .confirmOrder(
+                            odoMeterInput: odoController.text,
+                            odoMeterOcrText: orderCubit.oddoText,
+                            literInput: litersController.text,
+                            literOcrText: orderCubit.litersText,
+                            odoImage: orderCubit.odoImageFile as File,
+                            litersImage: orderCubit.litersImageFile as File,
+                            vehicleId: CacheHelper.getDataFromSharedPreference(
+                                key: 'imageID'),
+                          )
+                              .then((_) {
+                            if (state is NewOrderSuccessState) {
+                              cubit.changeSheetContentToThirdSheet3();
+                            } if (state is NewOrderErrorState) {
+                              showToast(
+                                  "Some errors happened , please try again",
+                                  context);
+                            }
+                          });
+                        } else {
+                          showToast("Fill all Fields", context);
                         }
                       },
-                      child: InkWell(
-                        onTap: () {
-                          // cubit.confirmOrder(
-                          //   odoMeterInput: odoController.text,
-                          //   odoMeterOcrText: cubit.list1[0].value,
-                          //   literInput: litersController.text,
-                          //   literOcrText: cubit.list2[0].value,
-                          //   odoImage: cubit.odoImage as File,
-                          //   litersImage: cubit.litersImage as File,
-                          //   vehicleId: CacheHelper.getDataFromSharedPreference(
-                          //       key: 'imageID'),
-                          // );
-                        },
-                        child: const DefaultContainer(
-                          borderRadius: 30.0,
-                          color: AppColor.teal,
-                          width: double.infinity,
-                          height: 45.0,
-                          widget: DefaultText(
-                            text: "Confirm Order",
-                            color: AppColor.white,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: AppString.sActor,
-                          ),
-                        ),
-                      ),
+                      child: state is NewOrderLoadingState
+                          ? const ProgressIndicatorWidget()
+                          : const DefaultContainer(
+                              borderRadius: 30.0,
+                              color: AppColor.teal,
+                              width: double.infinity,
+                              height: 45.0,
+                              widget: DefaultText(
+                                text: "Confirm Order",
+                                color: AppColor.white,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: AppString.sActor,
+                              ),
+                            ),
                     ),
                   ],
                 ),

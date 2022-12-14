@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:magdsoft_flutter_structure/business_logic/order_cubit/order_states.dart';
 import 'package:magdsoft_flutter_structure/data/data_providers/local/cache_helper.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/progress_indicator_widget.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 
 import '../../business_logic/global_cubit/global_cubit.dart';
+import '../../business_logic/order_cubit/order_cubit.dart';
 import '../../constants/strings.dart';
 import '../styles/colors.dart';
 import '../widget/default_container.dart';
@@ -22,16 +24,11 @@ class FuelStationSheetContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GlobalCubit, GlobalState>(
+    var globalCubit = GlobalCubit.get(context);
+    return BlocBuilder<OrderCubit, OrderState>(
       builder: (context, state) {
-        //print(CacheHelper.getDataFromSharedPreference(key: 'imageID'));
-        var cubit = GlobalCubit.get(context);
-        if (state is ChangeSheetContentToSecondSheet) {
-          return const FuelStationSheetContent2();
-        }
-        if (state is ChangeSheetContentToThirdSheet) {
-          return const FuelStationSheetContent3();
-        }
+        print(CacheHelper.getDataFromSharedPreference(key: 'imageID'));
+        var orderCubit = OrderCubit.get(context);
         return Container(
           decoration: const BoxDecoration(color: AppColor.white),
           child: Padding(
@@ -55,21 +52,22 @@ class FuelStationSheetContent extends StatelessWidget {
                                     onTap: () {
                                       CacheHelper.saveDataSharedPreference(
                                           key: 'imageID',
-                                          value: cubit.userCarModel.data!
+                                          value: orderCubit.userCarModel.data!
                                               .userVehicles[index].vehicleId);
-                                      cubit.changeCurrentPhoto(index);
+                                      orderCubit.changeCurrentPhoto(index);
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        boxShadow: cubit.currentPhoto == index
-                                            ? [
-                                                const BoxShadow(
-                                                  blurRadius: 5,
-                                                  color: AppColor.grey6,
-                                                  offset: Offset(0, 6),
-                                                ),
-                                              ]
-                                            : [],
+                                        boxShadow:
+                                            orderCubit.currentPhoto == index
+                                                ? [
+                                                    const BoxShadow(
+                                                      blurRadius: 5,
+                                                      color: AppColor.grey6,
+                                                      offset: Offset(0, 6),
+                                                    ),
+                                                  ]
+                                                : [],
                                       ),
                                       child: const Image(
                                         image: AssetImage(AppString.sLic),
@@ -82,7 +80,7 @@ class FuelStationSheetContent extends StatelessWidget {
                                     const SizedBox(
                                   width: 5.0,
                                 ),
-                                itemCount: cubit
+                                itemCount: orderCubit
                                     .userCarModel.data!.userVehicles.length,
                               ),
                             ),
@@ -142,7 +140,7 @@ class FuelStationSheetContent extends StatelessWidget {
                         if (CacheHelper.getDataFromSharedPreference(
                                 key: 'imageID') !=
                             null) {
-                          cubit.changeSheetContentToSecondSheet2();
+                          globalCubit.changeSheetContentToSecondSheet2();
                         } else {
                           showToast("Please select a car", context);
                         }
