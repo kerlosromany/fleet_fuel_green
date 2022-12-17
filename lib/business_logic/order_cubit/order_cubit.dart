@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mobile_vision_2/flutter_mobile_vision_2.dart';
 import 'package:path_provider/path_provider.dart';
@@ -11,6 +13,7 @@ import '../../data/data_providers/local/cache_helper.dart';
 import '../../data/data_providers/remote/dio_helper.dart';
 import '../../data/models/new_order_model.dart';
 import '../../data/models/user_car_model.dart';
+import '../../presentation/widget/toast.dart';
 import 'order_states.dart';
 
 class OrderCubit extends Cubit<OrderState> {
@@ -28,10 +31,15 @@ class OrderCubit extends Cubit<OrderState> {
     required File odoImage,
     required File litersImage,
     required int vehicleId,
+    required BuildContext context,
   }) async {
     emit(NewOrderLoadingState());
-    String odoFile = oddoOCRImagePath!.split('/').last;
-    String literFile = literOCRImagePath!.split('/').last;
+    String odoFile = odoImage.path.split('/').last;
+    debugPrint("odoFile => $odoFile");
+    String literFile = litersImage.path.split('/').last;
+    debugPrint("literFile => $literFile");
+    debugPrint("odoImage.path => ${odoImage.path}");
+    debugPrint("litersImage.path => ${litersImage.path}");
     FormData formData = FormData.fromMap({
       'shipment_type_id': 1,
       'payment_type_id': 1,
@@ -47,35 +55,51 @@ class OrderCubit extends Cubit<OrderState> {
         'vehicle_id': vehicleId,
       },
       'OcrImages': {
-        'odometer_ocr':
-            await MultipartFile.fromFile(oddoOCRImagePath!, filename: odoFile),
-        'liter_ocr': await MultipartFile.fromFile(literOCRImagePath!,
-            filename: literFile),
+        'odometer_ocr': await MultipartFile.fromFile(
+          odoImage.path,
+          filename: odoFile,
+          //contentType: MediaType("image", "jpg"),
+        ),
+        'liter_ocr': await MultipartFile.fromFile(
+          litersImage.path,
+          filename: literFile,
+
+          //contentType: MediaType("image", "jpg"),
+        ),
       }
     });
+    debugPrint(odoImage.path);
+    debugPrint(litersImage.path);
     try {
-      final response = await DioHelper.postData(
+      Response response = await DioHelper.postData(
         url: epMAKENEWORDER,
         isMultipart: true,
         token:
             "Bearer ${CacheHelper.getDataFromSharedPreference(key: 'token')}",
         body: formData,
       );
-      //debugPrint('${response.data}');
+      debugPrint('//////////${response.requestOptions.data}');
+      debugPrint('//////////${response.data}');
       if (response.statusCode == 200) {
         newOrderModel = NewOrderModel.fromJson(response.data);
-        print(newOrderModel!.message);
-        print(newOrderModel!.data!.paidApi);
-        print(newOrderModel!.data!.order!.location!.address);
-        print(newOrderModel!.data!.order!.vehicleId);
-
+        if (newOrderModel!.message == "validation error") {
+          showToast(
+              "Please try again , some errors happened , maybe the size of photo is too large",
+              context);
+          emit(NewOrderErrorState(error: ""));
+        }
         emit(NewOrderSuccessState());
       }
     } on DioError catch (e) {
-      // debugPrint('DioError : ${e.message}');
-      // debugPrint('DioError : ${e.error.toString()}');
+      debugPrint('DioError 1 : ${e.message.toString()}');
+      debugPrint('DioError 2: ${e.error.toString()}');
+      showToast(
+          "Please try again , some errors happened , maybe the size of photo is too large",
+          context);
       emit(NewOrderErrorState(error: e.message));
     } catch (e) {
+      debugPrint('DioError 3: ${e.toString()}');
+      showToast("Please try again , some errors happened", context);
       emit(NewOrderErrorState(error: e.toString()));
     }
   }
@@ -176,12 +200,13 @@ class OrderCubit extends Cubit<OrderState> {
         await getApplicationDocumentsDirectory(); // 1
     String appDocumentsPath = appDocumentsDirectory.path; // 2
     String filePath = '$appDocumentsPath/$fileName.png'; // 3
+    debugPrint("file path = $filePath");
 
-    if (fileName == "oddoOcr") {
-      odoImageFile = File(filePath);
-    } else {
-      litersImageFile = File(filePath);
-    }
+    // if (fileName == "oddoOcr") {
+    //   odoImageFile = File(filePath);
+    // } else {
+    //   litersImageFile = File(filePath);
+    // }
 
     return filePath;
   }

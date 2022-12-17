@@ -22,7 +22,9 @@ import '../styles/colors.dart';
 import 'fuel_station_sheet_content3.dart';
 
 class FuelStationSheetContent2 extends StatefulWidget {
-  const FuelStationSheetContent2({Key? key}) : super(key: key);
+  const FuelStationSheetContent2({Key? key, required this.reverse, this.controller}) : super(key: key);
+  final bool reverse;
+  final ScrollController? controller;
 
   @override
   State<FuelStationSheetContent2> createState() =>
@@ -49,7 +51,10 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
     return BlocBuilder<OrderCubit, OrderState>(
       builder: (context, state) {
         var orderCubit = OrderCubit.get(context);
-
+        if (state is NewOrderSuccessState) {
+          cubit.changeSheetContentToThirdSheet3();
+          print("changeSheetContentToThirdSheet3");
+        }
         return Container(
           decoration: const BoxDecoration(color: AppColor.white),
           child: Padding(
@@ -160,7 +165,7 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         ),
                         InkWell(
                           onTap: () {
-                            orderCubit.read('oddoOcr', OCRType.oddo);
+                            orderCubit.read('oddoOccr', OCRType.oddo);
                           },
                           child: orderCubit.oddoOCRImagePath != null
                               ? DefaultContainer(
@@ -232,7 +237,7 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         ),
                         InkWell(
                           onTap: () {
-                            orderCubit.read('literOcr', OCRType.liter);
+                            orderCubit.read('literOccr', OCRType.liter);
                           },
                           child: orderCubit.literOCRImagePath != null
                               ? DefaultContainer(
@@ -271,28 +276,19 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         if (formKey.currentState!.validate() &&
                             orderCubit.oddoText != "" &&
                             orderCubit.litersText != "" &&
-                            orderCubit.odoImageFile != null &&
-                            orderCubit.litersImageFile != null) {
-                          orderCubit
-                              .confirmOrder(
+                            orderCubit.oddoOCRImagePath != null &&
+                            orderCubit.literOCRImagePath != null) {
+                          orderCubit.confirmOrder(
                             odoMeterInput: odoController.text,
                             odoMeterOcrText: orderCubit.oddoText,
                             literInput: litersController.text,
                             literOcrText: orderCubit.litersText,
-                            odoImage: orderCubit.odoImageFile as File,
-                            litersImage: orderCubit.litersImageFile as File,
+                            odoImage: File(orderCubit.oddoOCRImagePath!),
+                            litersImage: File(orderCubit.literOCRImagePath!),
                             vehicleId: CacheHelper.getDataFromSharedPreference(
                                 key: 'imageID'),
-                          )
-                              .then((_) {
-                            if (state is NewOrderSuccessState) {
-                              cubit.changeSheetContentToThirdSheet3();
-                            } if (state is NewOrderErrorState) {
-                              showToast(
-                                  "Some errors happened , please try again",
-                                  context);
-                            }
-                          });
+                            context: context,
+                          );
                         } else {
                           showToast("Fill all Fields", context);
                         }

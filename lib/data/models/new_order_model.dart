@@ -31,6 +31,7 @@ class Order {
   String? literInput;
   String? literOcr;
   Location? location;
+  OcrImages? ocrImages;
 
   Order({
     this.id,
@@ -41,6 +42,7 @@ class Order {
     this.literInput,
     this.literOcr,
     this.location,
+    this.ocrImages,
   });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -53,6 +55,8 @@ class Order {
     literOcr = json['liter_ocr'];
     location =
         json['location'] != null ? Location.fromJson(json['location']) : null;
+    ocrImages =
+        json['OcrImages'] != null ? OcrImages.fromJson(json['OcrImages']) : null;
   }
 }
 
@@ -85,3 +89,21 @@ class Location {
     address = json['address'];
   }
 }
+
+class OcrImages {
+  String? odometerOcr;
+  String? literOcr;
+
+  OcrImages({this.odometerOcr, this.literOcr});
+
+  OcrImages.fromJson(Map<String, dynamic> json) {
+    odometerOcr = json['odometer_ocr'];
+    literOcr = json['liter_ocr'];
+  }
+}
+
+
+
+
+
+

@@ -55,15 +55,15 @@ class FindFuelStationScren extends StatelessWidget {
             lockOverflowDrag: true,
             snappingPositions: const [
               SnappingPosition.factor(
-                positionFactor: 0.7,
-                grabbingContentOffset: GrabbingContentOffset.bottom,
-              ),
-              SnappingPosition.factor(
                 positionFactor: 0.4,
                 grabbingContentOffset: GrabbingContentOffset.bottom,
               ),
               SnappingPosition.factor(
-                positionFactor: 0.1,
+                positionFactor: 0.7,
+                grabbingContentOffset: GrabbingContentOffset.bottom,
+              ),
+              SnappingPosition.factor(
+                positionFactor: 0.001,
                 grabbingContentOffset: GrabbingContentOffset.top,
               ),
             ],
@@ -77,10 +77,16 @@ class FindFuelStationScren extends StatelessWidget {
               child: BlocBuilder<GlobalCubit, GlobalState>(
                 builder: (context, state) {
                   if (state is ChangeSheetContentToSecondSheet) {
-                    return const FuelStationSheetContent2();
+                    return FuelStationSheetContent2(
+                      controller: _scrollController,
+                      reverse: false,
+                    );
                   }
                   if (state is ChangeSheetContentToThirdSheet) {
-                    return const FuelStationSheetContent3();
+                    return FuelStationSheetContent3(
+                      controller: _scrollController,
+                      reverse: false,
+                    );
                   }
                   return FuelStationSheetContent(
                     controller: _scrollController,

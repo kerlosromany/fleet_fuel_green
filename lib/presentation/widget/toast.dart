@@ -21,6 +21,6 @@ showToast(String? text, context) {
   fToast.showToast(
     child: toast,
     gravity: ToastGravity.TOP,
-    toastDuration: const Duration(seconds: 4),
+    toastDuration: const Duration(seconds: 10),
   );
 }

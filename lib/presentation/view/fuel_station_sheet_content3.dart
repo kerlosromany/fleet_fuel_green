@@ -10,7 +10,9 @@ import '../widget/default_container.dart';
 import '../widget/default_text.dart';
 
 class FuelStationSheetContent3 extends StatelessWidget {
-  const FuelStationSheetContent3({Key? key}) : super(key: key);
+  const FuelStationSheetContent3({Key? key, required this.reverse, this.controller}) : super(key: key);
+  final bool reverse;
+  final ScrollController? controller;
 
   @override
   Widget build(BuildContext context) {
