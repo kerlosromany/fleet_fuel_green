@@ -7,6 +7,8 @@ class AppColor{
   static const Color tealBackGround = Color(0xFF138B7D);
   static const Color red = Color(0xFFB42F2F);
   static const Color red2 = Color(0xFFAA4343);
+  static const Color red3 = Color(0xFF7E0303);
+
   static const Color grey = Color(0xFF888888);
   static const Color grey2 = Color(0xFF999999);
   static const Color grey3 = Color(0xFF505050);

@@ -19,6 +19,7 @@ import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 
 import '../../data/data_providers/local/cache_helper.dart';
 import '../styles/colors.dart';
+import '../widget/car_photo.dart';
 import 'fuel_station_sheet_content3.dart';
 
 class FuelStationSheetContent2 extends StatefulWidget {
@@ -99,7 +100,7 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                                     const DefaultText(
                                       text: "4.5 stars",
                                       color: AppColor.grey5,
-                                      fontSize: 14,
+                                      fontSize: 14, 
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ],
@@ -108,11 +109,9 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          child: Image(
-                            image: AssetImage(AppString.sLic),
-                            fit: BoxFit.fill,
-                          ),
+                         SizedBox(
+                          child: CarPhotoWidget(carNumber: CacheHelper.getDataFromSharedPreference(
+                                key: 'carNumber') ),
                         ),
                       ],
                     ),
@@ -165,7 +164,7 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         ),
                         InkWell(
                           onTap: () {
-                            orderCubit.read('oddoOccr', OCRType.oddo);
+                            orderCubit.read('oddoOccr', OCRType.oddo , context);
                           },
                           child: orderCubit.oddoOCRImagePath != null
                               ? DefaultContainer(
@@ -237,7 +236,7 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         ),
                         InkWell(
                           onTap: () {
-                            orderCubit.read('literOccr', OCRType.liter);
+                            orderCubit.read('literOccr', OCRType.liter , context);
                           },
                           child: orderCubit.literOCRImagePath != null
                               ? DefaultContainer(

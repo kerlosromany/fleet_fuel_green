@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mobile_vision_2/flutter_mobile_vision_2.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:magdsoft_flutter_structure/presentation/screens/shared/find_fuel_station_screen.dart';
 import 'package:magdsoft_flutter_structure/presentation/screens/shared/profile_settings.dart';
@@ -28,7 +29,7 @@ class GlobalCubit extends Cubit<GlobalState> {
 
   // change fuel station sheet content Logic
   void changeSheetContentToSecondSheet2() {
-    emit(ChangeSheetContentToSecondSheet()); 
+    emit(ChangeSheetContentToSecondSheet());
   }
 
   void changeSheetContentToThirdSheet3() {
@@ -51,4 +52,3 @@ class GlobalCubit extends Cubit<GlobalState> {
 
   
 }
-

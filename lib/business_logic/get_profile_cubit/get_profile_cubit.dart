@@ -40,7 +40,6 @@ class GetProfileCubit extends Cubit<GetProfileState> {
   updateProfileData({
     required String password,
     required String confirmPassword,
-    required String birth,
     required String email,
     required BuildContext context,
   }) {
@@ -50,7 +49,6 @@ class GetProfileCubit extends Cubit<GetProfileState> {
       body: {
         "password": password,
         "password_confirmation": confirmPassword,
-        "birth": birth,
         "email": email,
       },
       token: "Bearer ${CacheHelper.getDataFromSharedPreference(key: 'token')}",

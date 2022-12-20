@@ -47,7 +47,7 @@ class User {
   String? birth;
   String? email;
   String? type;
-  int? rate;
+  String? rate;
   String? image;
   List<dynamic>? driverImages;
   String? token;
@@ -80,21 +80,5 @@ class User {
     token = json['token'];
   }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = new Map<String, dynamic>();
-  //   data['id'] = this.id;
-  //   data['name'] = this.name;
-  //   data['phone'] = this.phone;
-  //   data['nickName'] = this.nickName;
-  //   data['birth'] = this.birth;
-  //   data['email'] = this.email;
-  //   data['type'] = this.type;
-  //   data['rate'] = this.rate;
-  //   data['image'] = this.image;
-  //   if (this.driverImages != null) {
-  //     data['driverImages'] = this.driverImages.map((v) => v.toJson()).toList();
-  //   }
-  //   data['token'] = this.token;
-  //   return data;
-  // }
+  
 }

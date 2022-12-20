@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mobile_vision_2/flutter_mobile_vision_2.dart';
+import 'package:magdsoft_flutter_structure/constants/constants.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../constants/end_points.dart';
@@ -20,6 +21,35 @@ class OrderCubit extends Cubit<OrderState> {
   OrderCubit() : super(OrderInitial());
 
   static OrderCubit get(context) => BlocProvider.of(context);
+
+  // user car data
+  UserCar? userCarModel;
+  getUserCarData() {
+    emit(GetUserCarLoadingState());
+    DioHelper.getData(
+      url: epUSERCARS,
+      token: "Bearer ${CacheHelper.getDataFromSharedPreference(key: 'token')}",
+    ).then((value) {
+      //print(value.data);
+      userCarModel = UserCar.fromJson(value.data);
+      //print(userCarModel.data.toString());
+      print(userCarModel!.message);
+      print(userCarModel!.data!.userVehicles.length);
+      emit(GetUserCarSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetUserCarErrorState(error: error.toString()));
+    });
+  }
+
+  // choose car photo logic
+  int currentPhoto = 0;
+  void changeCurrentPhoto(int photoIndex) {
+    currentPhoto = photoIndex;
+    emit(ChangeCarPhotoState());
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Make new order
   NewOrderModel? newOrderModel;
@@ -44,8 +74,8 @@ class OrderCubit extends Cubit<OrderState> {
       'shipment_type_id': 1,
       'payment_type_id': 1,
       'fleetoLocation': {
-        'longitude': 30.95618,
-        'latitude': 29.96207,
+        'longitude': AppConstants.longtude,
+        'latitude': AppConstants.latitude,
       },
       'order_details': {
         'odometer_input': odoMeterInput,
@@ -84,10 +114,12 @@ class OrderCubit extends Cubit<OrderState> {
         newOrderModel = NewOrderModel.fromJson(response.data);
         if (newOrderModel!.message == "validation error") {
           showToast(
-              "Please try again , some errors happened , maybe the size of photo is too large",
+              "Please try again , some errors happened , may be the size of photo is too large",
               context);
           emit(NewOrderErrorState(error: ""));
         }
+        print("latitude is sent as => ${newOrderModel!.data!.order!.location!.latitude}");
+        print("longitude is sent as => ${newOrderModel!.data!.order!.location!.longitude}");
         emit(NewOrderSuccessState());
       }
     } on DioError catch (e) {
@@ -102,33 +134,6 @@ class OrderCubit extends Cubit<OrderState> {
       showToast("Please try again , some errors happened", context);
       emit(NewOrderErrorState(error: e.toString()));
     }
-  }
-
-  // user car data
-  late UserCar userCarModel;
-  getUserCarData() {
-    emit(GetUserCarLoadingState());
-    DioHelper.getData(
-      url: epUSERCARS,
-      token: "Bearer ${CacheHelper.getDataFromSharedPreference(key: 'token')}",
-    ).then((value) {
-      //print(value.data);
-      userCarModel = UserCar.fromJson(value.data);
-      print(userCarModel);
-      print(userCarModel.message);
-      print(userCarModel.data!.userVehicles);
-      emit(GetUserCarSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(GetUserCarErrorState(error: error.toString()));
-    });
-  }
-
-  // choose car photo logic
-  int currentPhoto = 0;
-  void changeCurrentPhoto(int photoIndex) {
-    currentPhoto = photoIndex;
-    emit(ChangeCarPhotoState());
   }
 
 // make ocr logic
@@ -155,7 +160,7 @@ class OrderCubit extends Cubit<OrderState> {
   String? oddoOCRImagePath;
   String? literOCRImagePath;
 
-  Future read(String fileName, OCRType ocrType) async {
+  Future read(String fileName, OCRType ocrType, BuildContext context) async {
     List<OcrText> texts = [];
     Size scanpreviewOcr = previewOcr ?? FlutterMobileVision.PREVIEW;
     if (ocrType == OCRType.oddo) {
@@ -185,9 +190,11 @@ class OrderCubit extends Cubit<OrderState> {
     if (ocrType == OCRType.oddo) {
       oddoOCR = texts[0];
       oddoText = texts[0].value;
+      showToast("the picked number is $oddoText", context, toastDuration: 7);
     } else if (ocrType == OCRType.liter) {
       literOCR = texts[0];
       litersText = texts[0].value;
+      showToast("the picked number is $litersText", context, toastDuration: 7);
     }
     print(texts[0].value);
     emit(MobileVisionTextOcrState());

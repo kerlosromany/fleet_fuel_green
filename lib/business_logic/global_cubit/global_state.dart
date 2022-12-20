@@ -17,4 +17,6 @@ class ChangeSheetContentToThirdSheet extends GlobalState {}
 
 // change bottom nav bar states
 class ChangeCurrentIndexState extends GlobalState {}
+// map states
+class ChangeCurrentPositionState extends GlobalState {}
 

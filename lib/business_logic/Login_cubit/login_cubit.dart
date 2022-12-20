@@ -54,7 +54,7 @@ class LoginCubit extends Cubit<LoginState> {
         "appKey": 524,
       },
     ).then((value) {
-      //print(value.data);
+      print(value.data);
       loginModel = LoginModel.fromJson(value.data);
       //print(loginModel.data!.user!.token);
       CacheHelper.saveDataSharedPreference(
@@ -62,6 +62,7 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginSuccessState());
     }).catchError((error) {
       showToast(AppString.sLoginError, context);
+      print(error.toString());
       emit(LoginErrorState(error: error.toString()));
     });
   }
@@ -122,9 +123,9 @@ class LoginCubit extends Cubit<LoginState> {
       CacheHelper.saveDataSharedPreference(
           key: 'token', value: verifyPhoneModel.data!.user!.token);
       showToast(
-          verifyPhoneModel.data!.otp,
-          context,
-        );
+        verifyPhoneModel.data!.otp,
+        context,
+      );
       emit(VerifyPhoneSuccessState());
     } on DioError catch (e) {
       if (e.type == DioErrorType.response) {
@@ -140,8 +141,6 @@ class LoginCubit extends Cubit<LoginState> {
       emit(VerifyPhoneErrorState(error: e.toString()));
     }
   }
-
-
 
   // send verified code
   late LoginModel verifiedModelAfterSendOtp;

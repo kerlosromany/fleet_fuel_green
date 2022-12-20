@@ -115,7 +115,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                                     isSearch: false,
                                     img: AppString.sPasswordPhoto1,
                                     hintTxt:
-                                        cubit.loginModel.data?.user!.name ??
+                                        cubit.loginModel.data!.user!.name ??
                                             "Name",
                                     color: AppColor.grey3,
                                     isPassword: false,
@@ -142,7 +142,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                                     height: 0.06 * screenHeight,
                                     img: AppString.sSmartPhone,
                                     hintTxt:
-                                        cubit.loginModel.data?.user!.phone ??
+                                        cubit.loginModel.data!.user!.phone ??
                                             "Phone Number",
                                     color: AppColor.grey3,
                                     isSearch: false,
@@ -157,7 +157,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                                     height: 0.06 * screenHeight,
                                     img: AppString.sEmail,
                                     hintTxt:
-                                        cubit.loginModel.data?.user!.email ??
+                                        cubit.loginModel.data!.user!.email ??
                                             "Email",
                                     color: AppColor.grey3,
                                     isPassword: false,
@@ -223,7 +223,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                                               confirmPassword:
                                                   passwordConfirmController
                                                       .text,
-                                              birth: birthController.text,
+                                              //birth: birthController.text,
                                               email: emailController.text,
                                               context: context,
                                             );

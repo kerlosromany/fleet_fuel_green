@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../styles/colors.dart';
 
 final FToast fToast = FToast();
-showToast(String? text, context) {
+showToast(String? text, context, {int toastDuration = 10}) {
   fToast.context = context;
   Widget toast = Container(
     padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
@@ -21,6 +21,6 @@ showToast(String? text, context) {
   fToast.showToast(
     child: toast,
     gravity: ToastGravity.TOP,
-    toastDuration: const Duration(seconds: 10),
+    toastDuration: Duration(seconds: toastDuration),
   );
 }
