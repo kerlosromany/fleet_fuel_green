@@ -28,6 +28,12 @@ class LoginCubit extends Cubit<LoginState> {
     emit(ChangePasswordVisibilityState());
   }
 
+  bool isChecked = false;
+  void changeRemembereMeCheck() {
+    isChecked = !isChecked;
+    emit(ChangeRememberMEState());
+  }
+
   IconData suffixIconConfirm = Icons.visibility_outlined;
   bool isConfirmPassword = true;
   void changePasswordConfirmVisibility() {
@@ -49,14 +55,14 @@ class LoginCubit extends Cubit<LoginState> {
     DioHelper.postData(
       url: epLOGIN,
       body: {
-        "phone": phone,
+        "phone": "+2$phone",
         "password": password,
         "appKey": 524,
       },
     ).then((value) {
       print(value.data);
       loginModel = LoginModel.fromJson(value.data);
-      //print(loginModel.data!.user!.token);
+      print(loginModel.data!.user!.token);
       CacheHelper.saveDataSharedPreference(
           key: 'token', value: loginModel.data!.user!.token);
       emit(LoginSuccessState());

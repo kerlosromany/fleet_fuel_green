@@ -31,7 +31,7 @@ class CarPhotosView extends StatelessWidget {
           width: OrderCubit.get(context)
                   .selectedVehicle
                   .any((element) => element == userVehicle)
-              ? 0.33 * screenWidth
+              ? 0.4 * screenWidth
               : 0.308 * screenWidth,
           height: OrderCubit.get(context)
                   .selectedVehicle
@@ -61,14 +61,14 @@ class CarPhotosView extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                width: OrderCubit.get(context)
+                width: (OrderCubit.get(context)
                         .selectedVehicle
-                        .any((element) => element == userVehicle)
-                    ? 0.331 * screenWidth
+                        .any((element) => element == userVehicle))
+                    ? 0.42 * screenWidth
                     : 0.309 * screenWidth,
-                height: OrderCubit.get(context)
+                height: (OrderCubit.get(context)
                         .selectedVehicle
-                        .any((element) => element == userVehicle)
+                        .any((element) => element == userVehicle))
                     ? 0.0217 * screenHeight
                     : 0.02 * screenHeight,
                 decoration: const BoxDecoration(

@@ -6,6 +6,7 @@ import 'package:magdsoft_flutter_structure/business_logic/payment_methods_cubit/
 import '../styles/colors.dart';
 import '../widget/default_container.dart';
 import '../widget/default_text.dart';
+import 'package:sizer/sizer.dart';
 
 class UsageStatistics extends StatelessWidget {
   const UsageStatistics({Key? key}) : super(key: key);
@@ -61,7 +62,7 @@ class UsageStatistics extends StatelessWidget {
                             cubit.changeFuelUpWeeklyStates();
                           },
                           child: Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding:  EdgeInsets.all(8.sp),
                             child: DefaultText(
                               text: 'Weekly Fuelup',
                               color: AppColor.grey2,

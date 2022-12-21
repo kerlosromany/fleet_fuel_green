@@ -8,7 +8,9 @@ import 'package:magdsoft_flutter_structure/business_logic/get_profile_cubit/get_
 import 'package:magdsoft_flutter_structure/presentation/widget/default_container.dart';
 
 import '../../../constants/strings.dart';
+import '../../router/app_routers_names.dart';
 import '../../styles/colors.dart';
+import 'package:sizer/sizer.dart';
 import '../../widget/default_text_field.dart';
 import '../../widget/progress_indicator_widget.dart';
 
@@ -42,9 +44,15 @@ class ProfileSettingsScreen extends StatelessWidget {
               title: const Text("Profile Settings"),
               centerTitle: true,
               actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.notifications),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(
+                        context, AppRouterNames.rNotificationsScreen);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10.sp),
+                    child: const ImageIcon(AssetImage(AppString.sNotify)),
+                  ),
                 ),
               ],
             ),
@@ -166,7 +174,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                                     isSearch: false,
                                     validate: (value) {},
                                   ),
-                                  
+
                                   SizedBox(height: 0.018 * screenHeight),
                                   // password
                                   DefaultTextField(

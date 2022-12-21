@@ -8,6 +8,7 @@ import 'package:magdsoft_flutter_structure/presentation/router/app_routers_names
 import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 
 import '../../../constants/strings.dart';
+import 'package:sizer/sizer.dart';
 import '../../styles/colors.dart';
 import '../../widget/default_container.dart';
 import '../../widget/default_text.dart';
@@ -32,7 +33,6 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginSuccessState) {
             Navigator.pushReplacementNamed(context, AppRouterNames.rHome);
-            
           }
         },
         builder: (context, state) {
@@ -40,9 +40,9 @@ class LoginScreen extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: AppColor.teal,
-              title: const DefaultText(
+              title: DefaultText(
                 color: AppColor.white,
-                fontSize: 24,
+                fontSize: 22.sp,
                 fontWeight: FontWeight.w400,
                 text: AppString.sLogin,
                 fontFamily: AppString.sActor,
@@ -88,6 +88,8 @@ class LoginScreen extends StatelessWidget {
                           validate: (value) {
                             if (value.isEmpty) {
                               return "please enter your phone number";
+                            } else if (value.length < 11 || value.length > 11) {
+                              return "phone number must be 11 numbers";
                             }
                             return null;
                           },
@@ -122,7 +124,16 @@ class LoginScreen extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                const ImageIcon(AssetImage(AppString.sCheck)),
+                                InkWell(
+                                  onTap: () {
+                                    cubit.changeRemembereMeCheck();
+                                  },
+                                  child: ImageIcon(
+                                      const AssetImage(AppString.sCheck),
+                                      color: cubit.isChecked
+                                          ? AppColor.teal2
+                                          : AppColor.grey),
+                                ),
                                 SizedBox(width: 0.0178 * screenWidth),
                                 DefaultText(
                                   color: AppColor.grey3,
@@ -134,8 +145,8 @@ class LoginScreen extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.pushNamed(
-                                    context, AppRouterNames.rResetPasswordScreen);
+                                Navigator.pushReplacementNamed(context,
+                                    AppRouterNames.rResetPasswordScreen);
                               },
                               child: DefaultText(
                                 color: AppColor.grey3,

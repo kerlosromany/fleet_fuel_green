@@ -14,6 +14,8 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
@@ -27,18 +29,17 @@ class NotificationsScreen extends StatelessWidget {
           ),
         ],
       ),
-      drawer: const Drawer(),
       body: Stack(
         children: [
           DefaultContainer(
             color: AppColor.tealBackGround,
             width: double.infinity,
-            height: 230,
+            height: 0.278 * screenHeight,
             widget: Container(),
             borderRadius: 0.0,
           ),
           Positioned(
-            top: 20,
+            top: 0.02 * screenHeight,
             child: Image.asset(AppString.sBackGround),
           ),
           Center(

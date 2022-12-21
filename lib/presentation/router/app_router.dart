@@ -28,6 +28,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const SendOtpScreen());
       case AppRouterNames.rFindFuelStationScreen:
         return MaterialPageRoute(builder: (_) =>  FindFuelStationScren());
+      case AppRouterNames.rNotificationsScreen:
+        return MaterialPageRoute(builder: (_) =>  const NotificationsScreen());
       case AppRouterNames.rResetPasswordScreen:
         return MaterialPageRoute(builder: (_) =>  ResetPasswordScreen());
       default:

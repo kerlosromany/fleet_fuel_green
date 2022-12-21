@@ -158,7 +158,7 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                                 fontFamily: AppString.sActor,
                               ),
                             ],
-                          ),
+                          ), 
                         ),
                         InkWell(
                           onTap: () {

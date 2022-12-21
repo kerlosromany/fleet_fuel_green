@@ -28,73 +28,97 @@ class OrdersNotificationView extends StatelessWidget {
             // above half Info
             SizedBox(
               height: 0.0666 * screenHeight,
-              child: Row(
-                mainAxisAlignment: isNotification
-                    ? MainAxisAlignment.center
-                    : MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: const [
-                      Text("Vehicle number :"),
-                      Text("1324  م س"),
-                    ],
-                  ),
-                  if (!isNotification)
-                    DefaultContainer(
-                      color: AppColor.pendingColor.withOpacity(0.2),
-                      width: 100,
-                      height: 50,
-                      widget: const DefaultText(
-                        text: "Pending",
-                        color: AppColor.pendingColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.normal,
-                      ),
-                      borderRadius: 10,
+              child: Padding(
+                padding: EdgeInsets.all(8.sp),
+                child: Row(
+                  mainAxisAlignment: isNotification
+                      ? MainAxisAlignment.center
+                      : MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        DefaultText(
+                            text: "Vehicle number :",
+                            color: AppColor.grey10,
+                            fontSize: 9.sp,
+                            fontWeight: FontWeight.w300),
+                        DefaultText(
+                            text: "1324 | م س",
+                            color: AppColor.grey10,
+                            fontSize: 9.sp,
+                            fontWeight: FontWeight.w300),
+                      ],
                     ),
-                ],
+                    if (!isNotification)
+                      DefaultContainer(
+                        color: AppColor.pendingColor.withOpacity(0.2),
+                        width: 0.255 * screenWidth,
+                        height: 0.06 * screenHeight,
+                        widget: DefaultText(
+                          text: "Pending",
+                          color: AppColor.pendingColor,
+                          fontSize: 9.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        borderRadius: 10,
+                      ),
+                  ],
+                ),
               ),
             ),
-            const Divider(color: Colors.grey, endIndent: 30, indent: 30),
+            Divider(
+                color: Colors.grey,
+                endIndent: 0.076 * screenWidth,
+                indent: 0.076 * screenWidth),
             // below half Info
             SizedBox(
-              height: 65,
+              height: 0.078 * screenHeight,
               child: ListTile(
                 leading: DefaultContainer(
                   borderRadius: 10,
                   color: AppColor.pendingColor.withOpacity(0.2),
-                  width: 70,
-                  height: 70,
+                  width: 0.178 * screenWidth,
+                  height: 0.084 * screenHeight,
                   widget: const Icon(Icons.access_time,
                       color: AppColor.pendingColor),
                 ),
-                title: const DefaultText(
+                title: DefaultText(
                   color: AppColor.black,
-                  fontSize: 14,
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w600,
                   text: "Total Station - Nasr City",
                 ),
                 subtitle: Row(
-                  children: const [
+                  children: [
                     DefaultText(
                       color: AppColor.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
                       text: "150L.E",
                     ),
-                    SizedBox(width: 10),
+                    SizedBox(width: 0.025 * screenWidth),
                     DefaultText(
                       color: AppColor.black,
-                      fontSize: 12,
+                      fontSize: 9.sp,
                       fontWeight: FontWeight.w300,
                       text: "10 Liter",
                     ),
                   ],
                 ),
                 trailing: Column(
-                  children: const [
-                    Text("29 Nov"),
-                    Text("12.30"),
+                  children: [
+                    DefaultText(
+                      color: AppColor.black,
+                      fontSize: 9.sp,
+                      fontWeight: FontWeight.w300,
+                      text: "29 Nov",
+                    ),
+                    DefaultText(
+                      color: AppColor.black,
+                      fontSize: 9.sp,
+                      fontWeight: FontWeight.w300,
+                      text: "12.30",
+                    ),
                   ],
                 ),
               ),

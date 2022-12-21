@@ -29,7 +29,7 @@ class ResetPasswordScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is ResetPasswordSuccessState) {
-            Navigator.pushNamed(context, AppRouterNames.rHome);
+            Navigator.pushNamed(context, AppRouterNames.rSendOtp);
           }
         },
         builder: (context, state) {
@@ -40,7 +40,10 @@ class ResetPasswordScreen extends StatelessWidget {
               backgroundColor: AppColor.teal,
               title: const Text("Forgot Password"),
               leading: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacementNamed(
+                      context, AppRouterNames.rLogin);
+                },
                 icon: const Icon(Icons.arrow_back_ios),
               ),
               centerTitle: true,
@@ -158,11 +161,17 @@ class ResetPasswordScreen extends StatelessWidget {
                               fontSize: 0.035 * screenWidth,
                               fontWeight: FontWeight.w400,
                             ),
-                            DefaultText(
-                              text: AppString.sLogin,
-                              color: AppColor.red,
-                              fontSize: 0.045 * screenWidth,
-                              fontWeight: FontWeight.w400,
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushReplacementNamed(
+                                    context, AppRouterNames.rLogin);
+                              },
+                              child: DefaultText(
+                                text: AppString.sLogin,
+                                color: AppColor.red,
+                                fontSize: 0.045 * screenWidth,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ],
                         ),

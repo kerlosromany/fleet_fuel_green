@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magdsoft_flutter_structure/business_logic/payment_methods_cubit/payment_methods_cubit.dart';
 
 import '../../../constants/strings.dart';
+import '../../router/app_routers_names.dart';
 import '../../styles/colors.dart';
 import '../../view/balance_item.dart';
 import '../../view/current_balance_item.dart';
 import '../../view/month_item.dart';
 import '../../view/usage_statistics.dart';
+import 'package:sizer/sizer.dart';
 import '../../widget/default_text.dart';
 
 class PaymentMethodsScreen extends StatelessWidget {
@@ -25,9 +27,15 @@ class PaymentMethodsScreen extends StatelessWidget {
           backgroundColor: AppColor.teal,
           title: const Text("Payment methods"),
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.notifications),
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(
+                    context, AppRouterNames.rNotificationsScreen);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: 10.sp),
+                child: const ImageIcon(AssetImage(AppString.sNotify)),
+              ),
             ),
           ],
           centerTitle: true,

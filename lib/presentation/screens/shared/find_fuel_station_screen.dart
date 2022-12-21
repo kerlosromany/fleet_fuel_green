@@ -7,10 +7,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:magdsoft_flutter_structure/business_logic/global_cubit/global_cubit.dart';
 import 'package:magdsoft_flutter_structure/constants/constants.dart';
+import 'package:magdsoft_flutter_structure/data/data_providers/local/cache_helper.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
-
+import 'package:sizer/sizer.dart';
 import '../../../constants/strings.dart';
+import '../../router/app_routers_names.dart';
 import '../../styles/colors.dart';
 import '../../view/default_grapping.dart';
 import '../../view/fuel_station_sheet_content.dart';
@@ -69,20 +71,27 @@ class _FindFuelStationScrenState extends State<FindFuelStationScren> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.teal,
-        title: const DefaultText(
+        title: DefaultText(
           color: AppColor.white,
-          fontSize: 24,
+          fontSize: 17.sp,
           fontWeight: FontWeight.w400,
           text: AppString.sFindFuelStation,
           fontFamily: AppString.sActor,
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 12.0),
-            child: ImageIcon(AssetImage(AppString.sNotify)),
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, AppRouterNames.rNotificationsScreen);
+            },
+            child: Padding(
+              padding: EdgeInsets.only(right: 10.sp),
+              child: const ImageIcon(AssetImage(AppString.sNotify)),
+            ),
           ),
         ],
         centerTitle: true,
@@ -100,6 +109,33 @@ class _FindFuelStationScrenState extends State<FindFuelStationScren> {
               googleMapController = controller;
             },
           ),
+          Positioned(
+            bottom: 0.08 * screenHeight,
+            child: FloatingActionButton.extended(
+              onPressed: () async {
+                Position position = await _determinePosition();
+                googleMapController.animateCamera(
+                  CameraUpdate.newCameraPosition(
+                    CameraPosition(
+                      target: LatLng(position.latitude, position.longitude),
+                      zoom: 14,
+                    ),
+                  ),
+                );
+                markers.clear();
+                markers.add(
+                  Marker(
+                    markerId: const MarkerId("currentLocation"),
+                    position: LatLng(position.latitude, position.longitude),
+                  ),
+                );
+                setState(() {});
+              },
+              label: const Text("Current Location"),
+              icon: const Icon(Icons.location_on),
+              backgroundColor: AppColor.teal,
+            ),
+          ),
           SnappingSheet(
             lockOverflowDrag: true,
             snappingPositions: const [
@@ -116,7 +152,7 @@ class _FindFuelStationScrenState extends State<FindFuelStationScren> {
                 grabbingContentOffset: GrabbingContentOffset.top,
               ),
             ],
-            grabbingHeight: 50,
+            grabbingHeight: 0.06 * screenHeight,
             grabbing: DefaultGrabbing(
               color: AppColor.white,
               reverse: true,
@@ -145,12 +181,12 @@ class _FindFuelStationScrenState extends State<FindFuelStationScren> {
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(17.sp),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   DefaultTextField(
-                    height: 50,
+                    height: 0.06 * screenHeight,
                     hintTxt: "Search...",
                     isSearch: true,
                     color: AppColor.grey4,
@@ -164,29 +200,6 @@ class _FindFuelStationScrenState extends State<FindFuelStationScren> {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          Position position = await _determinePosition();
-          googleMapController.animateCamera(
-            CameraUpdate.newCameraPosition(
-              CameraPosition(
-                  target: LatLng(position.latitude, position.longitude),
-                  zoom: 14,),
-            ),
-          );
-          markers.clear();
-          markers.add(
-            Marker(
-              markerId: const MarkerId("currentLocation"),
-              position: LatLng(position.latitude, position.longitude),
-            ),
-          );
-          setState(() {});
-        },
-        label: const Text("Current Location"),
-        icon: const Icon(Icons.location_on),
-        backgroundColor: AppColor.teal,
       ),
     );
   }

@@ -7,6 +7,7 @@ import 'package:magdsoft_flutter_structure/presentation/screens/shared/payment_m
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 import '../../../business_logic/global_cubit/global_cubit.dart';
+import 'package:sizer/sizer.dart';
 import '../../../constants/strings.dart';
 import '../../styles/colors.dart';
 import '../../view/default_grapping.dart';
@@ -19,6 +20,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return BlocProvider(
       create: (context) => OrderCubit()..getUserCarData(),
       child: BlocConsumer<GlobalCubit, GlobalState>(
@@ -32,12 +35,13 @@ class HomeScreen extends StatelessWidget {
                 color: AppColor.white,
                 boxShadow: [
                   BoxShadow(
-                      color: AppColor.grey4,
-                      blurRadius: 25,
-                      offset: Offset(10, 10),),
+                    color: AppColor.grey4,
+                    blurRadius: 25,
+                    offset: Offset(10, 10),
+                  ),
                 ],
               ),
-              height: 65,
+              height: 0.078 * screenHeight,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -47,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                         cubit.changeCurrentIndex(0);
                       },
                       child: Container(
-                        height: 50,
+                        height: 0.06 * screenHeight,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: cubit.currentIndex == 0
@@ -65,10 +69,10 @@ class HomeScreen extends StatelessWidget {
                                   ? AppColor.white
                                   : AppColor.grey9,
                             ),
-                            const DefaultText(
+                            DefaultText(
                               text: "Home",
                               color: AppColor.white,
-                              fontSize: 12,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400,
                               fontFamily: AppString.sActor,
                             ),
@@ -83,7 +87,7 @@ class HomeScreen extends StatelessWidget {
                         cubit.changeCurrentIndex(1);
                       },
                       child: Container(
-                        height: 50,
+                        height: 0.06 * screenHeight,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: cubit.currentIndex == 1
@@ -101,10 +105,10 @@ class HomeScreen extends StatelessWidget {
                                   ? AppColor.white
                                   : AppColor.grey9,
                             ),
-                            const DefaultText(
+                            DefaultText(
                               text: "Wallet",
                               color: AppColor.white,
-                              fontSize: 12,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400,
                               fontFamily: AppString.sActor,
                             ),
@@ -119,7 +123,7 @@ class HomeScreen extends StatelessWidget {
                         cubit.changeCurrentIndex(2);
                       },
                       child: Container(
-                        height: 50,
+                        height: 0.06 * screenHeight,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: cubit.currentIndex == 2
@@ -137,10 +141,10 @@ class HomeScreen extends StatelessWidget {
                                   ? AppColor.white
                                   : AppColor.grey9,
                             ),
-                            const DefaultText(
+                            DefaultText(
                               text: "Orders",
                               color: AppColor.white,
-                              fontSize: 12,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400,
                               fontFamily: AppString.sActor,
                             ),
@@ -155,7 +159,7 @@ class HomeScreen extends StatelessWidget {
                         cubit.changeCurrentIndex(3);
                       },
                       child: Container(
-                        height: 50,
+                        height: 0.06 * screenHeight,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: cubit.currentIndex == 3
@@ -173,10 +177,10 @@ class HomeScreen extends StatelessWidget {
                                   ? AppColor.white
                                   : AppColor.grey9,
                             ),
-                            const DefaultText(
+                            DefaultText(
                               text: "Profile",
                               color: AppColor.white,
-                              fontSize: 12,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400,
                               fontFamily: AppString.sActor,
                             ),

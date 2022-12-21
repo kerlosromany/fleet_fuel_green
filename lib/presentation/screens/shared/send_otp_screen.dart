@@ -11,12 +11,12 @@ import 'package:magdsoft_flutter_structure/business_logic/Login_cubit/login_stat
 import 'package:magdsoft_flutter_structure/constants/strings.dart';
 import 'package:magdsoft_flutter_structure/data/data_providers/local/cache_helper.dart';
 import 'package:magdsoft_flutter_structure/presentation/styles/colors.dart';
+import 'package:sizer/sizer.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/default_container.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/default_text.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/progress_indicator_widget.dart';
 
 import '../../router/app_routers_names.dart';
-import '../../widget/text_field_otp.dart';
 
 class SendOtpScreen extends StatelessWidget {
   const SendOtpScreen({Key? key}) : super(key: key);
@@ -133,7 +133,7 @@ class SendOtpScreen extends StatelessWidget {
                       // ),
                       //////////////////////////////////////
                       OtpTextField(
-                        fieldWidth: 50,
+                        fieldWidth: 40.sp,
                         borderRadius: BorderRadius.circular(10),
                         numberOfFields: 4,
                         borderColor: AppColor.white,

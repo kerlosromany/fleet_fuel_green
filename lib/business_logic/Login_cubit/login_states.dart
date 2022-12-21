@@ -18,6 +18,7 @@ class LoginErrorState extends LoginState {
 
 class ChangePasswordVisibilityState extends LoginState{}
 class ChangePasswordConfirmVisibilityState extends LoginState{}
+class ChangeRememberMEState extends LoginState{}
 
 // Verify Phone States
 class VerifyPhoneLoadingState extends LoginState {}

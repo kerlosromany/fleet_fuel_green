@@ -237,7 +237,7 @@ class OrderCubit extends Cubit<OrderState> {
           return;
         }
         File? img = File(image.path);
-        img = await cropImage(imageFile: img, type: type);
+        img = await cropImage(imageFile: img, type: type,context: context);
         imageFileOdo = img;
 
         emit(SuccessPickImage());
@@ -252,7 +252,7 @@ class OrderCubit extends Cubit<OrderState> {
           return;
         }
         File? img = File(image.path);
-        img = await cropImage(imageFile: img, type: type);
+        img = await cropImage(imageFile: img, type: type , context: context);
         imageFileLiter = img;
 
         emit(SuccessPickImage());
@@ -264,10 +264,10 @@ class OrderCubit extends Cubit<OrderState> {
   }
 
   // make image cropper
-  Future<File?> cropImage({required File imageFile, required int type}) async {
+  Future<File?> cropImage({required File imageFile, required int type , required BuildContext context}) async {
     CroppedFile? croppedImage =
         await ImageCropper().cropImage(sourcePath: imageFile.path);
-    getRecognizedText(croppedImage!.path, type);
+    getRecognizedText(croppedImage!.path, type , context);
     // if (croppedImage == null) {
     //   return null;
     // }
@@ -277,7 +277,8 @@ class OrderCubit extends Cubit<OrderState> {
   String scannedTextOdo = "";
   String scannedTextLiter = "";
   // Text Recognition using Google ML Kit
-  void getRecognizedText(String imagePath, int type) async {
+  void getRecognizedText(
+      String imagePath, int type, BuildContext context) async {
     if (type == 0) {
       final inputImage = InputImage.fromFilePath(imagePath);
       final textDetector = GoogleMlKit.vision.textDetector();
@@ -291,8 +292,9 @@ class OrderCubit extends Cubit<OrderState> {
         }
       }
       print(scannedTextOdo);
+      showToast(scannedTextOdo, context , toastDuration: 10);
       emit(GetRecognizedTextState());
-    }else{
+    } else {
       final inputImage = InputImage.fromFilePath(imagePath);
       final textDetector = GoogleMlKit.vision.textDetector();
       RecognisedText recognisedText =
@@ -304,14 +306,11 @@ class OrderCubit extends Cubit<OrderState> {
           scannedTextLiter = scannedTextLiter + line.text + "\n";
         }
       }
+      showToast(scannedTextLiter, context , toastDuration: 10);
       print(scannedTextLiter);
       emit(GetRecognizedTextState());
     }
   }
-
-
-
-
 
   //////////////////////////////////////
   List<UserVehicles> selectedVehicle = [];

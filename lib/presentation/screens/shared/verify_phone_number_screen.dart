@@ -7,6 +7,7 @@ import 'package:magdsoft_flutter_structure/presentation/widget/progress_indicato
 import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 
 import '../../../constants/strings.dart';
+import 'package:sizer/sizer.dart';
 import '../../styles/colors.dart';
 import '../../widget/default_container.dart';
 import '../../widget/default_text.dart';
@@ -32,7 +33,7 @@ class VerifyPhoneNumberScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const SendOtpScreen(),
-                )); 
+                ));
             showToast(cubit.verifyPhoneModel.data!.otp, context);
           }
         },
@@ -51,19 +52,19 @@ class VerifyPhoneNumberScreen extends StatelessWidget {
             body: SingleChildScrollView(
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 20.0, horizontal: 15.0),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 17.sp, horizontal: 12.sp),
                   child: Form(
                     key: formKey,
                     child: Column(
                       children: [
-                        const DefaultText(
+                        DefaultText(
                           color: AppColor.grey3,
-                          fontSize: 20,
+                          fontSize: 17.sp,
                           text: AppString.sSendOtp,
                           fontWeight: FontWeight.w300,
                         ),
-                        const SizedBox(height: 20.0),
+                        SizedBox(height: 0.02 * screenHeight),
                         DefaultContainer(
                           color: Colors.transparent,
                           borderRadius: 10,
@@ -71,26 +72,26 @@ class VerifyPhoneNumberScreen extends StatelessWidget {
                           height: 150,
                           widget: Image.asset(AppString.sDataSecurity),
                         ),
-                        const SizedBox(height: 20.0),
+                        SizedBox(height: 0.02 * screenHeight),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             DefaultText(
                               color: AppColor.red,
-                              fontSize: 20,
+                              fontSize: 17.sp,
                               text: AppString.sVerify,
                               fontWeight: FontWeight.w300,
                             ),
-                            SizedBox(height: 15),
+                            SizedBox(height: 0.018 * screenHeight),
                             DefaultText(
                               color: AppColor.grey,
-                              fontSize: 15,
+                              fontSize: 12.sp,
                               text: AppString.sVerifyInfo,
                               fontWeight: FontWeight.w300,
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20.0),
+                        SizedBox(height: 0.02 * screenHeight),
                         DefaultTextField(
                           height: 0.06 * screenHeight,
                           img: AppString.sSmartPhone,
@@ -107,7 +108,7 @@ class VerifyPhoneNumberScreen extends StatelessWidget {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 20.0),
+                        SizedBox(height: 0.02 * screenHeight),
                         InkWell(
                           onTap: () {
                             if (formKey.currentState!.validate()) {
@@ -121,32 +122,30 @@ class VerifyPhoneNumberScreen extends StatelessWidget {
                               : DefaultContainer(
                                   color: AppColor.teal.withOpacity(0.6),
                                   borderRadius: 10,
-                                  width: 200,
-                                  height: 50,
-                                  widget: const DefaultText(
+                                  width: 0.51 * screenWidth,
+                                  height: 0.06 * screenHeight,
+                                  widget: DefaultText(
                                     text: AppString.sSendOtp,
                                     color: AppColor.white,
-                                    fontSize: 17,
+                                    fontSize: 15.sp,
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
                         ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
+                        SizedBox(height: 0.02 * screenHeight),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             DefaultText(
                               text: AppString.sTry,
                               color: AppColor.grey3,
-                              fontSize: 14,
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.w300,
                             ),
                             DefaultText(
                               text: AppString.sLogin,
                               color: AppColor.red,
-                              fontSize: 18,
+                              fontSize: 15.sp,
                               fontWeight: FontWeight.w400,
                             ),
                           ],
