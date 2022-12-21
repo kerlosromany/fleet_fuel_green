@@ -5,6 +5,7 @@ import 'package:magdsoft_flutter_structure/data/data_providers/local/cache_helpe
 import 'package:magdsoft_flutter_structure/presentation/widget/progress_indicator_widget.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../business_logic/global_cubit/global_cubit.dart';
 import '../../business_logic/order_cubit/order_cubit.dart';
@@ -12,7 +13,7 @@ import '../../constants/strings.dart';
 import '../../data/models/login_model.dart';
 import '../../data/models/user_car_model.dart';
 import '../styles/colors.dart';
-import '../widget/car_photo.dart';
+import 'car_photo.dart';
 import '../widget/default_container.dart';
 import '../widget/default_text.dart';
 import '../widget/text_error.dart';
@@ -35,28 +36,10 @@ class FuelStationSheetContent extends StatelessWidget {
       builder: (context, state) {
         var orderCubit = OrderCubit.get(context);
 
-        Widget _buildItemList(BuildContext context, int index) {
-          return SizedBox(
-            width: 200,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 200,
-                  height: 100,
-                  child: CarPhotoWidget(
-                      carNumber: orderCubit.userCarModel!.data!
-                          .userVehicles[index].carNumber as String),
-                ),
-              ],
-            ),
-          );
-        }
-
         return Container(
           decoration: const BoxDecoration(color: AppColor.white),
           child: Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: EdgeInsets.all(0.038 * screenWidth),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,25 +49,17 @@ class FuelStationSheetContent extends StatelessWidget {
                       : state is GetUserCarErrorState
                           ? const TextErrorWidget()
                           : SizedBox(
-                              height: 150,
-                              child: ScrollSnapList(
-                                onItemFocus: (index) {
-                                  print(CacheHelper.getDataFromSharedPreference(
-                                      key: 'imageID'));
-                                  print("object");
-                                  CacheHelper.saveDataSharedPreference(
-                                      key: 'imageID',
-                                      value: orderCubit.userCarModel!.data!
-                                          .userVehicles[index].vehicleId);
-                                  CacheHelper.saveDataSharedPreference(
-                                      key: 'carNumber',
-                                      value: orderCubit.userCarModel!.data!
-                                          .userVehicles[index].carNumber);
-                                },
-                                itemBuilder: _buildItemList,
-                                itemSize: 200,
-                                dynamicItemSize: true,
-                                onReachEnd: () {},
+                              width: double.infinity,
+                              height: 0.09 * screenHeight,
+                              child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) => CarPhotosView(
+                                  userVehicle: orderCubit
+                                      .userCarModel!.data!.userVehicles[index],
+                                ),
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(width: 0.05 * screenWidth),
                                 itemCount: orderCubit
                                     .userCarModel!.data!.userVehicles.length,
                               ),
@@ -95,26 +70,24 @@ class FuelStationSheetContent extends StatelessWidget {
                       Row(
                         children: [
                           SizedBox(
-                            width: 50.0,
-                            height: 40.0,
+                            width: 0.127 * screenWidth,
+                            height: 0.048 * screenHeight,
                             child: Image.asset(AppString.sMask2),
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               DefaultText(
                                 text: 'Shell station',
                                 color: AppColor.lightBlack,
-                                fontSize: 20.0,
+                                fontSize: 20.sp,
                                 fontWeight: FontWeight.w300,
                               ),
-                              SizedBox(
-                                height: 2.0,
-                              ),
+                              SizedBox(height: 0.003 * screenHeight),
                               DefaultText(
                                 text: 'Gas fuel',
                                 color: AppColor.grey,
-                                fontSize: 14.0,
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.w300,
                               ),
                             ],
@@ -124,41 +97,41 @@ class FuelStationSheetContent extends StatelessWidget {
                       Row(
                         children: [
                           SizedBox(
-                            width: 30.0,
-                            height: 30.0,
+                            width: 0.076 * screenWidth,
+                            height: 0.036 * screenHeight,
                             child: Image.asset(AppString.sStar),
                           ),
-                          const DefaultText(
+                          DefaultText(
                             text: '4.5 Stars',
                             color: AppColor.grey,
-                            fontSize: 14.0,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w300,
                           ),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 15.0),
+                  SizedBox(height: 0.018 * screenHeight),
                   Center(
                     child: InkWell(
                       onTap: () {
                         if (CacheHelper.getDataFromSharedPreference(
-                                key: 'imageID') !=
+                                key: 'carNo') !=
                             null) {
                           globalCubit.changeSheetContentToSecondSheet2();
                         } else {
-                          showToast("Please select a car", context);
+                          showToast("Please select a car", context , toastDuration: 4);
                         }
                       },
-                      child: const DefaultContainer(
-                        borderRadius: 30.0,
+                      child: DefaultContainer(
+                        borderRadius: 30.sp,
                         color: AppColor.teal,
                         width: double.infinity,
-                        height: 45.0,
+                        height: 0.054 * screenHeight,
                         widget: DefaultText(
                           text: "Order Now",
                           color: AppColor.white,
-                          fontSize: 20.0,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w400,
                           fontFamily: AppString.sActor,
                         ),

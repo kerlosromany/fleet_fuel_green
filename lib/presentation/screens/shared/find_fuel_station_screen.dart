@@ -172,7 +172,7 @@ class _FindFuelStationScrenState extends State<FindFuelStationScren> {
             CameraUpdate.newCameraPosition(
               CameraPosition(
                   target: LatLng(position.latitude, position.longitude),
-                  zoom: 14),
+                  zoom: 14,),
             ),
           );
           markers.clear();

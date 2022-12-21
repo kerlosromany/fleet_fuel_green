@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import '../styles/colors.dart';
+import 'package:sizer/sizer.dart';
 import '../widget/default_container.dart';
 import '../widget/default_text.dart';
 
@@ -13,18 +14,20 @@ class OrdersNotificationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(14.sp),
       child: DefaultContainer(
         color: AppColor.white,
-        width: 340,
-        height: 150,
-        borderRadius: 10,
+        width: 0.86 * screenWidth,
+        height: 0.18 * screenHeight,
+        borderRadius: 8.sp,
         widget: Column(
           children: [
             // above half Info
             SizedBox(
-              height: 55,
+              height: 0.0666 * screenHeight,
               child: Row(
                 mainAxisAlignment: isNotification
                     ? MainAxisAlignment.center

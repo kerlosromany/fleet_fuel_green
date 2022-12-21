@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../styles/colors.dart';
 import '../widget/default_container.dart';
 import '../widget/default_text.dart';
+import 'package:sizer/sizer.dart';
 
 class MonthItem extends StatelessWidget {
   MonthItem({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class MonthItem extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: SizedBox(
-        height: 200,
+        height: 0.24 * screenHeight,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
@@ -27,7 +28,154 @@ class MonthItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   DefaultContainer(
-                    borderRadius: 10.0,
+                    borderRadius: 8.sp,
+                    widget: const SizedBox(),
+                    color: month == 1 ? AppColor.grey : AppColor.lightWhite,
+                    width: 0.128 * screenWidth,
+                    height: 0.120 * screenHeight,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                  DefaultText(
+                    text: "January",
+                    color: month == 1 ? AppColor.lightBlack : AppColor.grey,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                ],
+              ),
+              SizedBox(width: 0.0383 * screenWidth),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  DefaultContainer(
+                    borderRadius: 8.sp,
+                    widget: const SizedBox(),
+                    color: month == 2 ? AppColor.grey : AppColor.lightWhite,
+                    width: 0.128 * screenWidth,
+                    height: 0.130 * screenHeight,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                  DefaultText(
+                    text: "Febraury",
+                    color: month == 2 ? AppColor.lightBlack : AppColor.grey,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                ],
+              ),
+              SizedBox(width: 0.0383 * screenWidth),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  DefaultContainer(
+                    borderRadius: 8.sp,
+                    widget: const SizedBox(),
+                    color: month == 3 ? AppColor.grey : AppColor.lightWhite,
+                    width: 0.128 * screenWidth,
+                    height: 0.09 * screenHeight,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                  DefaultText(
+                    text: "March",
+                    color: month == 3 ? AppColor.lightBlack : AppColor.grey,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                ],
+              ),
+              SizedBox(width: 0.0383 * screenWidth),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  DefaultContainer(
+                    borderRadius: 8.sp,
+                    widget: const SizedBox(),
+                    color: month == 4 ? AppColor.grey : AppColor.lightWhite,
+                    width: 0.128 * screenWidth,
+                    height: 0.11 * screenHeight,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                  DefaultText(
+                    text: "April",
+                    color: month == 4 ? AppColor.lightBlack : AppColor.grey,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                ],
+              ),
+              SizedBox(width: 0.0383 * screenWidth),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  DefaultContainer(
+                    borderRadius: 8.sp,
+                    widget: const SizedBox(),
+                    color: month == 5 ? AppColor.grey : AppColor.lightWhite,
+                    width: 0.128 * screenWidth,
+                    height: 0.140 * screenHeight,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                  DefaultText(
+                    text: "May",
+                    color: month == 5 ? AppColor.lightBlack : AppColor.grey,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                ],
+              ),
+              SizedBox(width: 0.0383 * screenWidth),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  DefaultContainer(
+                    borderRadius: 8.sp,
+                    widget: const SizedBox(),
+                    color: month == 6 ? AppColor.grey : AppColor.lightWhite,
+                    width: 0.128 * screenWidth,
+                    height: 0.100 * screenHeight,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                  DefaultText(
+                    text: "June",
+                    color: month == 6 ? AppColor.lightBlack : AppColor.grey,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                ],
+              ),
+              SizedBox(width: 0.0383 * screenWidth),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  DefaultContainer(
+                    borderRadius: 8.sp,
+                    widget: const SizedBox(),
+                    color: month == 7 ? AppColor.grey : AppColor.lightWhite,
+                    width: 0.128 * screenWidth,
+                    height: 0.130 * screenHeight,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                  DefaultText(
+                    text: "July",
+                    color: month == 7 ? AppColor.lightBlack : AppColor.grey,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  SizedBox(height: 0.0121 * screenHeight),
+                ],
+              ),
+              SizedBox(width: 0.0383 * screenWidth),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  DefaultContainer(
+                    borderRadius: 8.sp,
                     widget: const SizedBox(),
                     color: month == 8 ? AppColor.grey : AppColor.lightWhite,
                     width: 0.128 * screenWidth,
@@ -48,7 +196,7 @@ class MonthItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   DefaultContainer(
-                    borderRadius: 10.0,
+                    borderRadius: 8.sp,
                     widget: const SizedBox(),
                     color: month == 9 ? AppColor.grey : AppColor.lightWhite,
                     width: 0.128 * screenWidth,
@@ -70,7 +218,7 @@ class MonthItem extends StatelessWidget {
                 children: [
                   DefaultContainer(
                     widget: const SizedBox(),
-                    borderRadius: 10.0,
+                    borderRadius: 8.sp,
                     color: month == 10 ? AppColor.grey : AppColor.lightWhite,
                     width: 0.128 * screenWidth,
                     height: 0.055 * screenHeight,
@@ -90,7 +238,7 @@ class MonthItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   DefaultContainer(
-                    borderRadius: 10.0,
+                    borderRadius: 8.sp,
                     widget: Container(),
                     color: month == 11 ? AppColor.grey : AppColor.lightWhite,
                     width: 0.128 * screenWidth,
@@ -111,11 +259,11 @@ class MonthItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   DefaultContainer(
-                    borderRadius: 10.0,
+                    borderRadius: 8.sp,
                     widget: Container(),
                     color: month == 12 ? AppColor.grey : AppColor.lightWhite,
                     width: 0.128 * screenWidth,
-                    height: 0.015 * screenHeight,
+                    height: 0.11 * screenHeight,
                   ),
                   SizedBox(height: 0.0121 * screenHeight),
                   DefaultText(

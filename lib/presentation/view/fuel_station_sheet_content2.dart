@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -20,10 +20,14 @@ import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 import '../../data/data_providers/local/cache_helper.dart';
 import '../styles/colors.dart';
 import '../widget/car_photo.dart';
+import 'car_photo.dart';
+
 import 'fuel_station_sheet_content3.dart';
 
 class FuelStationSheetContent2 extends StatefulWidget {
-  const FuelStationSheetContent2({Key? key, required this.reverse, this.controller}) : super(key: key);
+  const FuelStationSheetContent2(
+      {Key? key, required this.reverse, this.controller})
+      : super(key: key);
   final bool reverse;
   final ScrollController? controller;
 
@@ -37,16 +41,11 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
   TextEditingController litersController = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-
-    super.initState();
-    OrderCubit.get(context).mobileVisionInit();
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     var cubit = GlobalCubit.get(context);
 
     return BlocBuilder<OrderCubit, OrderState>(
@@ -59,7 +58,7 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
         return Container(
           decoration: const BoxDecoration(color: AppColor.white),
           child: Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: EdgeInsets.all(15.sp),
             child: SingleChildScrollView(
               child: Form(
                 key: formKey,
@@ -72,35 +71,35 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
+                              padding: EdgeInsets.only(right: 8.sp),
                               child: Image.asset(AppString.sMask2),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const DefaultText(
+                                DefaultText(
                                   text: "Shell Station",
                                   color: AppColor.lightBlack2,
-                                  fontSize: 20,
+                                  fontSize: 15.sp,
                                   fontWeight: FontWeight.w400,
                                 ),
                                 Row(
                                   children: [
-                                    const DefaultText(
+                                    DefaultText(
                                       text: "Gas Fuel",
                                       color: AppColor.grey5,
-                                      fontSize: 14,
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 8.sp),
                                       child: Image.asset(AppString.sStar),
                                     ),
-                                    const DefaultText(
+                                    DefaultText(
                                       text: "4.5 stars",
                                       color: AppColor.grey5,
-                                      fontSize: 14, 
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ],
@@ -109,22 +108,21 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                             ),
                           ],
                         ),
-                         SizedBox(
-                          child: CarPhotoWidget(carNumber: CacheHelper.getDataFromSharedPreference(
-                                key: 'carNumber') ),
+                        const SizedBox(
+                          child: CarPhotoWidget(),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 0.024 * screenHeight),
                     // second row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         DefaultContainer(
                           color: AppColor.grey6,
-                          width: 285,
-                          height: 65,
-                          borderRadius: 10,
+                          width: 0.727 * screenWidth,
+                          height: 0.078 * screenHeight,
+                          borderRadius: 8.sp,
                           widget: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -133,7 +131,7 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                                 flex: 4,
                                 // odo
                                 child: DefaultTextField(
-                                  height: 55,
+                                  height: 0.0666 * screenHeight,
                                   isSearch: false,
                                   hintTxt: "",
                                   color: AppColor.grey6,
@@ -148,14 +146,14 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                                   },
                                   fillColor: AppColor.grey6,
                                   styleColor: AppColor.red2,
-                                  styleFontSize: 26,
+                                  styleFontSize: 18.sp,
                                   fontFamily: AppString.sInriaSerif,
                                 ),
                               ),
-                              const DefaultText(
+                              DefaultText(
                                 text: "ODO",
                                 color: AppColor.grey7,
-                                fontSize: 20,
+                                fontSize: 20.sp,
                                 fontWeight: FontWeight.w400,
                                 fontFamily: AppString.sActor,
                               ),
@@ -164,24 +162,26 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         ),
                         InkWell(
                           onTap: () {
-                            orderCubit.read('oddoOccr', OCRType.oddo , context);
+                            orderCubit.pickImage(
+                                ImageSource.camera, context, 0);
                           },
-                          child: orderCubit.oddoOCRImagePath != null
+                          child: orderCubit.imageFileOdo != null
                               ? DefaultContainer(
                                   widget: Image.file(
-                                      File(orderCubit.oddoOCRImagePath!),
-                                      fit: BoxFit.cover),
-                                  borderRadius: 10,
+                                    File(orderCubit.imageFileOdo!.path),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: 10.sp,
                                   color: AppColor.white,
-                                  height: 65,
-                                  width: 60,
+                                  height: 0.078 * screenHeight,
+                                  width: 0.153 * screenWidth,
                                 )
-                              : const DefaultContainer(
-                                  borderRadius: 10,
+                              : DefaultContainer(
+                                  borderRadius: 10.sp,
                                   color: AppColor.grey6,
-                                  height: 65,
-                                  width: 60,
-                                  widget: Image(
+                                  height: 0.078 * screenHeight,
+                                  width: 0.153 * screenWidth,
+                                  widget: const Image(
                                     image: AssetImage(AppString.sCamera),
                                     fit: BoxFit.cover,
                                   ),
@@ -189,23 +189,23 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 15),
+                    SizedBox(height: 0.018 * screenHeight),
                     // third row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         DefaultContainer(
                           color: AppColor.grey6,
-                          width: 285,
-                          height: 65,
-                          borderRadius: 10,
+                          width: 0.727 * screenWidth,
+                          height: 0.078 * screenHeight,
+                          borderRadius: 8.sp,
                           widget: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Image.asset(AppString.sCounter),
                               Expanded(
                                 child: DefaultTextField(
-                                  height: 50,
+                                  height: 0.0666 * screenHeight,
                                   isPassword: false,
                                   hintTxt: "",
                                   color: AppColor.grey6,
@@ -220,14 +220,14 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                                   },
                                   fillColor: AppColor.grey6,
                                   styleColor: AppColor.red2,
-                                  styleFontSize: 30,
+                                  styleFontSize: 18.sp,
                                   fontFamily: AppString.sInriaSerif,
                                 ),
                               ),
-                              const DefaultText(
+                              DefaultText(
                                 text: "Liter",
                                 color: AppColor.grey7,
-                                fontSize: 20,
+                                fontSize: 20.sp,
                                 fontWeight: FontWeight.w400,
                                 fontFamily: AppString.sActor,
                               ),
@@ -236,24 +236,26 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         ),
                         InkWell(
                           onTap: () {
-                            orderCubit.read('literOccr', OCRType.liter , context);
+                            orderCubit.pickImage(
+                                ImageSource.camera, context, 1);
                           },
-                          child: orderCubit.literOCRImagePath != null
+                          child: orderCubit.imageFileLiter != null
                               ? DefaultContainer(
                                   widget: Image.file(
-                                      File(orderCubit.literOCRImagePath!),
-                                      fit: BoxFit.cover),
-                                  borderRadius: 10,
+                                    File(orderCubit.imageFileLiter!.path),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: 10.sp,
                                   color: AppColor.white,
-                                  height: 65,
-                                  width: 60,
+                                  height: 0.078 * screenHeight,
+                                  width: 0.153 * screenWidth,
                                 )
-                              : const DefaultContainer(
+                              : DefaultContainer(
                                   borderRadius: 10,
                                   color: AppColor.grey6,
-                                  height: 65,
-                                  width: 60,
-                                  widget: Image(
+                                  height: 0.078 * screenHeight,
+                                  width: 0.153 * screenWidth,
+                                  widget: const Image(
                                     image: AssetImage(AppString.sCamera),
                                     fit: BoxFit.cover,
                                   ),
@@ -261,29 +263,29 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 30),
-                    const DefaultText(
+                    SizedBox(height: 0.036 * screenHeight),
+                    DefaultText(
                       text: "850 L.E.",
                       color: AppColor.green2,
-                      fontSize: 50,
+                      fontSize: 40.sp,
                       fontWeight: FontWeight.w400,
                       fontFamily: AppString.sInriaSerif,
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(height: 0.036 * screenHeight),
                     InkWell(
                       onTap: () {
                         if (formKey.currentState!.validate() &&
-                            orderCubit.oddoText != "" &&
-                            orderCubit.litersText != "" &&
-                            orderCubit.oddoOCRImagePath != null &&
-                            orderCubit.literOCRImagePath != null) {
+                            orderCubit.scannedTextOdo != "" &&
+                            orderCubit.scannedTextLiter != "" &&
+                            orderCubit.imageFileOdo != null &&
+                            orderCubit.imageFileLiter != null) {
                           orderCubit.confirmOrder(
                             odoMeterInput: odoController.text,
-                            odoMeterOcrText: orderCubit.oddoText,
+                            odoMeterOcrText: orderCubit.scannedTextOdo,
                             literInput: litersController.text,
-                            literOcrText: orderCubit.litersText,
-                            odoImage: File(orderCubit.oddoOCRImagePath!),
-                            litersImage: File(orderCubit.literOCRImagePath!),
+                            literOcrText: orderCubit.scannedTextLiter,
+                            odoImage: File(orderCubit.imageFileOdo!.path),
+                            litersImage: File(orderCubit.imageFileLiter!.path),
                             vehicleId: CacheHelper.getDataFromSharedPreference(
                                 key: 'imageID'),
                             context: context,
@@ -294,15 +296,15 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                       },
                       child: state is NewOrderLoadingState
                           ? const ProgressIndicatorWidget()
-                          : const DefaultContainer(
-                              borderRadius: 30.0,
+                          : DefaultContainer(
+                              borderRadius: 25.sp,
                               color: AppColor.teal,
                               width: double.infinity,
-                              height: 45.0,
+                              height: 0.054 * screenHeight,
                               widget: DefaultText(
                                 text: "Confirm Order",
                                 color: AppColor.white,
-                                fontSize: 20.0,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w400,
                                 fontFamily: AppString.sActor,
                               ),

@@ -43,7 +43,9 @@ dependencies:
   fluttertoast: ^8.0.9
   geolocator: ^9.0.2
   google_maps_flutter: ^2.2.1
+  google_ml_kit: ^0.7.3
   google_nav_bar: ^5.0.6
+  image_cropper: ^3.0.1
   image_picker: ^0.8.6
   path_provider: ^2.0.11
   scroll_snap_list: ^0.9.1

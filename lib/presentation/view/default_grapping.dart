@@ -20,19 +20,21 @@ class DefaultGrabbing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: _getBorderRadius(),
         color: color,
       ),
-      child: const DefaultContainer(
-          borderRadius: 10.0,
-          color: Colors.grey,
-          width: 40.0,
-          height: 5.0,
-          widget: SizedBox(),
-        ),
+      child: DefaultContainer(
+        borderRadius: 10.0,
+        color: Colors.grey,
+        width: 0.102 * screenWidth,
+        height: 0.006 * screenHeight,
+        widget: const SizedBox(),
+      ),
     );
   }
 }

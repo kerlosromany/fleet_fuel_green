@@ -5,21 +5,27 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import '../../constants/strings.dart';
+import 'package:sizer/sizer.dart';
 import '../styles/colors.dart';
+import '../widget/car_photo.dart';
 import '../widget/default_container.dart';
 import '../widget/default_text.dart';
 
 class FuelStationSheetContent3 extends StatelessWidget {
-  const FuelStationSheetContent3({Key? key, required this.reverse, this.controller}) : super(key: key);
+  const FuelStationSheetContent3(
+      {Key? key, required this.reverse, this.controller})
+      : super(key: key);
   final bool reverse;
   final ScrollController? controller;
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Container(
       decoration: const BoxDecoration(color: AppColor.white),
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: EdgeInsets.all(12.sp),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -30,35 +36,34 @@ class FuelStationSheetContent3 extends StatelessWidget {
                   Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
+                        padding: EdgeInsets.only(right: 6.sp),
                         child: Image.asset(AppString.sMask2),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const DefaultText(
+                          DefaultText(
                             text: "Shell Station",
                             color: AppColor.lightBlack2,
-                            fontSize: 20,
+                            fontSize: 18.sp,
                             fontWeight: FontWeight.w400,
                           ),
                           Row(
                             children: [
-                              const DefaultText(
+                              DefaultText(
                                 text: "Gas Fuel",
                                 color: AppColor.grey5,
-                                fontSize: 14,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w400,
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: EdgeInsets.symmetric(horizontal: 6.sp),
                                 child: Image.asset(AppString.sStar),
                               ),
-                              const DefaultText(
+                              DefaultText(
                                 text: "4.5 stars",
                                 color: AppColor.grey5,
-                                fontSize: 14,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.w400,
                               ),
                             ],
@@ -68,25 +73,22 @@ class FuelStationSheetContent3 extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(
-                    child: Image(
-                      image: AssetImage(AppString.sLic),
-                      fit: BoxFit.fill,
-                    ),
+                    child: CarPhotoWidget(),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 0.024 * screenHeight),
               Image.asset(AppString.sQrCode),
-              const SizedBox(height: 20),
-              const DefaultContainer(
-                borderRadius: 30.0,
+              SizedBox(height: 0.024 * screenHeight),
+              DefaultContainer(
+                borderRadius: 25.sp,
                 color: AppColor.teal,
                 width: double.infinity,
-                height: 45.0,
+                height: 0.054 * screenHeight,
                 widget: DefaultText(
                   text: "Genrated QR",
                   color: AppColor.white,
-                  fontSize: 20.0,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w400,
                   fontFamily: AppString.sActor,
                 ),

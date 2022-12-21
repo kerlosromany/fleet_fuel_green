@@ -3,22 +3,22 @@ abstract class OrderState {}
 class OrderInitial extends OrderState {}
 
 // make new order states
-class NewOrderLoadingState extends OrderInitial {}
+class NewOrderLoadingState extends OrderState {}
 
-class NewOrderSuccessState extends OrderInitial {} 
+class NewOrderSuccessState extends OrderState {} 
 
-class NewOrderErrorState extends OrderInitial {
+class NewOrderErrorState extends OrderState {
   final String error;
 
   NewOrderErrorState({required this.error});
 }
 
 // Get user car states
-class GetUserCarLoadingState extends OrderInitial {}
+class GetUserCarLoadingState extends OrderState {}
 
-class GetUserCarSuccessState extends OrderInitial {}
+class GetUserCarSuccessState extends OrderState {}
 
-class GetUserCarErrorState extends OrderInitial {
+class GetUserCarErrorState extends OrderState {
   final String error;
 
   GetUserCarErrorState({required this.error});
@@ -26,8 +26,18 @@ class GetUserCarErrorState extends OrderInitial {
 
 
 // car photo state
-class ChangeCarPhotoState extends OrderInitial {}
+class ChangeCarPhotoState extends OrderState {}
 
-class MobileVisionInitState extends OrderInitial {}
+class MobileVisionInitState extends OrderState {}
 
-class MobileVisionTextOcrState extends OrderInitial {}
+class MobileVisionTextOcrState extends OrderState {}
+
+//////////////////
+class RemoveSelectedVehicleIdState extends OrderState {}
+class AddSelectedVehicleIdState extends OrderState {}
+//////////////////
+
+// Picke Image State
+class SuccessPickImage extends OrderState {}
+class ErrorPickImage extends OrderState {}
+class GetRecognizedTextState extends OrderState {}

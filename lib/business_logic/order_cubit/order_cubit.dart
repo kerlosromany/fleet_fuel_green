@@ -1,11 +1,15 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/services.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_mobile_vision_2/flutter_mobile_vision_2.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:magdsoft_flutter_structure/constants/constants.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -118,8 +122,10 @@ class OrderCubit extends Cubit<OrderState> {
               context);
           emit(NewOrderErrorState(error: ""));
         }
-        print("latitude is sent as => ${newOrderModel!.data!.order!.location!.latitude}");
-        print("longitude is sent as => ${newOrderModel!.data!.order!.location!.longitude}");
+        print(
+            "latitude is sent as => ${newOrderModel!.data!.order!.location!.latitude}");
+        print(
+            "longitude is sent as => ${newOrderModel!.data!.order!.location!.longitude}");
         emit(NewOrderSuccessState());
       }
     } on DioError catch (e) {
@@ -138,85 +144,189 @@ class OrderCubit extends Cubit<OrderState> {
 
 // make ocr logic
 
-  int? cameraOcr = FlutterMobileVision.CAMERA_BACK;
-  bool autoFocusOcr = true;
-  bool torchOcr = false;
-  bool multipleOcr = true;
-  bool waitTapOcr = true;
-  bool showTextOcr = true;
-  Size? previewOcr;
+  // int? cameraOcr = FlutterMobileVision.CAMERA_BACK;
+  // bool autoFocusOcr = true;
+  // bool torchOcr = false;
+  // bool multipleOcr = true;
+  // bool waitTapOcr = true;
+  // bool showTextOcr = true;
+  // Size? previewOcr;
 
-  Future<void> mobileVisionInit() async {
-    final previewSizes = await FlutterMobileVision.start();
-    previewOcr = previewSizes[cameraOcr]!.first;
-    emit(MobileVisionInitState());
+  // Future<void> mobileVisionInit() async {
+  //   final previewSizes = await FlutterMobileVision.start();
+  //   previewOcr = previewSizes[cameraOcr]!.first;
+  //   emit(MobileVisionInitState());
+  // }
+
+  // OcrText? oddoOCR;
+  // OcrText? literOCR;
+  // String oddoText = "";
+  // String litersText = "";
+
+  // String? oddoOCRImagePath;
+  // String? literOCRImagePath;
+  // List<OcrText> texts = [];
+
+  // Future read(String fileName, OCRType ocrType, BuildContext context) async {
+  //   Size scanpreviewOcr = previewOcr ?? FlutterMobileVision.PREVIEW;
+  //   if (ocrType == OCRType.oddo) {
+  //     oddoOCRImagePath = await getFilePath(fileName);
+  //   } else if (ocrType == OCRType.liter) {
+  //     literOCRImagePath = await getFilePath(fileName);
+  //   }
+  //   try {
+  //     texts = await FlutterMobileVision.read(
+  //       flash: torchOcr,
+  //       autoFocus: autoFocusOcr,
+  //       multiple: multipleOcr,
+  //       waitTap: waitTapOcr,
+  //       forceCloseCameraOnTap: false,
+  //       imagePath: ocrType == OCRType.oddo
+  //           ? oddoOCRImagePath!
+  //           : literOCRImagePath!, //'path/to/file.jpg'
+  //       showText: showTextOcr,
+  //       preview: previewOcr ?? FlutterMobileVision.PREVIEW,
+  //       scanArea: Size(400, scanpreviewOcr.height - 1000),
+  //       //scanArea: const Size(500, 500),
+  //       camera: cameraOcr ?? FlutterMobileVision.CAMERA_BACK,
+  //       fps: 2.0,
+  //     );
+  //   } on Exception {
+  //     texts.add(OcrText('Failed to recognize text.'));
+  //   }
+  //   if (ocrType == OCRType.oddo) {
+  //     oddoOCR = texts[0];
+  //     oddoText = texts[0].value;
+  //     showToast("the picked number is $oddoText", context, toastDuration: 7);
+  //   } else if (ocrType == OCRType.liter) {
+  //     literOCR = texts[0];
+  //     litersText = texts[0].value;
+  //     showToast("the picked number is $litersText", context, toastDuration: 7);
+  //   }
+  //   print(texts[0].value);
+  //   emit(MobileVisionTextOcrState());
+  // }
+
+  // File? odoImageFile;
+  // File? litersImageFile;
+  // Future<String> getFilePath(String fileName) async {
+  //   Directory appDocumentsDirectory =
+  //       await getApplicationDocumentsDirectory(); // 1
+  //   String appDocumentsPath = appDocumentsDirectory.path; // 2
+  //   String filePath = '$appDocumentsPath/$fileName.png'; // 3
+  //   debugPrint("file path = $filePath");
+
+  //   // if (fileName == "oddoOcr") {
+  //   //   odoImageFile = File(filePath);
+  //   // } else {
+  //   //   litersImageFile = File(filePath);
+  //   // }
+
+  //   return filePath;
+  // }
+
+  //make imagePicker and cropper
+  File? imageFileOdo;
+  File? imageFileLiter;
+  Future pickImage(
+      ImageSource imageSource, BuildContext context, int type) async {
+    if (type == 0) {
+      try {
+        final image = await ImagePicker().pickImage(source: imageSource);
+        if (image == null) {
+          return;
+        }
+        File? img = File(image.path);
+        img = await cropImage(imageFile: img, type: type);
+        imageFileOdo = img;
+
+        emit(SuccessPickImage());
+      } on PlatformException catch (e) {
+        print(e.toString());
+        emit(ErrorPickImage());
+      }
+    } else {
+      try {
+        final image = await ImagePicker().pickImage(source: imageSource);
+        if (image == null) {
+          return;
+        }
+        File? img = File(image.path);
+        img = await cropImage(imageFile: img, type: type);
+        imageFileLiter = img;
+
+        emit(SuccessPickImage());
+      } on PlatformException catch (e) {
+        print(e.toString());
+        emit(ErrorPickImage());
+      }
+    }
   }
 
-  OcrText? oddoOCR;
-  OcrText? literOCR;
-  String oddoText = "";
-  String litersText = "";
-
-  String? oddoOCRImagePath;
-  String? literOCRImagePath;
-
-  Future read(String fileName, OCRType ocrType, BuildContext context) async {
-    List<OcrText> texts = [];
-    Size scanpreviewOcr = previewOcr ?? FlutterMobileVision.PREVIEW;
-    if (ocrType == OCRType.oddo) {
-      oddoOCRImagePath = await getFilePath(fileName);
-    } else if (ocrType == OCRType.liter) {
-      literOCRImagePath = await getFilePath(fileName);
-    }
-    try {
-      texts = await FlutterMobileVision.read(
-        flash: torchOcr,
-        autoFocus: autoFocusOcr,
-        multiple: multipleOcr,
-        waitTap: waitTapOcr,
-        forceCloseCameraOnTap: true,
-        imagePath: ocrType == OCRType.oddo
-            ? oddoOCRImagePath!
-            : literOCRImagePath!, //'path/to/file.jpg'
-        showText: showTextOcr,
-        preview: previewOcr ?? FlutterMobileVision.PREVIEW,
-        scanArea: Size(scanpreviewOcr.width - 20, scanpreviewOcr.height - 20),
-        camera: cameraOcr ?? FlutterMobileVision.CAMERA_BACK,
-        fps: 2.0,
-      );
-    } on Exception {
-      texts.add(OcrText('Failed to recognize text.'));
-    }
-    if (ocrType == OCRType.oddo) {
-      oddoOCR = texts[0];
-      oddoText = texts[0].value;
-      showToast("the picked number is $oddoText", context, toastDuration: 7);
-    } else if (ocrType == OCRType.liter) {
-      literOCR = texts[0];
-      litersText = texts[0].value;
-      showToast("the picked number is $litersText", context, toastDuration: 7);
-    }
-    print(texts[0].value);
-    emit(MobileVisionTextOcrState());
-  }
-
-  File? odoImageFile;
-  File? litersImageFile;
-  Future<String> getFilePath(String fileName) async {
-    Directory appDocumentsDirectory =
-        await getApplicationDocumentsDirectory(); // 1
-    String appDocumentsPath = appDocumentsDirectory.path; // 2
-    String filePath = '$appDocumentsPath/$fileName.png'; // 3
-    debugPrint("file path = $filePath");
-
-    // if (fileName == "oddoOcr") {
-    //   odoImageFile = File(filePath);
-    // } else {
-    //   litersImageFile = File(filePath);
+  // make image cropper
+  Future<File?> cropImage({required File imageFile, required int type}) async {
+    CroppedFile? croppedImage =
+        await ImageCropper().cropImage(sourcePath: imageFile.path);
+    getRecognizedText(croppedImage!.path, type);
+    // if (croppedImage == null) {
+    //   return null;
     // }
-
-    return filePath;
+    return File(croppedImage.path);
   }
+
+  String scannedTextOdo = "";
+  String scannedTextLiter = "";
+  // Text Recognition using Google ML Kit
+  void getRecognizedText(String imagePath, int type) async {
+    if (type == 0) {
+      final inputImage = InputImage.fromFilePath(imagePath);
+      final textDetector = GoogleMlKit.vision.textDetector();
+      RecognisedText recognisedText =
+          await textDetector.processImage(inputImage);
+      await textDetector.close();
+      scannedTextOdo = "";
+      for (TextBlock block in recognisedText.blocks) {
+        for (TextLine line in block.lines) {
+          scannedTextOdo = scannedTextOdo + line.text + "\n";
+        }
+      }
+      print(scannedTextOdo);
+      emit(GetRecognizedTextState());
+    }else{
+      final inputImage = InputImage.fromFilePath(imagePath);
+      final textDetector = GoogleMlKit.vision.textDetector();
+      RecognisedText recognisedText =
+          await textDetector.processImage(inputImage);
+      await textDetector.close();
+      scannedTextLiter = "";
+      for (TextBlock block in recognisedText.blocks) {
+        for (TextLine line in block.lines) {
+          scannedTextLiter = scannedTextLiter + line.text + "\n";
+        }
+      }
+      print(scannedTextLiter);
+      emit(GetRecognizedTextState());
+    }
+  }
+
+
+
+
+
+  //////////////////////////////////////
+  List<UserVehicles> selectedVehicle = [];
+
+  void selectedCat(UserVehicles vehicle) {
+    if (selectedVehicle.contains(vehicle)) {
+      selectedVehicle.remove(vehicle);
+      emit(RemoveSelectedVehicleIdState());
+    } else {
+      selectedVehicle = [];
+      selectedVehicle.add(vehicle);
+      emit(AddSelectedVehicleIdState());
+    }
+  }
+  /////////////////////////////////////
 }
 
 enum OCRType { oddo, liter }

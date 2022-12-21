@@ -3,74 +3,68 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-import '../../business_logic/order_cubit/order_cubit.dart';
+import '../../data/data_providers/local/cache_helper.dart';
 import '../styles/colors.dart';
 import 'default_text.dart';
+import 'package:sizer/sizer.dart';
 
 class CarPhotoWidget extends StatelessWidget {
-  final String carNumber;
- CarPhotoWidget({Key? key , required this.carNumber}) : super(key: key);
+  const CarPhotoWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var orderCubit = OrderCubit.get(context);
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      // width: 80,
+      width: 0.308 * screenWidth,
+      height: 0.066 * screenHeight,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        color: AppColor.white,
         border: Border.all(
-          color: AppColor.black,
-          width: 2,
+          color: Colors.black,
         ),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
       child: Column(
         children: [
           Container(
-            height: 30,
+            width: 0.309 * screenWidth,
+            height: 0.02 * screenHeight,
             decoration: const BoxDecoration(
-              color: AppColor.red3,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(13),
+              color: AppColor.red,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(8),
+                topLeft: Radius.circular(8),
               ),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
                 DefaultText(
-                    text: "Egypt",
-                    color: AppColor.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w300),
+                  text: 'Egypt',
+                  fontWeight: FontWeight.bold,
+                  color: AppColor.white,
+                  fontSize: 6.sp,
+                ),
                 DefaultText(
-                    text: "مصر",
-                    color: AppColor.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w300),
+                  text: 'مصر',
+                  fontWeight: FontWeight.bold,
+                  color: AppColor.white,
+                  fontSize: 6.sp,
+                ),
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-               DefaultText(
-                  text: carNumber,
-                  color: AppColor.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w900),
-              Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Container(
-                  width: 4,
-                  height: 50,
-                  color: AppColor.black,
-                ),
-              ),
-              const DefaultText(
-                  text: "م س",
-                  color: AppColor.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ],
+          SizedBox(height: 0.012 * screenHeight),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 1.0),
+            child: DefaultText(
+              text: CacheHelper.getDataFromSharedPreference(key: "carNo"),
+              fontWeight: FontWeight.bold,
+              fontSize: 11.sp,
+              color: AppColor.black,
+            ),
           ),
         ],
       ),
