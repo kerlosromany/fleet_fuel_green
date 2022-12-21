@@ -4,7 +4,6 @@ import 'package:magdsoft_flutter_structure/business_logic/order_cubit/order_stat
 import 'package:magdsoft_flutter_structure/data/data_providers/local/cache_helper.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/progress_indicator_widget.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
-import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../business_logic/global_cubit/global_cubit.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_mobile_vision_2/flutter_mobile_vision_2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:magdsoft_flutter_structure/business_logic/order_cubit/order_cubit.dart';
 import 'package:magdsoft_flutter_structure/presentation/screens/shared/payment_method_screen.dart';
