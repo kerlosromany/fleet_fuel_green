@@ -41,3 +41,8 @@ class AddSelectedVehicleIdState extends OrderState {}
 class SuccessPickImage extends OrderState {}
 class ErrorPickImage extends OrderState {}
 class GetRecognizedTextState extends OrderState {}
+
+// generate code state
+class GenerateCodeSuccessState extends OrderState {}
+class GenerateCodeErrorState extends OrderState {}
+class GenerateCodeLoadingState extends OrderState {}

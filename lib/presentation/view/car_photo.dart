@@ -25,17 +25,24 @@ class CarPhotosView extends StatelessWidget {
           OrderCubit.get(context).selectedCat(userVehicle);
           CacheHelper.saveDataSharedPreference(
               key: "carNo", value: userVehicle.carNumber);
+          CacheHelper.saveDataSharedPreference(
+              key: "vehicleID", value: userVehicle.vehicleId);
+          print(CacheHelper.getDataFromSharedPreference(key: "vehicleID"));
           print(CacheHelper.getDataFromSharedPreference(key: "carNo"));
         },
         child: Container(
-          width: OrderCubit.get(context)
-                  .selectedVehicle
-                  .any((element) => element == userVehicle)
+          width: (OrderCubit.get(context)
+                      .selectedVehicle
+                      .any((element) => element == userVehicle) ||
+                  CacheHelper.getDataFromSharedPreference(key: "vehicleID") ==
+                      userVehicle.vehicleId)
               ? 0.4 * screenWidth
               : 0.308 * screenWidth,
-          height: OrderCubit.get(context)
-                  .selectedVehicle
-                  .any((element) => element == userVehicle)
+          height: (OrderCubit.get(context)
+                      .selectedVehicle
+                      .any((element) => element == userVehicle) ||
+                  CacheHelper.getDataFromSharedPreference(key: "vehicleID") ==
+                      userVehicle.vehicleId)
               ? 0.07 * screenHeight
               : 0.066 * screenHeight,
           clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -62,13 +69,19 @@ class CarPhotosView extends StatelessWidget {
             children: [
               Container(
                 width: (OrderCubit.get(context)
-                        .selectedVehicle
-                        .any((element) => element == userVehicle))
+                            .selectedVehicle
+                            .any((element) => element == userVehicle) ||
+                        CacheHelper.getDataFromSharedPreference(
+                                key: "vehicleID") ==
+                            userVehicle.vehicleId)
                     ? 0.42 * screenWidth
                     : 0.309 * screenWidth,
                 height: (OrderCubit.get(context)
-                        .selectedVehicle
-                        .any((element) => element == userVehicle))
+                            .selectedVehicle
+                            .any((element) => element == userVehicle) ||
+                        CacheHelper.getDataFromSharedPreference(
+                                key: "vehicleID") ==
+                            userVehicle.vehicleId)
                     ? 0.0217 * screenHeight
                     : 0.02 * screenHeight,
                 decoration: const BoxDecoration(

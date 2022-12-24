@@ -141,88 +141,22 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
+  String generatedCode = "";
+  bool isGenerated = false;
+  generateCode() {
+    emit(GenerateCodeLoadingState());
+    try {
+      isGenerated = true;
+      generatedCode = newOrderModel!.data!.paidApi as String;
+
+      emit(GenerateCodeSuccessState());
+    } catch (e) {
+      print(e.toString());
+      emit(GenerateCodeErrorState());
+    }
+  }
+
 // make ocr logic
-
-  // int? cameraOcr = FlutterMobileVision.CAMERA_BACK;
-  // bool autoFocusOcr = true;
-  // bool torchOcr = false;
-  // bool multipleOcr = true;
-  // bool waitTapOcr = true;
-  // bool showTextOcr = true;
-  // Size? previewOcr;
-
-  // Future<void> mobileVisionInit() async {
-  //   final previewSizes = await FlutterMobileVision.start();
-  //   previewOcr = previewSizes[cameraOcr]!.first;
-  //   emit(MobileVisionInitState());
-  // }
-
-  // OcrText? oddoOCR;
-  // OcrText? literOCR;
-  // String oddoText = "";
-  // String litersText = "";
-
-  // String? oddoOCRImagePath;
-  // String? literOCRImagePath;
-  // List<OcrText> texts = [];
-
-  // Future read(String fileName, OCRType ocrType, BuildContext context) async {
-  //   Size scanpreviewOcr = previewOcr ?? FlutterMobileVision.PREVIEW;
-  //   if (ocrType == OCRType.oddo) {
-  //     oddoOCRImagePath = await getFilePath(fileName);
-  //   } else if (ocrType == OCRType.liter) {
-  //     literOCRImagePath = await getFilePath(fileName);
-  //   }
-  //   try {
-  //     texts = await FlutterMobileVision.read(
-  //       flash: torchOcr,
-  //       autoFocus: autoFocusOcr,
-  //       multiple: multipleOcr,
-  //       waitTap: waitTapOcr,
-  //       forceCloseCameraOnTap: false,
-  //       imagePath: ocrType == OCRType.oddo
-  //           ? oddoOCRImagePath!
-  //           : literOCRImagePath!, //'path/to/file.jpg'
-  //       showText: showTextOcr,
-  //       preview: previewOcr ?? FlutterMobileVision.PREVIEW,
-  //       scanArea: Size(400, scanpreviewOcr.height - 1000),
-  //       //scanArea: const Size(500, 500),
-  //       camera: cameraOcr ?? FlutterMobileVision.CAMERA_BACK,
-  //       fps: 2.0,
-  //     );
-  //   } on Exception {
-  //     texts.add(OcrText('Failed to recognize text.'));
-  //   }
-  //   if (ocrType == OCRType.oddo) {
-  //     oddoOCR = texts[0];
-  //     oddoText = texts[0].value;
-  //     showToast("the picked number is $oddoText", context, toastDuration: 7);
-  //   } else if (ocrType == OCRType.liter) {
-  //     literOCR = texts[0];
-  //     litersText = texts[0].value;
-  //     showToast("the picked number is $litersText", context, toastDuration: 7);
-  //   }
-  //   print(texts[0].value);
-  //   emit(MobileVisionTextOcrState());
-  // }
-
-  // File? odoImageFile;
-  // File? litersImageFile;
-  // Future<String> getFilePath(String fileName) async {
-  //   Directory appDocumentsDirectory =
-  //       await getApplicationDocumentsDirectory(); // 1
-  //   String appDocumentsPath = appDocumentsDirectory.path; // 2
-  //   String filePath = '$appDocumentsPath/$fileName.png'; // 3
-  //   debugPrint("file path = $filePath");
-
-  //   // if (fileName == "oddoOcr") {
-  //   //   odoImageFile = File(filePath);
-  //   // } else {
-  //   //   litersImageFile = File(filePath);
-  //   // }
-
-  //   return filePath;
-  // }
 
   //make imagePicker and cropper
   File? imageFileOdo;
@@ -236,7 +170,7 @@ class OrderCubit extends Cubit<OrderState> {
           return;
         }
         File? img = File(image.path);
-        img = await cropImage(imageFile: img, type: type,context: context);
+        img = await cropImage(imageFile: img, type: type, context: context);
         imageFileOdo = img;
 
         emit(SuccessPickImage());
@@ -251,7 +185,7 @@ class OrderCubit extends Cubit<OrderState> {
           return;
         }
         File? img = File(image.path);
-        img = await cropImage(imageFile: img, type: type , context: context);
+        img = await cropImage(imageFile: img, type: type, context: context);
         imageFileLiter = img;
 
         emit(SuccessPickImage());
@@ -263,10 +197,13 @@ class OrderCubit extends Cubit<OrderState> {
   }
 
   // make image cropper
-  Future<File?> cropImage({required File imageFile, required int type , required BuildContext context}) async {
+  Future<File?> cropImage(
+      {required File imageFile,
+      required int type,
+      required BuildContext context}) async {
     CroppedFile? croppedImage =
         await ImageCropper().cropImage(sourcePath: imageFile.path);
-    getRecognizedText(croppedImage!.path, type , context);
+    getRecognizedText(croppedImage!.path, type, context);
     // if (croppedImage == null) {
     //   return null;
     // }
@@ -291,7 +228,7 @@ class OrderCubit extends Cubit<OrderState> {
         }
       }
       print(scannedTextOdo);
-      showToast(scannedTextOdo, context , toastDuration: 10);
+      showToast(scannedTextOdo, context, toastDuration: 10);
       emit(GetRecognizedTextState());
     } else {
       final inputImage = InputImage.fromFilePath(imagePath);
@@ -305,7 +242,7 @@ class OrderCubit extends Cubit<OrderState> {
           scannedTextLiter = scannedTextLiter + line.text + "\n";
         }
       }
-      showToast(scannedTextLiter, context , toastDuration: 10);
+      showToast(scannedTextLiter, context, toastDuration: 10);
       print(scannedTextLiter);
       emit(GetRecognizedTextState());
     }

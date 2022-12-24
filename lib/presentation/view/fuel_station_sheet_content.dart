@@ -115,7 +115,7 @@ class FuelStationSheetContent extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         if (CacheHelper.getDataFromSharedPreference(
-                                key: 'carNo') !=
+                                key: 'vehicleID') !=
                             null) {
                           globalCubit.changeSheetContentToSecondSheet2();
                         } else {

@@ -40,7 +40,6 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
   TextEditingController litersController = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
- 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -157,7 +156,7 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                                 fontFamily: AppString.sActor,
                               ),
                             ],
-                          ), 
+                          ),
                         ),
                         InkWell(
                           onTap: () {
@@ -286,12 +285,17 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                             odoImage: File(orderCubit.imageFileOdo!.path),
                             litersImage: File(orderCubit.imageFileLiter!.path),
                             vehicleId: CacheHelper.getDataFromSharedPreference(
-                                key: 'imageID'),
+                                key: 'vehicleID'),
                             context: context,
                           );
+                        } else if (orderCubit.scannedTextOdo == "" ||
+                            orderCubit.scannedTextLiter == "") {
+                          showToast("No number is picked", context);
                         } else {
                           showToast("Fill all Fields", context);
                         }
+                        print(orderCubit.scannedTextOdo);
+                        print(orderCubit.scannedTextLiter);
                       },
                       child: state is NewOrderLoadingState
                           ? const ProgressIndicatorWidget()

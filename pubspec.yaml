@@ -28,7 +28,6 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   bloc: ^8.0.3
-  
   cupertino_icons: ^1.0.2
   dio: ^4.0.6
   flutter:
@@ -36,7 +35,6 @@ dependencies:
   flutter_bloc: ^8.0.1
   flutter_localizations:
     sdk: flutter
-  
   flutter_otp_text_field: ^1.1.1
   flutter_svg_provider: ^1.0.3
   flutter_translate: ^4.0.2
@@ -48,7 +46,7 @@ dependencies:
   image_cropper: ^3.0.1
   image_picker: ^0.8.6
   path_provider: ^2.0.11
-  
+  qr_flutter: ^4.0.0
   shared_preferences: ^2.0.15
   sizer: ^2.0.15
   snapping_sheet: ^3.1.0
