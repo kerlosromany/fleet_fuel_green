@@ -48,11 +48,10 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     var cubit = GlobalCubit.get(context);
-    var takePhotosCubit = TakePhotosCubit.get(context);
 
     return BlocBuilder<OrderCubit, OrderState>(
       builder: (context, state) {
- 
+        var takePhotosCubit = TakePhotosCubit.get(context);
         var orderCubit = OrderCubit.get(context);
         if (state is NewOrderSuccessState) {
           cubit.changeSheetContentToThirdSheet3();
@@ -164,32 +163,55 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                             ],
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            orderCubit.pickImage(
-                                ImageSource.camera, context, 0);
-                          },
-                          child: orderCubit.imageFileOdo != null
-                              ? DefaultContainer(
-                                  widget: Image.file(
-                                    File(orderCubit.imageFileOdo!.path),
-                                    fit: BoxFit.cover,
+                        BlocBuilder<TakePhotosCubit, TakePhotosState>(
+                          builder:(context, state) =>  InkWell(
+                            onTap: () {
+                              if (odoController.text.isNotEmpty) {
+                                CacheHelper.removeData(key: "photo1Path");
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => HomePaage(type: 1)));
+                              } else {
+                                showToast("Enter the ODO number first", context,
+                                    toastDuration: 5);
+                              }
+                            },
+                            child: (CacheHelper.getDataFromSharedPreference(
+                                        key: "photo1Path") !=
+                                    null)
+                                ? BlocBuilder<TakePhotosCubit, TakePhotosState>(
+                                    builder: (context, state) {
+                                      // debugPrint(
+                                      //     "////////////////////////////////////${takePhotosCubit.imageFile}");
+                                      return DefaultContainer(
+                                        widget: AspectRatio(
+                                          aspectRatio: 8 / 1,
+                                          child: Image.file(
+                                            File(
+                                              CacheHelper
+                                                  .getDataFromSharedPreference(
+                                                      key: "photo1Path"),
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        borderRadius: 10.sp,
+                                        color: AppColor.white,
+                                        height: 0.078 * screenHeight,
+                                        width: 0.153 * screenWidth,
+                                      );
+                                    },
+                                  )
+                                : DefaultContainer(
+                                    borderRadius: 10.sp,
+                                    color: AppColor.grey6,
+                                    height: 0.078 * screenHeight,
+                                    width: 0.153 * screenWidth,
+                                    widget: const Image(
+                                      image: AssetImage(AppString.sCamera),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                  borderRadius: 10.sp,
-                                  color: AppColor.white,
-                                  height: 0.078 * screenHeight,
-                                  width: 0.153 * screenWidth,
-                                )
-                              : DefaultContainer(
-                                  borderRadius: 10.sp,
-                                  color: AppColor.grey6,
-                                  height: 0.078 * screenHeight,
-                                  width: 0.153 * screenWidth,
-                                  widget: const Image(
-                                    image: AssetImage(AppString.sCamera),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                          ),
                         ),
                       ],
                     ),
@@ -238,38 +260,56 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                             ],
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const HomePaage()));
-                          },
-                          child: takePhotosCubit.imageFile != null
-                              ? BlocBuilder<TakePhotosCubit, TakePhotosState>(
-                                  builder: (context, state) {
-                                    debugPrint(
-                                        "////////////////////////////////////${takePhotosCubit.imageFile}");
-                                    return DefaultContainer(
-                                      widget: Image.file(
-                                        File(takePhotosCubit.imageFile!.path),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      borderRadius: 10.sp,
-                                      color: AppColor.white,
-                                      height: 0.078 * screenHeight,
-                                      width: 0.153 * screenWidth,
-                                    );
-                                  },
-                                )
-                              : DefaultContainer(
-                                  borderRadius: 10,
-                                  color: AppColor.grey6,
-                                  height: 0.078 * screenHeight,
-                                  width: 0.153 * screenWidth,
-                                  widget: const Image(
-                                    image: AssetImage(AppString.sCamera),
-                                    fit: BoxFit.cover,
+                        BlocBuilder<TakePhotosCubit, TakePhotosState>(
+                          builder:(context, state) =>  InkWell(
+                            onTap: () {
+                              if (litersController.text.isNotEmpty) {
+                                CacheHelper.removeData(key: "photo2Path");
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => HomePaage(type: 2)));
+                              } else {
+                                showToast(
+                                    "Enter the Liters number first", context,
+                                    toastDuration: 5);
+                              }
+                            },
+                            child: (CacheHelper.getDataFromSharedPreference(
+                                        key: "photo2Path") !=
+                                    null)
+                                ? BlocBuilder<TakePhotosCubit, TakePhotosState>(
+                                    builder: (context, state) {
+                                      debugPrint(
+                                          "*************************${takePhotosCubit.imageFileLiters}");
+                                      return DefaultContainer(
+                                        widget: AspectRatio(
+                                          aspectRatio: 8 / 1,
+                                          child: Image.file(
+                                            File(
+                                              CacheHelper
+                                                  .getDataFromSharedPreference(
+                                                      key: "photo2Path"),
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        borderRadius: 10.sp,
+                                        color: AppColor.white,
+                                        height: 0.078 * screenHeight,
+                                        width: 0.153 * screenWidth,
+                                      );
+                                    },
+                                  )
+                                : DefaultContainer(
+                                    borderRadius: 10,
+                                    color: AppColor.grey6,
+                                    height: 0.078 * screenHeight,
+                                    width: 0.153 * screenWidth,
+                                    widget: const Image(
+                                      image: AssetImage(AppString.sCamera),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
+                          ),
                         ),
                       ],
                     ),
@@ -285,8 +325,10 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                     InkWell(
                       onTap: () {
                         if (formKey.currentState!.validate() &&
-                            takePhotosCubit.scannedTextOdo != "" &&
-                            takePhotosCubit.scannedTextLiter != "" &&
+                            takePhotosCubit.scannedTextOdo !=
+                                odoController.text &&
+                            takePhotosCubit.scannedTextLiter !=
+                                litersController.text &&
                             orderCubit.imageFileOdo != null &&
                             orderCubit.imageFileLiter != null) {
                           orderCubit.confirmOrder(

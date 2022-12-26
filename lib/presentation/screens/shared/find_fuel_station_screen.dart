@@ -73,6 +73,8 @@ class _FindFuelStationScrenState extends State<FindFuelStationScren> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    CacheHelper.removeData(key: "photo1Path");
+    CacheHelper.removeData(key: "photo2Path");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.teal,

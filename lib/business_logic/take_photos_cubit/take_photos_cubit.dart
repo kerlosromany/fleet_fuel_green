@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:magdsoft_flutter_structure/business_logic/take_photos_cubit/take_photos_states.dart';
+import 'package:magdsoft_flutter_structure/data/data_providers/local/cache_helper.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../presentation/widget/toast.dart';
@@ -16,21 +17,23 @@ class TakePhotosCubit extends Cubit<TakePhotosState> {
 
   static TakePhotosCubit get(context) => BlocProvider.of(context);
 
-  Uint8List? bytes;
-  File? imageFile;
   late CameraController controller;
-  File? file;
+
+  Uint8List? bytesOdo;
+  File? imageFileODO;
+  File? fileODO;
 
   Future saveImage(Uint8List bytes, BuildContext context) async {
     final appStorage = await getApplicationDocumentsDirectory();
-    file = File('${appStorage.path}/image.jpeg');
-    
-    await file!.writeAsBytes(bytes);
-    getRecognizedText(file!.path, context);
+    fileODO = File('${appStorage.path}/image.jpeg');
+    await fileODO!.writeAsBytes(bytes);
+    getRecognizedText(fileODO!.path, context);
+
+    emit(GetSavePhotoState());
   }
 
   void changeBytes(bytess) {
-    bytes = bytess;
+    bytesOdo = bytess;
     emit(ChangeBytesSuccessState());
   }
 
@@ -48,13 +51,15 @@ class TakePhotosCubit extends Cubit<TakePhotosState> {
   void onTakePicture() async {
     await controller.takePicture().then((XFile xFile) {
       File? img = File(xFile.path);
-      imageFile = img;
-      emit(OnTakePicSuccessState());
+      imageFileODO = img;
+      CacheHelper.saveDataSharedPreference(
+          key: "photo1Path", value: imageFileODO!.path);
     });
+    emit(OnTakePicSuccessState());
   }
 
   String scannedTextOdo = "";
-  String scannedTextLiter = "";
+
   // Text Recognition using Google ML Kit
   void getRecognizedText(String imagePath, BuildContext context) async {
     final inputImage = InputImage.fromFilePath(imagePath);
@@ -67,10 +72,62 @@ class TakePhotosCubit extends Cubit<TakePhotosState> {
         scannedTextOdo = scannedTextOdo + line.text + "\n";
       }
     }
+    bool isTrue = scannedTextOdo.contains("35758");
     print(scannedTextOdo);
-    showToast(scannedTextOdo, context, toastDuration: 3);
+    isTrue
+        ? showToast("your number is 35758", context, toastDuration: 7)
+        : showToast(
+            "Can not find your number in the photo, Please try again.", context,
+            toastDuration: 7);
 
     emit(GetRecognizedTextState());
   }
-  
+
+  /////////////////////////////////////////////////////////////////////////////
+  Uint8List? bytesLiters;
+  File? imageFileLiters;
+  File? fileLiters;
+
+  Future saveLitersImage(Uint8List bytes, BuildContext context) async {
+    final appStorage = await getApplicationDocumentsDirectory();
+    fileLiters = File('${appStorage.path}/image.jpeg');
+    await fileLiters!.writeAsBytes(bytes);
+    getRecognizedLitersText(fileLiters!.path, context);
+
+    emit(GetSavePhotoState());
+  }
+
+  void onTakeLitersPicture() async {
+    await controller.takePicture().then((XFile xFile) {
+      File? img = File(xFile.path);
+      imageFileLiters = img;
+      CacheHelper.saveDataSharedPreference(
+          key: "photo2Path", value: imageFileLiters!.path);
+    });
+    emit(OnTakePicSuccessState());
+  }
+
+  String scannedTextLiter = "";
+  // Text Recognition using Google ML Kit
+  void getRecognizedLitersText(String imagePath, BuildContext context) async {
+    final inputImage = InputImage.fromFilePath(imagePath);
+    final textDetector = GoogleMlKit.vision.textDetector();
+    RecognisedText recognisedText = await textDetector.processImage(inputImage);
+    await textDetector.close();
+    scannedTextLiter = "";
+    for (TextBlock block in recognisedText.blocks) {
+      for (TextLine line in block.lines) {
+        scannedTextLiter = scannedTextLiter + line.text + "\n";
+      }
+    }
+    bool isTrue = scannedTextLiter.contains("35758");
+    print(scannedTextLiter);
+    isTrue
+        ? showToast("your number is 35758", context, toastDuration: 7)
+        : showToast(
+            "Can not find your number in the photo, Please try again.", context,
+            toastDuration: 7);
+
+    emit(GetRecognizedTextState());
+  }
 }

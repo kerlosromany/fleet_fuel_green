@@ -16,39 +16,52 @@ import 'dart:io';
 import 'package:screenshot/screenshot.dart';
 
 import '../../../business_logic/take_photos_cubit/take_photos_cubit.dart';
+import '../../../data/data_providers/local/cache_helper.dart';
 import '../../widget/toast.dart';
 
 class HomePaage extends StatelessWidget {
-  const HomePaage({Key? key}) : super(key: key);
+  late int type;
+  HomePaage({Key? key, required this.type}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TakePhotosCubit(),
-      child: BlocConsumer<TakePhotosCubit, TakePhotosState>(
-        listener: (context, state) {
-          if (state is GetRecognizedTextState) {
-            Navigator.pop(context);
-          }
-        },
-        builder: (context, state) {
-          var takePhotosCub = TakePhotosCubit.get(context);
-          AspectRatio buildTargetPhoto() {
-            return AspectRatio(
-              aspectRatio: 9 / 1,
-              child: Image.file(
-                File(takePhotosCub.imageFile!.path),
-                fit: BoxFit.cover,
-              ),
-            );
-          }
+    return BlocConsumer<TakePhotosCubit, TakePhotosState>(
+      listener: (context, state) {
+        if (state is GetRecognizedTextState) {
+          Navigator.pop(context);
+        }
+      },
+      builder: (context, state) {
+        var takePhotosCub = TakePhotosCubit.get(context);
+        AspectRatio buildODOTargetPhoto() {
+          return AspectRatio(
+            aspectRatio: 9 / 1,
+            child: Image.file(
+              File(takePhotosCub.imageFileODO!.path),
+              fit: BoxFit.cover,
+            ),
+          );
+        }
 
-          return Scaffold(
-            body: FutureBuilder(
-              future: takePhotosCub.initializationCamera(),
-              builder: (context, snapshot) {
+         AspectRatio buildLitersTargetPhoto() {
+          return AspectRatio(
+            aspectRatio: 9 / 1,
+            child: Image.file(
+              File(takePhotosCub.imageFileLiters!.path),
+              fit: BoxFit.cover,
+            ),
+          );
+        }
+
+        return Scaffold(
+          body: FutureBuilder(
+            future: takePhotosCub.initializationCamera(),
+            builder: (context, snapshot) {
+              if (type == 1) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  return takePhotosCub.imageFile == null
+                  return (CacheHelper.getDataFromSharedPreference(
+                              key: "photo1Path") ==
+                          null)
                       ? Stack(
                           alignment: Alignment.center,
                           children: [
@@ -60,8 +73,8 @@ class HomePaage extends StatelessWidget {
                               height: double.infinity,
                               child: Center(
                                 child: Container(
-                                  width: 150,
-                                  height: 70,
+                                  width: 180,
+                                  height: 90,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: AppColor.red,
@@ -87,45 +100,133 @@ class HomePaage extends StatelessWidget {
                           ],
                         )
                       : Center(
-                          child: buildTargetPhoto(),
+                          child: buildODOTargetPhoto(),
                         );
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }
-              },
-            ),
-            floatingActionButton: takePhotosCub.imageFile != null
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FloatingActionButton(
-                        child: const Icon(Icons.check),
-                        heroTag: "button1",
-                        onPressed: () async {
-                          final controller = ScreenshotController();
-                          final bytes = await controller.captureFromWidget(
-                            Material(
-                              child: buildTargetPhoto(),
+              } else {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return (CacheHelper.getDataFromSharedPreference(
+                              key: "photo2Path") ==
+                          null)
+                      ? Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            CameraPreview(
+                              takePhotosCub.controller,
                             ),
-                          );
-                          takePhotosCub.changeBytes(bytes);
-                          takePhotosCub.saveImage(bytes, context);
-                          
-                        },
-                      ),
-                      FloatingActionButton(
+                            Container(
+                              color: AppColor.black.withOpacity(0.8),
+                              height: double.infinity,
+                              child: Center(
+                                child: Container(
+                                  width: 180,
+                                  height: 90,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: AppColor.red,
+                                      width: 3,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () => takePhotosCub.onTakeLitersPicture(),
+                              child: const Align(
+                                alignment: Alignment.bottomCenter,
+                                child: CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: AppColor.white,
+                                  child: Center(
+                                      child: Icon(Icons.camera,
+                                          size: 35, color: AppColor.teal)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Center(
+                          child: buildLitersTargetPhoto(),
+                        );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              }
+            },
+          ),
+          floatingActionButton:type == 1? ( (CacheHelper.getDataFromSharedPreference(
+                      key: "photo1Path") !=
+                  null)
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30.0),
+                      child: FloatingActionButton(
                         heroTag: "button2",
-                        child: const Icon(Icons.close),
+                        backgroundColor: AppColor.teal,
+                        child: const Icon(Icons.close, color: AppColor.black),
                         onPressed: () {
                           Navigator.pop(context);
                         },
                       ),
-                    ],
-                  )
-                : const SizedBox(),
-          );
-        },
-      ),
+                    ),
+                    FloatingActionButton(
+                      child: const Icon(Icons.check, color: AppColor.black),
+                      backgroundColor: AppColor.teal,
+                      heroTag: "button1",
+                      onPressed: () async {
+                        final controller = ScreenshotController();
+                        final bytes = await controller.captureFromWidget(
+                          Material(
+                            child: buildODOTargetPhoto(),
+                          ),
+                        );
+                        takePhotosCub.changeBytes(bytes);
+                        takePhotosCub.saveImage(bytes, context);
+                      },
+                    ),
+                  ],
+                )
+              : const SizedBox()) :( (CacheHelper.getDataFromSharedPreference(
+                      key: "photo2Path") !=
+                  null)
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30.0),
+                      child: FloatingActionButton(
+                        heroTag: "button2",
+                        backgroundColor: AppColor.teal,
+                        child: const Icon(Icons.close, color: AppColor.black),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    FloatingActionButton(
+                      child: const Icon(Icons.check, color: AppColor.black),
+                      backgroundColor: AppColor.teal,
+                      heroTag: "button1",
+                      onPressed: () async {
+                        final controller = ScreenshotController();
+                        final bytes = await controller.captureFromWidget(
+                          Material(
+                            child: buildLitersTargetPhoto(),
+                          ),
+                        );
+                        takePhotosCub.changeBytes(bytes);
+                        takePhotosCub.saveLitersImage(bytes, context);
+                      },
+                    ),
+                  ],
+                )
+              : const SizedBox()) ,
+        );
+      },
     );
   }
 }
