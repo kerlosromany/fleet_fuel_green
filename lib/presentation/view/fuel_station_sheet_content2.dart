@@ -164,12 +164,14 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                           ),
                         ),
                         BlocBuilder<TakePhotosCubit, TakePhotosState>(
-                          builder:(context, state) =>  InkWell(
+                          builder: (context, state) => InkWell(
                             onTap: () {
                               if (odoController.text.isNotEmpty) {
                                 CacheHelper.removeData(key: "photo1Path");
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => HomePaage(type: 1)));
+                                    builder: (context) => HomePaage(
+                                        type: 1,
+                                        textController: odoController.text)));
                               } else {
                                 showToast("Enter the ODO number first", context,
                                     toastDuration: 5);
@@ -261,12 +263,15 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                           ),
                         ),
                         BlocBuilder<TakePhotosCubit, TakePhotosState>(
-                          builder:(context, state) =>  InkWell(
+                          builder: (context, state) => InkWell(
                             onTap: () {
                               if (litersController.text.isNotEmpty) {
                                 CacheHelper.removeData(key: "photo2Path");
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => HomePaage(type: 2)));
+                                    builder: (context) => HomePaage(
+                                        type: 2,
+                                        textController:
+                                            litersController.text)));
                               } else {
                                 showToast(
                                     "Enter the Liters number first", context,
@@ -325,28 +330,30 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                     InkWell(
                       onTap: () {
                         if (formKey.currentState!.validate() &&
-                            takePhotosCubit.scannedTextOdo !=
-                                odoController.text &&
-                            takePhotosCubit.scannedTextLiter !=
-                                litersController.text &&
-                            orderCubit.imageFileOdo != null &&
-                            orderCubit.imageFileLiter != null) {
+                            // takePhotosCubit.scannedTextOdo != "" &&
+                            // takePhotosCubit.scannedTextLiter != "" &&
+                            takePhotosCubit.imageFileODO != null &&
+                            takePhotosCubit.imageFileLiters != null) {
                           orderCubit.confirmOrder(
                             odoMeterInput: odoController.text,
                             odoMeterOcrText: takePhotosCubit.scannedTextOdo,
                             literInput: litersController.text,
                             literOcrText: takePhotosCubit.scannedTextLiter,
-                            odoImage: File(orderCubit.imageFileOdo!.path),
-                            litersImage: File(orderCubit.imageFileLiter!.path),
+                            odoImage: File(takePhotosCubit.imageFileODO!.path),
+                            litersImage:
+                                File(takePhotosCubit.imageFileLiters!.path),
                             vehicleId: CacheHelper.getDataFromSharedPreference(
                                 key: 'vehicleID'),
                             context: context,
                           );
-                        } else if (takePhotosCubit.scannedTextOdo == "" ||
-                            takePhotosCubit.scannedTextLiter == "") {
-                          showToast("No number is picked", context);
-                        } else {
-                          showToast("Fill all Fields", context);
+                        }
+                        // else if (takePhotosCubit.scannedTextOdo == "" ||
+                        //     takePhotosCubit.scannedTextLiter == "") {
+                        //   showToast("No number is picked", context);
+                        // }
+                        else {
+                          showToast("Fill all Fields", context,
+                              toastDuration: 4);
                         }
                         print(takePhotosCubit.scannedTextOdo);
                         print(takePhotosCubit.scannedTextLiter);

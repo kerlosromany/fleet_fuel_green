@@ -21,7 +21,8 @@ import '../../widget/toast.dart';
 
 class HomePaage extends StatelessWidget {
   late int type;
-  HomePaage({Key? key, required this.type}) : super(key: key);
+  late String textController;
+  HomePaage({Key? key, required this.type , required this.textController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class HomePaage extends StatelessWidget {
         var takePhotosCub = TakePhotosCubit.get(context);
         AspectRatio buildODOTargetPhoto() {
           return AspectRatio(
-            aspectRatio: 9 / 1,
+            aspectRatio: 8 / 1,
             child: Image.file(
               File(takePhotosCub.imageFileODO!.path),
               fit: BoxFit.cover,
@@ -43,9 +44,9 @@ class HomePaage extends StatelessWidget {
           );
         }
 
-         AspectRatio buildLitersTargetPhoto() {
+        AspectRatio buildLitersTargetPhoto() {
           return AspectRatio(
-            aspectRatio: 9 / 1,
+            aspectRatio: 8 / 1,
             child: Image.file(
               File(takePhotosCub.imageFileLiters!.path),
               fit: BoxFit.cover,
@@ -156,75 +157,77 @@ class HomePaage extends StatelessWidget {
               }
             },
           ),
-          floatingActionButton:type == 1? ( (CacheHelper.getDataFromSharedPreference(
-                      key: "photo1Path") !=
-                  null)
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30.0),
-                      child: FloatingActionButton(
-                        heroTag: "button2",
-                        backgroundColor: AppColor.teal,
-                        child: const Icon(Icons.close, color: AppColor.black),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                    FloatingActionButton(
-                      child: const Icon(Icons.check, color: AppColor.black),
-                      backgroundColor: AppColor.teal,
-                      heroTag: "button1",
-                      onPressed: () async {
-                        final controller = ScreenshotController();
-                        final bytes = await controller.captureFromWidget(
-                          Material(
-                            child: buildODOTargetPhoto(),
+          floatingActionButton: type == 1
+              ? ((CacheHelper.getDataFromSharedPreference(key: "photo1Path") !=
+                      null)
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30.0),
+                          child: FloatingActionButton(
+                            heroTag: "button2",
+                            backgroundColor: AppColor.teal,
+                            child:
+                                const Icon(Icons.close, color: AppColor.black),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
                           ),
-                        );
-                        takePhotosCub.changeBytes(bytes);
-                        takePhotosCub.saveImage(bytes, context);
-                      },
-                    ),
-                  ],
-                )
-              : const SizedBox()) :( (CacheHelper.getDataFromSharedPreference(
-                      key: "photo2Path") !=
-                  null)
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30.0),
-                      child: FloatingActionButton(
-                        heroTag: "button2",
-                        backgroundColor: AppColor.teal,
-                        child: const Icon(Icons.close, color: AppColor.black),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                    FloatingActionButton(
-                      child: const Icon(Icons.check, color: AppColor.black),
-                      backgroundColor: AppColor.teal,
-                      heroTag: "button1",
-                      onPressed: () async {
-                        final controller = ScreenshotController();
-                        final bytes = await controller.captureFromWidget(
-                          Material(
-                            child: buildLitersTargetPhoto(),
+                        ),
+                        FloatingActionButton(
+                          child: const Icon(Icons.check, color: AppColor.black),
+                          backgroundColor: AppColor.teal,
+                          heroTag: "button1",
+                          onPressed: () async {
+                            final controller = ScreenshotController();
+                            final bytes = await controller.captureFromWidget(
+                              Material(
+                                child: buildODOTargetPhoto(),
+                              ),
+                            );
+                            takePhotosCub.changeBytes(bytes);
+                            takePhotosCub.saveImage(bytes, context , textController);
+                          },
+                        ),
+                      ],
+                    )
+                  : const SizedBox())
+              : ((CacheHelper.getDataFromSharedPreference(key: "photo2Path") !=
+                      null)
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30.0),
+                          child: FloatingActionButton(
+                            heroTag: "button2",
+                            backgroundColor: AppColor.teal,
+                            child:
+                                const Icon(Icons.close, color: AppColor.black),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
                           ),
-                        );
-                        takePhotosCub.changeBytes(bytes);
-                        takePhotosCub.saveLitersImage(bytes, context);
-                      },
-                    ),
-                  ],
-                )
-              : const SizedBox()) ,
+                        ),
+                        FloatingActionButton(
+                          child: const Icon(Icons.check, color: AppColor.black),
+                          backgroundColor: AppColor.teal,
+                          heroTag: "button1",
+                          onPressed: () async {
+                            final controller = ScreenshotController();
+                            final bytes = await controller.captureFromWidget(
+                              Material(
+                                child: buildLitersTargetPhoto(),
+                              ),
+                            );
+                            takePhotosCub.changeBytes(bytes);
+                            takePhotosCub.saveLitersImage(bytes, context , textController);
+                          },
+                        ),
+                      ],
+                    )
+                  : const SizedBox()),
         );
       },
     );

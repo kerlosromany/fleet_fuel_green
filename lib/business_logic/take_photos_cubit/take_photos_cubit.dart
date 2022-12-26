@@ -23,11 +23,11 @@ class TakePhotosCubit extends Cubit<TakePhotosState> {
   File? imageFileODO;
   File? fileODO;
 
-  Future saveImage(Uint8List bytes, BuildContext context) async {
+  Future saveImage(Uint8List bytes, BuildContext context , String textController) async {
     final appStorage = await getApplicationDocumentsDirectory();
     fileODO = File('${appStorage.path}/image.jpeg');
     await fileODO!.writeAsBytes(bytes);
-    getRecognizedText(fileODO!.path, context);
+    getRecognizedText(fileODO!.path, context ,textController);
 
     emit(GetSavePhotoState());
   }
@@ -61,7 +61,7 @@ class TakePhotosCubit extends Cubit<TakePhotosState> {
   String scannedTextOdo = "";
 
   // Text Recognition using Google ML Kit
-  void getRecognizedText(String imagePath, BuildContext context) async {
+  void getRecognizedText(String imagePath, BuildContext context , String textController) async {
     final inputImage = InputImage.fromFilePath(imagePath);
     final textDetector = GoogleMlKit.vision.textDetector();
     RecognisedText recognisedText = await textDetector.processImage(inputImage);
@@ -72,10 +72,10 @@ class TakePhotosCubit extends Cubit<TakePhotosState> {
         scannedTextOdo = scannedTextOdo + line.text + "\n";
       }
     }
-    bool isTrue = scannedTextOdo.contains("35758");
+    bool isTrue = scannedTextOdo.contains(textController);
     print(scannedTextOdo);
     isTrue
-        ? showToast("your number is 35758", context, toastDuration: 7)
+        ? showToast("your number is $textController", context, toastDuration: 7)
         : showToast(
             "Can not find your number in the photo, Please try again.", context,
             toastDuration: 7);
@@ -88,11 +88,11 @@ class TakePhotosCubit extends Cubit<TakePhotosState> {
   File? imageFileLiters;
   File? fileLiters;
 
-  Future saveLitersImage(Uint8List bytes, BuildContext context) async {
+  Future saveLitersImage(Uint8List bytes, BuildContext context , String textController) async {
     final appStorage = await getApplicationDocumentsDirectory();
     fileLiters = File('${appStorage.path}/image.jpeg');
     await fileLiters!.writeAsBytes(bytes);
-    getRecognizedLitersText(fileLiters!.path, context);
+    getRecognizedLitersText(fileLiters!.path, context , textController);
 
     emit(GetSavePhotoState());
   }
@@ -109,7 +109,7 @@ class TakePhotosCubit extends Cubit<TakePhotosState> {
 
   String scannedTextLiter = "";
   // Text Recognition using Google ML Kit
-  void getRecognizedLitersText(String imagePath, BuildContext context) async {
+  void getRecognizedLitersText(String imagePath, BuildContext context , String textController) async {
     final inputImage = InputImage.fromFilePath(imagePath);
     final textDetector = GoogleMlKit.vision.textDetector();
     RecognisedText recognisedText = await textDetector.processImage(inputImage);
@@ -120,10 +120,10 @@ class TakePhotosCubit extends Cubit<TakePhotosState> {
         scannedTextLiter = scannedTextLiter + line.text + "\n";
       }
     }
-    bool isTrue = scannedTextLiter.contains("35758");
+    bool isTrue = scannedTextLiter.contains(textController);
     print(scannedTextLiter);
     isTrue
-        ? showToast("your number is 35758", context, toastDuration: 7)
+        ? showToast("your number is $textController", context, toastDuration: 7)
         : showToast(
             "Can not find your number in the photo, Please try again.", context,
             toastDuration: 7);
