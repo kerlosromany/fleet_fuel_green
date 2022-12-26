@@ -7,6 +7,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:magdsoft_flutter_structure/business_logic/Login_cubit/login_cubit.dart';
 import 'package:magdsoft_flutter_structure/business_logic/bloc_observer.dart';
 import 'package:magdsoft_flutter_structure/business_logic/global_cubit/global_cubit.dart';
+import 'package:magdsoft_flutter_structure/business_logic/take_photos_cubit/take_photos_cubit.dart';
 import 'package:magdsoft_flutter_structure/data/data_providers/local/cache_helper.dart';
 import 'package:magdsoft_flutter_structure/data/data_providers/remote/dio_helper.dart';
 import 'package:magdsoft_flutter_structure/presentation/router/app_router.dart';
@@ -85,9 +86,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: ((context) => GlobalCubit()),
         ),
-        // BlocProvider(
-        //   create: ((context) => LoginCubit()),
-        // ),
+        BlocProvider(
+          create: ((context) => TakePhotosCubit()),
+        ),
       ],
       child: BlocConsumer<GlobalCubit, GlobalState>(
         listener: (context, state) {},

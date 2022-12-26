@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:http_parser/http_parser.dart';
@@ -170,7 +171,7 @@ class OrderCubit extends Cubit<OrderState> {
           return;
         }
         File? img = File(image.path);
-        img = await cropImage(imageFile: img, type: type, context: context);
+        //  img = await cropImage(imageFile: img, type: type, context: context);
         imageFileOdo = img;
 
         emit(SuccessPickImage());
@@ -185,7 +186,7 @@ class OrderCubit extends Cubit<OrderState> {
           return;
         }
         File? img = File(image.path);
-        img = await cropImage(imageFile: img, type: type, context: context);
+        // img = await cropImage(imageFile: img, type: type, context: context);
         imageFileLiter = img;
 
         emit(SuccessPickImage());
@@ -197,56 +198,18 @@ class OrderCubit extends Cubit<OrderState> {
   }
 
   // make image cropper
-  Future<File?> cropImage(
-      {required File imageFile,
-      required int type,
-      required BuildContext context}) async {
-    CroppedFile? croppedImage =
-        await ImageCropper().cropImage(sourcePath: imageFile.path);
-    getRecognizedText(croppedImage!.path, type, context);
-    // if (croppedImage == null) {
-    //   return null;
-    // }
-    return File(croppedImage.path);
-  }
-
-  String scannedTextOdo = "";
-  String scannedTextLiter = "";
-  // Text Recognition using Google ML Kit
-  void getRecognizedText(
-      String imagePath, int type, BuildContext context) async {
-    if (type == 0) {
-      final inputImage = InputImage.fromFilePath(imagePath);
-      final textDetector = GoogleMlKit.vision.textDetector();
-      RecognisedText recognisedText =
-          await textDetector.processImage(inputImage);
-      await textDetector.close();
-      scannedTextOdo = "";
-      for (TextBlock block in recognisedText.blocks) {
-        for (TextLine line in block.lines) {
-          scannedTextOdo = scannedTextOdo + line.text + "\n";
-        }
-      }
-      print(scannedTextOdo);
-      showToast(scannedTextOdo, context, toastDuration: 10);
-      emit(GetRecognizedTextState());
-    } else {
-      final inputImage = InputImage.fromFilePath(imagePath);
-      final textDetector = GoogleMlKit.vision.textDetector();
-      RecognisedText recognisedText =
-          await textDetector.processImage(inputImage);
-      await textDetector.close();
-      scannedTextLiter = "";
-      for (TextBlock block in recognisedText.blocks) {
-        for (TextLine line in block.lines) {
-          scannedTextLiter = scannedTextLiter + line.text + "\n";
-        }
-      }
-      showToast(scannedTextLiter, context, toastDuration: 10);
-      print(scannedTextLiter);
-      emit(GetRecognizedTextState());
-    }
-  }
+  // Future<File?> cropImage(
+  //     {required File imageFile,
+  //     required int type,
+  //     required BuildContext context}) async {
+  //   CroppedFile? croppedImage =
+  //       await ImageCropper().cropImage(sourcePath: imageFile.path);
+  //   getRecognizedText(croppedImage!.path, type, context);
+  //   // if (croppedImage == null) {
+  //   //   return null;
+  //   // }
+  //   return File(croppedImage.path);
+  // }
 
   //////////////////////////////////////
   List<UserVehicles> selectedVehicle = [];
@@ -261,7 +224,12 @@ class OrderCubit extends Cubit<OrderState> {
       emit(AddSelectedVehicleIdState());
     }
   }
+
   /////////////////////////////////////
+  ///
+  ///
+  // ocr logic
+  
 }
 
 enum OCRType { oddo, liter }

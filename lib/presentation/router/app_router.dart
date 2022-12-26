@@ -12,6 +12,8 @@ import '../screens/shared/payment_method_screen.dart';
 import '../screens/shared/profile_settings.dart';
 import '../screens/shared/resend_password_screen.dart';
 import '../screens/shared/send_OTP_screen.dart';
+import '../screens/user/home.dart';
+import '../screens/user/test.dart';
 
 class AppRouter {
   Route? onGenerateRoute(RouteSettings settings) {

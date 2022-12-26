@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:magdsoft_flutter_structure/business_logic/take_photos_cubit/take_photos_states.dart';
+import 'package:magdsoft_flutter_structure/presentation/screens/user/home.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -16,6 +18,7 @@ import 'package:magdsoft_flutter_structure/presentation/widget/default_text_fiel
 import 'package:magdsoft_flutter_structure/presentation/widget/progress_indicator_widget.dart';
 import 'package:magdsoft_flutter_structure/presentation/widget/toast.dart';
 
+import '../../business_logic/take_photos_cubit/take_photos_cubit.dart';
 import '../../data/data_providers/local/cache_helper.dart';
 import '../styles/colors.dart';
 import '../widget/car_photo.dart';
@@ -45,14 +48,17 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     var cubit = GlobalCubit.get(context);
+    var takePhotosCubit = TakePhotosCubit.get(context);
 
     return BlocBuilder<OrderCubit, OrderState>(
       builder: (context, state) {
+ 
         var orderCubit = OrderCubit.get(context);
         if (state is NewOrderSuccessState) {
           cubit.changeSheetContentToThirdSheet3();
           print("changeSheetContentToThirdSheet3");
         }
+
         return Container(
           decoration: const BoxDecoration(color: AppColor.white),
           child: Padding(
@@ -234,19 +240,25 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                         ),
                         InkWell(
                           onTap: () {
-                            orderCubit.pickImage(
-                                ImageSource.camera, context, 1);
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const HomePaage()));
                           },
-                          child: orderCubit.imageFileLiter != null
-                              ? DefaultContainer(
-                                  widget: Image.file(
-                                    File(orderCubit.imageFileLiter!.path),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: 10.sp,
-                                  color: AppColor.white,
-                                  height: 0.078 * screenHeight,
-                                  width: 0.153 * screenWidth,
+                          child: takePhotosCubit.imageFile != null
+                              ? BlocBuilder<TakePhotosCubit, TakePhotosState>(
+                                  builder: (context, state) {
+                                    debugPrint(
+                                        "////////////////////////////////////${takePhotosCubit.imageFile}");
+                                    return DefaultContainer(
+                                      widget: Image.file(
+                                        File(takePhotosCubit.imageFile!.path),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      borderRadius: 10.sp,
+                                      color: AppColor.white,
+                                      height: 0.078 * screenHeight,
+                                      width: 0.153 * screenWidth,
+                                    );
+                                  },
                                 )
                               : DefaultContainer(
                                   borderRadius: 10,
@@ -273,29 +285,29 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                     InkWell(
                       onTap: () {
                         if (formKey.currentState!.validate() &&
-                            orderCubit.scannedTextOdo != "" &&
-                            orderCubit.scannedTextLiter != "" &&
+                            takePhotosCubit.scannedTextOdo != "" &&
+                            takePhotosCubit.scannedTextLiter != "" &&
                             orderCubit.imageFileOdo != null &&
                             orderCubit.imageFileLiter != null) {
                           orderCubit.confirmOrder(
                             odoMeterInput: odoController.text,
-                            odoMeterOcrText: orderCubit.scannedTextOdo,
+                            odoMeterOcrText: takePhotosCubit.scannedTextOdo,
                             literInput: litersController.text,
-                            literOcrText: orderCubit.scannedTextLiter,
+                            literOcrText: takePhotosCubit.scannedTextLiter,
                             odoImage: File(orderCubit.imageFileOdo!.path),
                             litersImage: File(orderCubit.imageFileLiter!.path),
                             vehicleId: CacheHelper.getDataFromSharedPreference(
                                 key: 'vehicleID'),
                             context: context,
                           );
-                        } else if (orderCubit.scannedTextOdo == "" ||
-                            orderCubit.scannedTextLiter == "") {
+                        } else if (takePhotosCubit.scannedTextOdo == "" ||
+                            takePhotosCubit.scannedTextLiter == "") {
                           showToast("No number is picked", context);
                         } else {
                           showToast("Fill all Fields", context);
                         }
-                        print(orderCubit.scannedTextOdo);
-                        print(orderCubit.scannedTextLiter);
+                        print(takePhotosCubit.scannedTextOdo);
+                        print(takePhotosCubit.scannedTextLiter);
                       },
                       child: state is NewOrderLoadingState
                           ? const ProgressIndicatorWidget()
