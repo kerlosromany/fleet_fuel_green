@@ -17,7 +17,7 @@ class CarPhotoWidget extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     return Container(
       width: 0.308 * screenWidth,
-      height: 0.066 * screenHeight,
+      height: 0.08 * screenHeight,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       decoration: BoxDecoration(
         color: AppColor.white,
@@ -62,7 +62,7 @@ class CarPhotoWidget extends StatelessWidget {
             child: DefaultText(
               text: CacheHelper.getDataFromSharedPreference(key: "carNo"),
               fontWeight: FontWeight.bold,
-              fontSize: 11.sp,
+              fontSize: 9.sp,
               color: AppColor.black,
             ),
           ),

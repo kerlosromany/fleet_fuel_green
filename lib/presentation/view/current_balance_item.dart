@@ -4,6 +4,7 @@ import '../../constants/strings.dart';
 import '../styles/colors.dart';
 import '../widget/default_container.dart';
 import '../widget/default_text.dart';
+import 'package:sizer/sizer.dart';
 
 class CurrentBalanceItem extends StatelessWidget {
   const CurrentBalanceItem({Key? key}) : super(key: key);
@@ -29,13 +30,13 @@ class CurrentBalanceItem extends StatelessWidget {
                     DefaultText(
                       text: 'Current balance',
                       color: AppColor.white,
-                      fontSize: 0.038 * screenWidth,
+                      fontSize: 10.sp,
                       fontWeight: FontWeight.w500,
                     ),
                     DefaultText(
                       text: '100 Liter',
                       color: AppColor.white,
-                      fontSize: 0.077 * screenWidth,
+                      fontSize: 13.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ],

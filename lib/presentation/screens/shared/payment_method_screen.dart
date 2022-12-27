@@ -70,13 +70,13 @@ class PaymentMethodsScreen extends StatelessWidget {
                   DefaultText(
                     text: 'أحمد السيد جلال',
                     color: AppColor.white,
-                    fontSize: 0.0638 * screenWidth,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.w500,
                   ),
                   DefaultText(
                     text: 'مدرسة فيوتشر',
                     color: AppColor.white,
-                    fontSize: 0.0383 * screenWidth,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
                   ),
                 ],
@@ -85,12 +85,12 @@ class PaymentMethodsScreen extends StatelessWidget {
             const CurrentBalanceItem(),
             const BalanceItem(),
             Padding(
-              padding: EdgeInsets.only(top: 0.14 * screenHeight),
+              padding: EdgeInsets.only(top: 0.12 * screenHeight),
               child: Center(
                 child: DefaultText(
                   text: 'Usage Statistics',
                   color: AppColor.tealBackGround,
-                  fontSize: 0.0383 * screenWidth,
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
                 ),
               ),

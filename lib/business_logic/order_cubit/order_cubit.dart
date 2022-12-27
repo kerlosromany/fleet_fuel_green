@@ -66,6 +66,7 @@ class OrderCubit extends Cubit<OrderState> {
     required int vehicleId,
     required BuildContext context,
   }) async {
+    
     emit(NewOrderLoadingState());
     String odoFile = odoImage.path.split('/').last;
     debugPrint("odoFile => $odoFile");
@@ -156,10 +157,6 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-
-
-  
-
   //////////////////////////////////////
   List<UserVehicles> selectedVehicle = [];
 
@@ -178,6 +175,5 @@ class OrderCubit extends Cubit<OrderState> {
   ///
   ///
   // ocr logic
-  
-}
 
+}

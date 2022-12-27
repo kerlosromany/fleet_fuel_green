@@ -54,7 +54,7 @@ class FuelStationSheetContent3 extends StatelessWidget {
                               DefaultText(
                                 text: "Shell Station",
                                 color: AppColor.lightBlack2,
-                                fontSize: 18.sp,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w400,
                               ),
                               Row(
@@ -62,18 +62,18 @@ class FuelStationSheetContent3 extends StatelessWidget {
                                   DefaultText(
                                     text: "Gas Fuel",
                                     color: AppColor.grey5,
-                                    fontSize: 16.sp,
+                                    fontSize: 9.sp,
                                     fontWeight: FontWeight.w400,
                                   ),
                                   Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 6.sp),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 6.sp),
                                     child: Image.asset(AppString.sStar),
                                   ),
                                   DefaultText(
                                     text: "4.5 stars",
                                     color: AppColor.grey5,
-                                    fontSize: 16.sp,
+                                    fontSize: 9.sp,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ],

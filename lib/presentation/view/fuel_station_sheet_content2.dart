@@ -67,53 +67,56 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                 child: Column(
                   children: [
                     // first row
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(right: 8.sp),
-                              child: Image.asset(AppString.sMask2),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                DefaultText(
-                                  text: "Shell Station",
-                                  color: AppColor.lightBlack2,
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                Row(
-                                  children: [
-                                    DefaultText(
-                                      text: "Gas Fuel",
-                                      color: AppColor.grey5,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 8.sp),
-                                      child: Image.asset(AppString.sStar),
-                                    ),
-                                    DefaultText(
-                                      text: "4.5 stars",
-                                      color: AppColor.grey5,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          child: CarPhotoWidget(),
-                        ),
-                      ],
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 8.sp),
+                                child: Image.asset(AppString.sMask2),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  DefaultText(
+                                    text: "Shell Station",
+                                    color: AppColor.lightBlack2,
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  Row(
+                                    children: [
+                                      DefaultText(
+                                        text: "Gas Fuel",
+                                        color: AppColor.grey5,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.sp),
+                                        child: Image.asset(AppString.sStar),
+                                      ),
+                                      DefaultText(
+                                        text: "4.5 stars",
+                                        color: AppColor.grey5,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            child: CarPhotoWidget(),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(height: 0.024 * screenHeight),
                     // second row
@@ -133,7 +136,7 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                                 flex: 4,
                                 // odo
                                 child: DefaultTextField(
-                                  height: 0.0666 * screenHeight,
+                                  height: 0.07 * screenHeight,
                                   isSearch: false,
                                   hintTxt: "",
                                   color: AppColor.grey6,
@@ -148,14 +151,14 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                                   },
                                   fillColor: AppColor.grey6,
                                   styleColor: AppColor.red2,
-                                  styleFontSize: 18.sp,
+                                  styleFontSize: 12.sp,
                                   fontFamily: AppString.sInriaSerif,
                                 ),
                               ),
                               DefaultText(
                                 text: "ODO",
                                 color: AppColor.grey7,
-                                fontSize: 20.sp,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w400,
                                 fontFamily: AppString.sActor,
                               ),
@@ -247,14 +250,14 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                                   },
                                   fillColor: AppColor.grey6,
                                   styleColor: AppColor.red2,
-                                  styleFontSize: 18.sp,
+                                  styleFontSize: 12.sp,
                                   fontFamily: AppString.sInriaSerif,
                                 ),
                               ),
                               DefaultText(
                                 text: "Liter",
                                 color: AppColor.grey7,
-                                fontSize: 20.sp,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w400,
                                 fontFamily: AppString.sActor,
                               ),
@@ -329,8 +332,8 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                     InkWell(
                       onTap: () {
                         if (formKey.currentState!.validate() &&
-                            // takePhotosCubit.scannedTextOdo != "" &&
-                            // takePhotosCubit.scannedTextLiter != "" &&
+                            takePhotosCubit.scannedTextOdo != "" &&
+                            takePhotosCubit.scannedTextLiter != "" &&
                             takePhotosCubit.imageFileODO != null &&
                             takePhotosCubit.imageFileLiters != null) {
                           orderCubit.confirmOrder(
@@ -338,9 +341,12 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                             odoMeterOcrText: takePhotosCubit.scannedTextOdo,
                             literInput: litersController.text,
                             literOcrText: takePhotosCubit.scannedTextLiter,
-                            odoImage: File(takePhotosCubit.imageFileODO!.path),
-                            litersImage:
-                                File(takePhotosCubit.imageFileLiters!.path),
+                            odoImage: File(
+                                CacheHelper.getDataFromSharedPreference(
+                                    key: "photo1Path")),
+                            litersImage: File(
+                                CacheHelper.getDataFromSharedPreference(
+                                    key: "photo2Path")),
                             vehicleId: CacheHelper.getDataFromSharedPreference(
                                 key: 'vehicleID'),
                             context: context,

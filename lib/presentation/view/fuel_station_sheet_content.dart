@@ -49,7 +49,7 @@ class FuelStationSheetContent extends StatelessWidget {
                           ? const TextErrorWidget()
                           : SizedBox(
                               width: double.infinity,
-                              height: 0.09 * screenHeight,
+                              height: 0.090 * screenHeight,
                               child: ListView.separated(
                                 scrollDirection: Axis.horizontal,
                                 shrinkWrap: true,
@@ -63,52 +63,55 @@ class FuelStationSheetContent extends StatelessWidget {
                                     .userCarModel!.data!.userVehicles.length,
                               ),
                             ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 0.127 * screenWidth,
-                            height: 0.048 * screenHeight,
-                            child: Image.asset(AppString.sMask2),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              DefaultText(
-                                text: 'Shell station',
-                                color: AppColor.lightBlack,
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w300,
-                              ),
-                              SizedBox(height: 0.003 * screenHeight),
-                              DefaultText(
-                                text: 'Gas fuel',
-                                color: AppColor.grey,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 0.076 * screenWidth,
-                            height: 0.036 * screenHeight,
-                            child: Image.asset(AppString.sStar),
-                          ),
-                          DefaultText(
-                            text: '4.5 Stars',
-                            color: AppColor.grey,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ],
-                      ),
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 0.127 * screenWidth,
+                              height: 0.048 * screenHeight,
+                              child: Image.asset(AppString.sMask2),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                DefaultText(
+                                  text: 'Shell station',
+                                  color: AppColor.lightBlack,
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                                SizedBox(height: 0.003 * screenHeight),
+                                DefaultText(
+                                  text: 'Gas fuel',
+                                  color: AppColor.grey,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 0.076 * screenWidth,
+                              height: 0.036 * screenHeight,
+                              child: Image.asset(AppString.sStar),
+                            ),
+                            DefaultText(
+                              text: '4.5 Stars',
+                              color: AppColor.grey,
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 0.018 * screenHeight),
                   Center(
@@ -119,7 +122,8 @@ class FuelStationSheetContent extends StatelessWidget {
                             null) {
                           globalCubit.changeSheetContentToSecondSheet2();
                         } else {
-                          showToast("Please select a car", context , toastDuration: 4);
+                          showToast("Please select a car", context,
+                              toastDuration: 4);
                         }
                       },
                       child: DefaultContainer(
@@ -130,7 +134,7 @@ class FuelStationSheetContent extends StatelessWidget {
                         widget: DefaultText(
                           text: "Order Now",
                           color: AppColor.white,
-                          fontSize: 15.sp,
+                          fontSize: 13.sp,
                           fontWeight: FontWeight.w400,
                           fontFamily: AppString.sActor,
                         ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../constants/strings.dart';
 import '../styles/colors.dart';
 import '../widget/default_container.dart';
+import 'package:sizer/sizer.dart';
 import '../widget/default_text.dart';
 
 class BalanceItem extends StatelessWidget {
@@ -23,33 +24,35 @@ class BalanceItem extends StatelessWidget {
             widget: Padding(
               padding: EdgeInsets.all(0.0128 * screenWidth),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    children: [
-                      DefaultContainer(
-                        borderRadius: 10.0,
-                        color: Colors.transparent,
-                        width: 0.128 * screenWidth,
-                        height: 0.036 * screenHeight,
-                        widget: const ImageIcon(
-                          AssetImage(AppString.sDownLoad),
-                          color: AppColor.green,
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        DefaultContainer(
+                          borderRadius: 10.0,
+                          color: Colors.transparent,
+                          width: 0.128 * screenWidth,
+                          height: 0.036 * screenHeight,
+                          widget: const ImageIcon(
+                            AssetImage(AppString.sDownLoad),
+                            color: AppColor.green,
+                          ),
                         ),
-                      ),
-                      DefaultText(
-                        text: '5866 Liter',
-                        color: AppColor.green,
-                        fontSize: 0.038 * screenWidth,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      DefaultText(
-                        text: 'Incoming Fuelup',
-                        color: AppColor.tealBackGround,
-                        fontSize: 0.038 * screenWidth,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ],
+                        DefaultText(
+                          text: '5866 Liter',
+                          color: AppColor.green,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        DefaultText(
+                          text: 'Incoming Fuelup',
+                          color: AppColor.tealBackGround,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ],
+                    ),
                   ),
                   DefaultContainer(
                     borderRadius: 10.0,
@@ -73,13 +76,13 @@ class BalanceItem extends StatelessWidget {
                       DefaultText(
                         text: '568 Liter',
                         color: AppColor.green,
-                        fontSize: 0.05 * screenWidth,
+                        fontSize: 10.sp,
                         fontWeight: FontWeight.w500,
                       ),
                       DefaultText(
                         text: 'Usage Fuelup',
                         color: AppColor.tealBackGround,
-                        fontSize: 0.0255 * screenWidth,
+                        fontSize: 10.sp,
                         fontWeight: FontWeight.w500,
                       ),
                     ],

@@ -26,7 +26,7 @@ class UsageStatistics extends StatelessWidget {
               borderRadius: 10.0,
               color: AppColor.white,
               width: 0.77 * screenWidth,
-              height: 0.13 * screenHeight,
+              height: 0.16 * screenHeight,
               widget: Padding(
                 padding: EdgeInsets.all(0.0255 * screenWidth),
                 child: Column(
@@ -45,7 +45,7 @@ class UsageStatistics extends StatelessWidget {
                             child: DefaultText(
                               text: 'Daily ',
                               color: AppColor.tealBackGround,
-                              fontSize: 0.0255 * screenWidth,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -62,11 +62,11 @@ class UsageStatistics extends StatelessWidget {
                             cubit.changeFuelUpWeeklyStates();
                           },
                           child: Padding(
-                            padding:  EdgeInsets.all(8.sp),
+                            padding: EdgeInsets.all(8.sp),
                             child: DefaultText(
                               text: 'Weekly Fuelup',
                               color: AppColor.grey2,
-                              fontSize: 0.0255 * screenWidth,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -79,7 +79,7 @@ class UsageStatistics extends StatelessWidget {
                         DefaultText(
                           text: '30 Liter',
                           color: AppColor.black,
-                          fontSize: 0.0255 * screenWidth,
+                          fontSize: 7.sp,
                           fontWeight: FontWeight.w500,
                         ),
                         Row(
@@ -87,14 +87,14 @@ class UsageStatistics extends StatelessWidget {
                             DefaultText(
                               text: 'Monthly quota',
                               color: AppColor.grey3,
-                              fontSize: 0.0255 * screenWidth,
+                              fontSize: 7.sp,
                               fontWeight: FontWeight.w500,
                             ),
                             SizedBox(width: 0.0128 * screenWidth),
                             DefaultText(
                               text: '99 Liter',
                               color: AppColor.tealBackGround,
-                              fontSize: 0.0383 * screenWidth,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w700,
                             ),
                           ],
@@ -109,7 +109,7 @@ class UsageStatistics extends StatelessWidget {
                     DefaultText(
                       text: 'Today : 01 - 01 - 2023',
                       color: AppColor.grey2,
-                      fontSize: 0.0255 * screenWidth,
+                      fontSize: 8.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ],

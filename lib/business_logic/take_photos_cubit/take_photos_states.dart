@@ -7,6 +7,7 @@ class ChangeBytesSuccessState extends TakePhotosState {}
 class GetRecognizedTextState extends TakePhotosState {}
 class InitializeCameraState extends TakePhotosState {}
 class GetSavePhotoState extends TakePhotosState {}
+class RemoveDataFromCacheState extends TakePhotosState {}
 
 
 

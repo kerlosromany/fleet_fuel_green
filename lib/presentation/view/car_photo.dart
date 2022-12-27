@@ -116,7 +116,7 @@ class CarPhotosView extends StatelessWidget {
                   DefaultText(
                     text: userVehicle.carNumber!,
                     fontWeight: FontWeight.bold,
-                    fontSize: 13.sp,
+                    fontSize: 10.sp,
                     color: AppColor.black,
                   ),
                   Container(
@@ -127,7 +127,7 @@ class CarPhotosView extends StatelessWidget {
                   DefaultText(
                     text: "م س",
                     fontWeight: FontWeight.bold,
-                    fontSize: 13.sp,
+                    fontSize: 10.sp,
                     color: AppColor.black,
                   ),
                 ],

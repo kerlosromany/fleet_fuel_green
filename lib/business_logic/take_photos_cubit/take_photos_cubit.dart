@@ -23,11 +23,12 @@ class TakePhotosCubit extends Cubit<TakePhotosState> {
   File? imageFileODO;
   File? fileODO;
 
-  Future saveImage(Uint8List bytes, BuildContext context , String textController) async {
+  Future saveImage(
+      Uint8List bytes, BuildContext context, String textController) async {
     final appStorage = await getApplicationDocumentsDirectory();
     fileODO = File('${appStorage.path}/image.jpeg');
     await fileODO!.writeAsBytes(bytes);
-    getRecognizedText(fileODO!.path, context ,textController);
+    getRecognizedText(fileODO!.path, context, textController);
 
     emit(GetSavePhotoState());
   }
@@ -58,10 +59,21 @@ class TakePhotosCubit extends Cubit<TakePhotosState> {
     emit(OnTakePicSuccessState());
   }
 
+  void removePhotoODOFromCache() {
+    CacheHelper.removeData(key: "photo1Path");
+    emit(RemoveDataFromCacheState());
+  }
+ 
+  void removePhotoLitersFromCache() {
+    CacheHelper.removeData(key: "photo2Path");
+    emit(RemoveDataFromCacheState());
+  }
+
   String scannedTextOdo = "";
 
   // Text Recognition using Google ML Kit
-  void getRecognizedText(String imagePath, BuildContext context , String textController) async {
+  void getRecognizedText(
+      String imagePath, BuildContext context, String textController) async {
     final inputImage = InputImage.fromFilePath(imagePath);
     final textDetector = GoogleMlKit.vision.textDetector();
     RecognisedText recognisedText = await textDetector.processImage(inputImage);
@@ -88,11 +100,12 @@ class TakePhotosCubit extends Cubit<TakePhotosState> {
   File? imageFileLiters;
   File? fileLiters;
 
-  Future saveLitersImage(Uint8List bytes, BuildContext context , String textController) async {
+  Future saveLitersImage(
+      Uint8List bytes, BuildContext context, String textController) async {
     final appStorage = await getApplicationDocumentsDirectory();
     fileLiters = File('${appStorage.path}/image.jpeg');
     await fileLiters!.writeAsBytes(bytes);
-    getRecognizedLitersText(fileLiters!.path, context , textController);
+    getRecognizedLitersText(fileLiters!.path, context, textController);
 
     emit(GetSavePhotoState());
   }
@@ -109,7 +122,8 @@ class TakePhotosCubit extends Cubit<TakePhotosState> {
 
   String scannedTextLiter = "";
   // Text Recognition using Google ML Kit
-  void getRecognizedLitersText(String imagePath, BuildContext context , String textController) async {
+  void getRecognizedLitersText(
+      String imagePath, BuildContext context, String textController) async {
     final inputImage = InputImage.fromFilePath(imagePath);
     final textDetector = GoogleMlKit.vision.textDetector();
     RecognisedText recognisedText = await textDetector.processImage(inputImage);

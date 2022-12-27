@@ -22,7 +22,8 @@ import '../../widget/toast.dart';
 class HomePaage extends StatelessWidget {
   late int type;
   late String textController;
-  HomePaage({Key? key, required this.type , required this.textController}) : super(key: key);
+  HomePaage({Key? key, required this.type, required this.textController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -171,6 +172,7 @@ class HomePaage extends StatelessWidget {
                             child:
                                 const Icon(Icons.close, color: AppColor.black),
                             onPressed: () {
+                              takePhotosCub.removePhotoODOFromCache();
                               Navigator.pop(context);
                             },
                           ),
@@ -187,7 +189,8 @@ class HomePaage extends StatelessWidget {
                               ),
                             );
                             takePhotosCub.changeBytes(bytes);
-                            takePhotosCub.saveImage(bytes, context , textController);
+                            takePhotosCub.saveImage(
+                                bytes, context, textController);
                           },
                         ),
                       ],
@@ -205,7 +208,8 @@ class HomePaage extends StatelessWidget {
                             backgroundColor: AppColor.teal,
                             child:
                                 const Icon(Icons.close, color: AppColor.black),
-                            onPressed: () {
+                            onPressed: ()  {
+                              takePhotosCub.removePhotoLitersFromCache();
                               Navigator.pop(context);
                             },
                           ),
@@ -222,7 +226,8 @@ class HomePaage extends StatelessWidget {
                               ),
                             );
                             takePhotosCub.changeBytes(bytes);
-                            takePhotosCub.saveLitersImage(bytes, context , textController);
+                            takePhotosCub.saveLitersImage(
+                                bytes, context, textController);
                           },
                         ),
                       ],

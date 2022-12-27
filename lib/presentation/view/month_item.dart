@@ -32,7 +32,7 @@ class MonthItem extends StatelessWidget {
                     widget: const SizedBox(),
                     color: month == 1 ? AppColor.grey : AppColor.lightWhite,
                     width: 0.128 * screenWidth,
-                    height: 0.120 * screenHeight,
+                    height: 0.1 * screenHeight,
                   ),
                   SizedBox(height: 0.0121 * screenHeight),
                   DefaultText(
