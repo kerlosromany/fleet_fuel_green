@@ -9,7 +9,6 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:magdsoft_flutter_structure/business_logic/order_cubit/order_cubit.dart';
 import 'package:magdsoft_flutter_structure/business_logic/order_cubit/order_states.dart';
 import 'package:magdsoft_flutter_structure/business_logic/take_photos_cubit/take_photos_states.dart';
-import 'package:magdsoft_flutter_structure/presentation/screens/user/test.dart';
 import 'package:magdsoft_flutter_structure/presentation/styles/colors.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -17,6 +16,7 @@ import 'package:screenshot/screenshot.dart';
 
 import '../../../business_logic/take_photos_cubit/take_photos_cubit.dart';
 import '../../../data/data_providers/local/cache_helper.dart';
+import '../../widget/progress_indicator_widget.dart';
 import '../../widget/toast.dart';
 
 class HomePaage extends StatelessWidget {
@@ -104,7 +104,7 @@ class HomePaage extends StatelessWidget {
                           child: buildODOTargetPhoto(),
                         );
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  return const ProgressIndicatorWidget();
                 }
               } else {
                 if (snapshot.connectionState == ConnectionState.done) {
@@ -152,7 +152,7 @@ class HomePaage extends StatelessWidget {
                           child: buildLitersTargetPhoto(),
                         );
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  return const ProgressIndicatorWidget();
                 }
               }
             },

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:magdsoft_flutter_structure/presentation/screens/shared/find_fuel_station_screen.dart';
 import 'package:magdsoft_flutter_structure/presentation/screens/shared/profile_settings.dart';
 import 'package:path_provider/path_provider.dart';

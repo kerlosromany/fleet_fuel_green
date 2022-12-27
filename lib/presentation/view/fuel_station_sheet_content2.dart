@@ -7,7 +7,6 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:magdsoft_flutter_structure/business_logic/global_cubit/global_cubit.dart';
 import 'package:magdsoft_flutter_structure/business_logic/order_cubit/order_cubit.dart';
 import 'package:magdsoft_flutter_structure/business_logic/order_cubit/order_states.dart';
@@ -143,7 +142,7 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                                   textEditingController: odoController,
                                   validate: (value) {
                                     if (value.isEmpty) {
-                                      return "please enter the number of odo here";
+                                      return "Enter the number of odo here";
                                     }
                                     return null;
                                   },
@@ -242,7 +241,7 @@ class _FuelStationSheetContent2State extends State<FuelStationSheetContent2> {
                                   isSearch: false,
                                   validate: (value) {
                                     if (value.isEmpty) {
-                                      return "please enter the number of Liters here";
+                                      return "Enter the number of Liters here";
                                     }
                                     return null;
                                   },

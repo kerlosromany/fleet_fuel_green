@@ -8,8 +8,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:magdsoft_flutter_structure/constants/constants.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -157,59 +156,9 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-// make ocr logic
 
-  //make imagePicker and cropper
-  File? imageFileOdo;
-  File? imageFileLiter;
-  Future pickImage(
-      ImageSource imageSource, BuildContext context, int type) async {
-    if (type == 0) {
-      try {
-        final image = await ImagePicker().pickImage(source: imageSource);
-        if (image == null) {
-          return;
-        }
-        File? img = File(image.path);
-        //  img = await cropImage(imageFile: img, type: type, context: context);
-        imageFileOdo = img;
 
-        emit(SuccessPickImage());
-      } on PlatformException catch (e) {
-        print(e.toString());
-        emit(ErrorPickImage());
-      }
-    } else {
-      try {
-        final image = await ImagePicker().pickImage(source: imageSource);
-        if (image == null) {
-          return;
-        }
-        File? img = File(image.path);
-        // img = await cropImage(imageFile: img, type: type, context: context);
-        imageFileLiter = img;
-
-        emit(SuccessPickImage());
-      } on PlatformException catch (e) {
-        print(e.toString());
-        emit(ErrorPickImage());
-      }
-    }
-  }
-
-  // make image cropper
-  // Future<File?> cropImage(
-  //     {required File imageFile,
-  //     required int type,
-  //     required BuildContext context}) async {
-  //   CroppedFile? croppedImage =
-  //       await ImageCropper().cropImage(sourcePath: imageFile.path);
-  //   getRecognizedText(croppedImage!.path, type, context);
-  //   // if (croppedImage == null) {
-  //   //   return null;
-  //   // }
-  //   return File(croppedImage.path);
-  // }
+  
 
   //////////////////////////////////////
   List<UserVehicles> selectedVehicle = [];
@@ -232,4 +181,3 @@ class OrderCubit extends Cubit<OrderState> {
   
 }
 
-enum OCRType { oddo, liter }
